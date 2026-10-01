@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cut">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#16191d">
+<title>Muster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: phone-first dataslate — sticky header, single column of operable panels, fixed bottom tab bar */
+:root{
+  --bg:#e9ecef;--surface:#fbfcfd;--surface2:#f1f3f5;--ink:#181c21;--muted:#5a636d;--line:#d3d8de;
+  --brass:#8a5f12;--brass-ink:#fff8ea;--brass-soft:#f2e6cc;--danger:#a8261d;--danger-soft:#f8e1de;--ok:#2b6e47;--ok-soft:#dcefe3;
+  --display:"Saira Condensed","Arial Narrow",sans-serif;--body:"Source Sans 3","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px;
+  --a-fill:var(--brass);--a-ink:var(--brass-ink);--a-text:var(--brass);--a-soft:var(--brass-soft);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101317;--surface:#191e24;--surface2:#212830;--ink:#e6e9ec;--muted:#98a2ad;--line:#2d353e;
+  --brass:#d9a744;--brass-ink:#1a1408;--brass-soft:#372b14;--danger:#ef7468;--danger-soft:#3a1c19;--ok:#6fc893;--ok-soft:#183126;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101317;--surface:#191e24;--surface2:#212830;--ink:#e6e9ec;--muted:#98a2ad;--line:#2d353e;
+  --brass:#d9a744;--brass-ink:#1a1408;--brass-soft:#372b14;--danger:#ef7468;--danger-soft:#3a1c19;--ok:#6fc893;--ok-soft:#183126;color-scheme:dark}
+/* army accents */
+.f-orks{--a-fill:linear-gradient(135deg,#c6ef5e 0%,#71b021 55%,#a5d93b 100%);--a-ink:#122005;--a-text:#3f6b0c;--a-soft:#e5f2d0}
+.f-tyranids{--a-fill:linear-gradient(135deg,#a06ad0 0%,#552a7a 55%,#8452b3 100%);--a-ink:#fff;--a-text:#6b3a94;--a-soft:#ece2f4}
+.f-dark-angels{--a-fill:linear-gradient(135deg,#3f8f63 0%,#103a25 55%,#2b6d4a 100%);--a-ink:#eef6f1;--a-text:#1b5a3b;--a-soft:#dcebe2}
+.f-custodes{--a-fill:linear-gradient(135deg,#f7de7e 0%,#c99a2e 55%,#ecc55c 100%);--a-ink:#2b1e05;--a-text:#86600c;--a-soft:#f6ecd0}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .f-orks{--a-text:#a6dc5c;--a-soft:#223212}
+  :root:not([data-theme="light"]) .f-tyranids{--a-fill:linear-gradient(135deg,#b07ddc 0%,#6a399a 55%,#9462c2 100%);--a-text:#c6a3e8;--a-soft:#2c1f3a}
+  :root:not([data-theme="light"]) .f-dark-angels{--a-fill:linear-gradient(135deg,#4ea474 0%,#1a5a3a 55%,#36845a 100%);--a-text:#78c9a0;--a-soft:#16291f}
+  :root:not([data-theme="light"]) .f-custodes{--a-text:#e8bf55;--a-soft:#382c10}}
+:root[data-theme="dark"] .f-orks{--a-text:#a6dc5c;--a-soft:#223212}
+:root[data-theme="dark"] .f-tyranids{--a-fill:linear-gradient(135deg,#b07ddc 0%,#6a399a 55%,#9462c2 100%);--a-text:#c6a3e8;--a-soft:#2c1f3a}
+:root[data-theme="dark"] .f-dark-angels{--a-fill:linear-gradient(135deg,#4ea474 0%,#1a5a3a 55%,#36845a 100%);--a-text:#78c9a0;--a-soft:#16291f}
+:root[data-theme="dark"] .f-custodes{--a-text:#e8bf55;--a-soft:#382c10}
+/* app themes (Settings): override base tokens only */
+:root.t-void{--bg:#0b0f17;--surface:#121826;--surface2:#1a2233;--ink:#e3e8f2;--muted:#8b97ad;--line:#253049;--brass:#7aa7ff;--brass-ink:#071022;--brass-soft:#1b2b4d;color-scheme:dark}
+:root.t-forge{--bg:#141110;--surface:#1d1917;--surface2:#272220;--ink:#efe7e2;--muted:#a69a92;--line:#3a312c;--brass:#ff8a3d;--brass-ink:#1a0c03;--brass-soft:#3d2414;color-scheme:dark}
+:root.t-bone{--bg:#ebe8e3;--surface:#f8f6f3;--surface2:#efebe6;--ink:#1f1b18;--muted:#6a625b;--line:#d6d0c8;--brass:#9b1c2c;--brass-ink:#fff4f4;--brass-soft:#f1dadd;color-scheme:light}
+:root.t-ice{--bg:#e8eef4;--surface:#f7fafd;--surface2:#edf2f7;--ink:#14202c;--muted:#566677;--line:#cfdae5;--brass:#1f5fbf;--brass-ink:#f2f7ff;--brass-soft:#d8e5f8;color-scheme:light}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 var(--body)}
+*{box-sizing:border-box}
+#app{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:0 calc(84px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:.01em;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:2rem}h2{font-size:1.35rem}h3{font-size:1.1rem}
+p{margin:0}
+.eyebrow{font:600 .72rem/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}.small{font-size:.875rem}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.top{position:relative;background:var(--bg);display:flex;gap:12px;align-items:flex-end;justify-content:space-between;padding-block:18px 12px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.top .grow{min-width:0;display:grid;gap:6px}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--a-fill)}
+.top .eyebrow{color:var(--a-text)}
+.grp{font:700 .95rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--a-text)}
+.top h1{overflow-wrap:anywhere}
+.stack{display:grid;gap:16px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:12px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+button,select,input,textarea{font:inherit;color:inherit}
+.btn{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;min-height:40px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--a-fill);border-color:transparent;color:var(--a-ink)}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.sm{min-height:32px;padding:4px 10px;font-size:.875rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--a-text);outline-offset:2px}
+label.f{display:grid;gap:4px;font-size:.8rem;font-weight:600;color:var(--muted);min-width:0}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:9px 10px;color:var(--ink);font-size:1rem;font-weight:400}
+textarea{min-height:88px;resize:vertical}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.grid6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.875rem;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed=true]{background:var(--a-fill);color:var(--a-ink);border-color:transparent}
+.badge{flex:none;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:8px;background:var(--a-fill);color:var(--a-ink);font:700 .85rem/1 var(--display);letter-spacing:.06em}
+.badge.s{width:30px;height:30px;font-size:.68rem;border-radius:6px}
+.tag{display:inline-flex;align-items:center;border-radius:6px;padding:2px 8px;font-size:.78rem;font-weight:600;background:var(--surface2);border:1px solid var(--line);white-space:nowrap}
+.tag.brass{background:var(--a-soft);border-color:transparent;color:var(--ink)}
+.tag.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.tag.bad{background:var(--danger-soft);color:var(--danger);border-color:transparent}
+.card{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer}
+.card:hover{border-color:var(--muted)}
+.card .body{min-width:0;display:grid;gap:4px;flex:1}
+.meter{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--a-fill)}
+.meter.over i{background:var(--danger)}
+.entry{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
+.entry:first-child,.grp+.entry{border-top:0;padding-top:0}
+.entry select{width:auto;min-width:0;max-width:100%;padding:6px 8px;font-size:.9rem}
+.warn{display:grid;gap:6px;padding:0;margin:0;list-style:none}
+.warn li{background:var(--danger-soft);color:var(--danger);border-radius:8px;padding:8px 10px;font-size:.9rem;font-weight:600}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px;justify-items:start;color:var(--muted)}
+.empty h3{color:var(--ink)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:6px 16px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
+.tabs nav{display:flex;gap:4px;width:100%;max-width:760px;justify-content:space-between}
+.tabs button{appearance:none;border:0;background:transparent;border-radius:999px;padding:10px 12px;font:700 .9rem/1 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px;flex:0 0 auto;transition:background .15s,color .15s}
+.tabs button svg{width:22px;height:22px;flex:none}
+.tabs button span{display:none}
+.tabs button[aria-current=page]{background:var(--brass-soft);color:var(--ink);flex:1 1 auto;justify-content:center}
+.tabs button[aria-current=page] span{display:inline}
+.tabs button[aria-current=page] svg{color:var(--brass)}
+.searchbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--bg);padding-block:10px 6px;max-width:760px;margin:0 auto;padding-inline:16px}
+.searchbar input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:10px 16px 10px 40px;font-size:1rem;color:var(--ink)}
+.searchbar .sicon{position:absolute;left:30px;top:21px;width:18px;height:18px;color:var(--muted);pointer-events:none}
+.results{position:absolute;left:16px;right:16px;top:calc(100% - 2px);background:var(--surface);border:1px solid var(--line);border-radius:12px;max-height:60vh;overflow:auto;box-shadow:0 12px 30px rgb(0 0 0 / .25);padding:6px}
+.results p.grp{padding:8px 10px 4px;margin:0}
+.res{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;background:transparent;border:0;border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink)}
+.res:hover,.res:focus-visible{background:var(--surface2)}
+.res .body{min-width:0;display:grid}
+.res small{color:var(--muted)}
+.cat{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:10px}
+.cat:first-of-type{border-top:0;padding-top:0}
+.cat-h{display:flex;align-items:center;justify-content:space-between;gap:8px;background:none;border:0;padding:0;cursor:pointer;color:var(--ink);width:100%;text-align:left}
+.cat-h h3{font:700 1.45rem/1 var(--display);letter-spacing:.08em;text-transform:uppercase;border-left:5px solid var(--a-text);padding-left:10px;color:var(--a-text)}
+.gslot{display:grid;gap:6px}
+.gslot>p{margin:0}
+.msec{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.msec-h{background:#1d2b44;color:#fff;font:700 .95rem/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:8px 10px}
+.msec.act .msec-h{background:#b98a1a;color:#1a1305}
+.mwhen{padding:7px 10px;border-bottom:1px solid var(--line);font-size:.88rem}.mwhen b{text-transform:uppercase;font-size:.75rem;letter-spacing:.08em;margin-right:6px;background:var(--ink);color:var(--surface);padding:2px 6px;border-radius:4px}
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 10px;font-size:.9rem}
+.mrow+.mrow{border-top:1px dashed var(--line)}
+.mrow .vp{flex:none;font:700 1.1rem/1 var(--mono);text-align:right;display:grid;justify-items:end;gap:2px}.mrow .vp small{font:600 .6rem/1 var(--mono);text-transform:uppercase;color:var(--muted)}
+.mrow.cum{background:var(--surface2)}.plus{color:var(--a-text)}
+.mor{text-align:center;font:700 .7rem/1 var(--mono);text-transform:uppercase;color:var(--muted);padding:2px}
+.mpre{font-style:italic;font-size:.88rem;border-left:3px solid var(--a-text);padding-left:10px;margin:0}
+.mact{padding:8px 10px;display:grid;gap:4px;font-size:.88rem}.mact p{margin:0}
+.radios{display:grid;gap:4px}
+.radios label{display:flex;align-items:center;gap:8px;font-size:.92rem;cursor:pointer}
+.radios input{accent-color:var(--a-text);width:18px;height:18px;margin:0}
+.faq{margin:0;padding-left:20px;display:grid;gap:8px}
+.mission .cat-h h3{font-size:1.1rem}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.cat-h .chev{transition:transform .15s;color:var(--muted)}
+.cat.closed .chev{transform:rotate(-90deg)}
+.cat-count{font:600 .8rem/1 var(--mono);color:var(--muted)}
+.rulebox{background:#fff;color:#1b1f24;border:1px solid #d3d8de;border-radius:var(--r);padding:14px;display:grid;gap:10px;color-scheme:light}
+.rulebox details>summary{color:#1b1f24}
+.rulebox h2,.rulebox h3,.rulebox strong{color:#111418}
+.rulebox p,.rulebox .rules{color:#2a3038}
+.rulebox .num{color:#6b7480}
+.rule-item{display:grid;gap:3px;padding-block:6px;border-top:1px solid #e5e8ec}
+.rule-item:first-child{border-top:0}
+.gear{display:grid;gap:6px;background:var(--surface2);border-radius:8px;padding:10px}
+.gear label{display:flex;gap:8px;align-items:center;font-size:.92rem}
+.gear ul{margin:0;padding-left:18px;font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.flash{animation:flash 1.4s ease-out}@keyframes flash{0%{box-shadow:0 0 0 3px var(--brass)}100%{box-shadow:0 0 0 3px transparent}}}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.theme{border:2px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;display:grid;gap:8px;text-align:left;background:var(--surface);color:var(--ink)}
+.theme[aria-pressed=true]{border-color:var(--brass)}
+.theme .sw{display:flex;height:34px;border-radius:8px;overflow:hidden}
+.theme .sw i{flex:1}
+.score{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:560px){.score{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.ctr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px;display:grid;gap:6px;justify-items:center}
+.ctr .v{font:600 2rem/1 var(--mono);font-variant-numeric:tabular-nums}
+.ctr .row{flex-wrap:nowrap}
+.ctr .btn{min-width:40px;justify-content:center;padding:4px}
+.seg{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:4px;overflow-x:auto;scrollbar-width:none}
+.seg button{flex:1;appearance:none;border:0;background:transparent;border-radius:7px;padding:8px 10px;font:600 .9rem/1 var(--body);cursor:pointer;white-space:nowrap;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:inset 0 -3px 0 var(--a-text),0 1px 2px rgb(0 0 0 / .15)}
+/* stratagem timing colours: fixed, independent of theme and army */
+.strat{--sc:#2563c9;--sl:#dce8fc;--st:#1a4ea6;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:grid;background:var(--surface)}
+.strat.s-opp{--sc:#c3362b;--sl:#fbe1de;--st:#9c271e}
+.strat.s-either{--sc:#0f8a72;--sl:#d4f1e9;--st:#0b6a57}
+.strat .sh{background:var(--sc);color:#fff;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.strat>summary{list-style:none;cursor:pointer}
+.strat>summary::-webkit-details-marker{display:none}
+.strat>summary::before{content:none}
+.strat .chev{transition:transform .15s;margin-left:6px}
+.strat[open] .chev{transform:rotate(180deg)}
+.strat .sb{color:var(--ink)}
+.disp-take{--dc:#2f8a3b}.disp-disr{--dc:#1f6aa5}.disp-purge{--dc:#a5232c}.disp-prio{--dc:#b8901c}.disp-recon{--dc:#13808a}
+.tag.disp{background:var(--dc);color:#fff;border-color:transparent}
+.chip.disp[aria-pressed=true]{background:var(--dc);color:#fff}
+.strat .sh h3{color:inherit}
+.strat .sh small{display:block;opacity:.85;font-size:.78rem;font-weight:600;letter-spacing:.04em}
+.strat .sb{padding:10px 12px;display:grid;gap:8px}
+.strat.used{opacity:.55}
+.strat .cp{font:700 1.25rem/1 var(--mono);color:inherit;white-space:nowrap}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.rules{white-space:pre-wrap;font-size:.93rem;overflow-wrap:anywhere}
+.statline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;overflow:hidden;text-align:center}
+.statline div{padding:4px 2px;border-left:1px solid var(--line)}
+.statline div:first-child{border-left:0}
+.statline b{display:block;font:600 .66rem/1.2 var(--body);letter-spacing:.08em;color:var(--muted)}
+.statline span{font:600 .95rem/1.3 var(--mono)}
+.unit.dead{opacity:.5}.unit.dead h3{text-decoration:line-through}
+
+.wtab-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.wtab{width:100%;border-collapse:collapse;font-size:.85rem;min-width:420px}
+.wtab th{font:700 .7rem/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--a-ink);background:var(--a-fill);padding:6px 6px;text-align:center}
+.wtab th:first-child{text-align:left}
+.wtab td{padding:6px;border-top:1px solid var(--line);text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;vertical-align:top}
+.wtab td:first-child{text-align:left;font-family:var(--body);font-weight:600}
+.wtab td small{display:block;font-weight:400;color:var(--a-text);font-size:.75rem;letter-spacing:.02em}
+.wgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.wgrid.m{grid-template-columns:repeat(5,minmax(0,1fr))}
+details>summary{cursor:pointer;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+.item{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:8px;background:var(--surface2)}
+.item input,.item select,.item textarea{background:var(--surface)}
+.sheet{position:fixed;inset:0;z-index:20;background:rgb(8 10 12 / .55);display:flex;align-items:flex-end;justify-content:center}
+.sheet .pane{background:var(--surface);width:100%;max-width:760px;max-height:85%;overflow:auto;border-radius:14px 14px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:12px;align-content:start}
+.pick{display:flex;justify-content:space-between;gap:10px;align-items:center;width:100%;text-align:left;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.pick:disabled{opacity:.45;cursor:not-allowed}
+.pick .body{min-width:0;display:grid;gap:2px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:600;max-width:calc(100% - 32px)}
+.notice{background:var(--brass-soft);border-radius:var(--r);padding:12px;font-size:.92rem}
+pre{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;font:500 .8rem/1.5 var(--mono);margin:0}
+@media (prefers-reduced-motion:no-preference){.sheet .pane{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+</style>
+
+<div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
+<div id="app"></div>
+<div id="sheet" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<div class="tabs"><nav id="tabs"></nav></div>
+
+<script>
+const FACTIONS=[
+  {id:'custodes',name:'Adeptus Custodes',abbr:'ADC'},
+  {id:'dark-angels',name:'Dark Angels',abbr:'DA'},
+  {id:'orks',name:'Orks',abbr:'ORK'},
+  {id:'tyranids',name:'Tyranids',abbr:'TYR'}];
+const CORE_RULES=[{"id": "r01", "num": "01", "title": "Core Concepts", "items": [["Armies, units and models", "Each player controls an army of units; a unit is one or more models that move and fight together. A model's base counts as part of the model. Friendly means your army, enemy means your opponent's; rules that don't say either affect both. Anything that applies to a unit applies to every model in it."], ["Active and opposing player", "One player is always active. During your turn you're active, except that whoever's unit is moving, shooting or fighting is the active player until that move or those attacks finish. Outside turns, the player who goes first in the round is active."], ["Measuring", "Distances are in inches and can be measured at any time. Measure to and from the closest part of a model's base."], ["Dice", "D6 is a six-sided die. 3+ means 3 or more; 2D6 adds two dice; D3 is a D6 halved, rounding up."], ["Leadership and battle-shock rolls", "Roll 2D6: if it equals or beats a Ld value in the unit, it passes. A failed battle-shock roll makes the unit battle-shocked: its OC becomes '-', you can't target it with stratagems, and it can't start or complete actions."]]}, {"id": "r02", "num": "02", "title": "Datasheets", "items": [["Profiles", "M (Move), T (Toughness), Sv (Save), InSv (Invulnerable save, if any), W (Wounds), Ld (Leadership) and OC (Objective Control). M of '-' means it can't move once set up; OC of '-' means it can't control objectives."], ["Weapons", "Range (Melee for melee weapons), A (Attacks), BS or WS (skill to hit), S (Strength), AP (Armour Penetration), D (Damage)."], ["Keywords", "Faction keywords are used for army building; otherwise all keywords work the same. Rules tied to a keyword only affect units with it."], ["Composition and wargear options", "Lists the models in the unit and their default wargear, plus options for swapping weapons when you add the unit to your army."]]}, {"id": "r03", "num": "03", "title": "Moving", "items": [["Moving models", "Move models one at a time in straight lines and rotations. Rotating doesn't use distance. Models can pass through friendly models and any gap their base fits, but not through enemy models or off the table edge."], ["Ending a move", "At the end, the unit must be in coherency, no model can be on another model or partway through a wall, and any 'after moving' conditions must be met, otherwise the models go back and the move didn't happen."], ["Setting up", "When setting up, the unit must be in coherency, unengaged and meet any other restrictions. If it can't, it goes back where it came from."], ["Coherency", "Every model must be within 2\" horizontally and 5\" vertically of another model in the unit, and within 9\" of every other model. In each End of Turn step, remove models until out-of-coherency units are back in coherency (these don't count as being destroyed for rules)."], ["Engagement", "Engagement range is 2\" horizontally and 5\" vertically. Models within it of an enemy are engaged with that enemy; a unit with no engaged models is unengaged."]]}, {"id": "r04", "num": "04", "title": "Making Attacks", "items": [["Sequence", "1) Select weapons, 2) select targets, 3) resolve attacks."], ["Select weapons", "Shooting: pick any of the model's ranged weapons. Fighting: pick exactly one melee weapon."], ["Select targets", "Shooting: one enemy unit per weapon that is visible, in range and unengaged. Fighting: one or more engaged enemy units, no more targets than the weapon's Attacks; split the attacks between them."], ["Resolve attacks", "Pick a target unit, gather attack dice for a weapon (rolling identical attacks together), resolve the attack sequence, then repeat for the remaining weapons and targets. Identical attacks share BS/WS, S, AP, D and the same rules."]]}, {"id": "r05", "num": "05", "title": "Attack Sequence", "items": [["1. Hit rolls", "Roll a D6 per attack. Unmodified 1 always fails; unmodified 6 is a critical hit; otherwise it hits on the BS/WS or better."], ["2. Wound rolls", "Roll a D6 per hit. Unmodified 1 fails; unmodified 6 is a critical wound. S at least double T: 2+. S greater than T: 3+. S equal to T: 4+. S less than T: 5+. S half T or less: 6+."], ["3. Save rolls", "The defender splits the unit into groups: each Character on its own, and others grouped by matching W, Sv and InSv. Wounded non-Character groups go first; Characters always go after non-Characters (wounded Characters first). One save roll per wound."], ["4. Inflict damage", "Resolve saves from lowest to highest against the current group, picking an already-wounded model if possible. Unmodified 1 always fails. The save passes if it equals or beats the InSv, or if the roll modified by AP equals or beats the Sv. Each failed save removes wounds equal to D; a model at 0 wounds is destroyed. Extra attacks after the unit is wiped out are lost."], ["Critical hits and wounds", "Criticals still count as hits and wounds, and trigger abilities such as [Lethal Hits] and [Devastating Wounds]."]]}, {"id": "r06", "num": "06", "title": "Other Concepts", "items": [["Visibility", "A model is visible if a 1 mm line can be drawn from any part of the observer to any part of it (ignoring models in either unit). Fully visible means every facing part can be seen. A unit is visible if any model is, fully visible if every model is. Terrain adds its own rules."], ["Mortal wounds", "Each mortal wound removes 1 wound. Allocate to a wounded non-Character first, then any non-Character, then a wounded Character, then any Character. When attacks cause both normal damage and mortal wounds, resolve the normal damage first."], ["Hazard rolls", "Roll a D6: on 1-2 the unit takes 1 mortal wound, or 3 if every model is a Monster or Vehicle. Multiple hazard rolls are made together."]]}, {"id": "r07", "num": "07", "title": "The Battle Round", "items": [["Structure", "Start of battle round, then each player takes a turn (the same player always goes first, as set by the mission), then end of battle round. Non-mission rules resolve before mission scoring at each end step."], ["A turn", "Start of Turn step, then the Command, Movement, Shooting, Charge and Fight phases, then the End of Turn step."]]}, {"id": "r08", "num": "08", "title": "Command Phase", "items": [["Steps", "Start of phase, Gain Core CP, Battle-shock, Command abilities, End of phase."], ["Gain Core CP", "Both players gain 1 CP."], ["Battle-shock", "The active player rolls battle-shock for every unit that is already battle-shocked or is at or below half-strength. A battle-shocked unit that passes recovers."]]}, {"id": "r09", "num": "09", "title": "Movement Phase", "items": [["Moving units", "Every unit must be selected to move once, including those in reserves or embarked; one option is to remain stationary."], ["Remain stationary", "Nothing moves, and rules triggered by starting or ending a move don't trigger."], ["Normal move", "Up to M. Must start and end unengaged."], ["Advance move", "Roll a D6 and move up to M plus the roll. Must end unengaged. Unless a rule says otherwise, the unit can't declare a charge or start an action this turn."], ["Fall-back move", "Up to M, for engaged units. Ordered Retreat is allowed if not battle-shocked. Desperate Escape (otherwise, or by choice) makes a hazard roll per model, lets models move through enemies, and forces a battle-shock roll afterwards if not already shocked. Must end unengaged; the unit can't shoot, charge or start actions this turn."]]}, {"id": "r10", "num": "10", "title": "Shooting Phase", "items": [["Shooting", "Select eligible units one at a time and pick a shooting type for each."], ["Normal shooting", "Unengaged and didn't Advance."], ["Assault shooting", "Unengaged, Advanced, and has [Assault] weapons; only those weapons can fire."], ["Close-quarters shooting", "Engaged, didn't Advance, and has [Close-Quarters] weapons or is a Monster/Vehicle. Infantry and similar can only fire Close-Quarters weapons at units they're engaged with. Monsters and Vehicles can fire everything, at -1 to hit except Close-Quarters weapons at engaged targets; [Blast] can't target engaged units."], ["Indirect shooting", "Unengaged, didn't Advance, has [Indirect Fire] weapons. Those weapons can hit unseen targets, the target always gets cover, hit rolls can't be re-rolled, and unmodified 1-5 miss (1-3 if the unit stayed stationary and a friendly unit can see the target)."], ["After shooting", "Units that shot can't start an action this phase."]]}, {"id": "r11", "num": "11", "title": "Charge Phase", "items": [["Declaring a charge", "A unit can declare a charge if it's within 12\" of an enemy, unengaged, and didn't Advance or Fall Back this turn. Roll 2D6 for the charge distance."], ["Charge move", "Pick charge targets within 12\" and within the rolled distance. Each model must end closer to a target, within 1\" of one if possible, and engaged if possible. The unit must end engaged with every target and no other enemy. Charging units gain Fights First until the end of the turn. A roll of 2 can never succeed without modifiers."]]}, {"id": "r12", "num": "12", "title": "Fight Phase", "items": [["Steps", "Start of phase, Pile in, Fight, Consolidate, End of phase. Units that can fight must, but piling in and consolidating are optional."], ["Pile in", "Up to 3\" for units that are engaged, charged this turn, or are making an overrun fight. Models in base contact stay put; others end closer to the nearest pile-in target and engaged if possible. The active player's units go first."], ["Fight order", "Starting with the active player, players alternate picking Fights First units, then all remaining eligible units. If a Fights First unit becomes eligible later, return to the Fights First step."], ["Normal fight", "For engaged units: fight as normal."], ["Overrun fight", "For units that are unengaged (or became engaged mid-step): make one extra pile-in move, then fight."], ["Consolidate", "Up to 3\" for units that were eligible to fight. Ongoing (engaged): stay engaged and move closer. Engaging (within 3\" of enemies): must end engaged with the selected units, and any of them that haven't fought now fight. Objective (within 3\" of an objective): end within range of it."], ["Unable to fight", "If all your eligible units are more than 5\" from enemies, you can pass back to your opponent."]]}, {"id": "r13", "num": "13", "title": "Terrain", "items": [["Terrain areas", "Terrain sits in agreed areas (or on mats), and each feature is Exposed, Light or Dense."], ["Movement", "Exposed and Light: anyone moves through. Dense: Infantry, Beasts, Swarm and Mobile move through horizontally, and Infantry, Beasts and Swarm can climb. Others can cross dense sections 2\" or lower, or climb taller sections but can't end on upper floors. Climbing counts vertical distance and models must stay within ½\" of the feature. Only Infantry, Beasts, Swarm, Fly and Monster can end on upper levels."], ["Benefit of cover", "If every model in the target is Infantry, Beasts or Swarm in a terrain area, or isn't fully visible because of terrain or obscuring areas, the attack gets -1 to BS (worsened by 1)."], ["Hidden", "Infantry, Beasts and Swarm in an area with dense terrain whose unit didn't shoot this turn or last turn can only be seen by enemies within their detection range (normally 15\")."], ["Obscuring", "Areas with light or dense terrain block sight when every line between two models crosses one (ignoring areas either model is in)."], ["Solid", "Dense features block sight through enclosed gaps (doors, windows) 3\" or less above the ground, and models can't end a move poking through those parts."], ["Plunging fire", "+1 BS when shooting at a unit with models on the ground from terrain 3\" or higher, or from a Towering model within 12\". Doesn't apply to or against Aircraft."]]}, {"id": "r14", "num": "14", "title": "Objectives", "items": [["Terrain objectives", "Objectives are the terrain areas at the mission's points. A model is in range while inside that area."], ["Control", "At the end of each phase and turn, add up the OC of each player's models in range: the higher total controls it; a tie means nobody does unless it's secured. A unit with OC 1+ in range of an objective its army controls is controlling it."], ["Secured", "A secured objective stays yours with nobody on it until your opponent's level of control beats yours at the end of a phase."], ["Objective markers", "If an objective isn't in a terrain area, use a 40 mm marker; models are in range within 3\" horizontally and 5\" vertically."]]}, {"id": "r15", "num": "15", "title": "Stratagems", "items": [["Using stratagems", "Each one shows a CP cost, When, Target, Effect and any Restrictions. Pick targets, pay the CP (plus any optional +CP sections you choose), then resolve the effect."], ["Limits", "Each player can use a given stratagem only once per phase, and can't target the same unit with more than one stratagem in a phase unless a rule says otherwise. Battle-shocked units can't be targeted by their owner's stratagems."], ["Snap shooting", "Used by Fire Overwatch. Target one visible eligible enemy unit within 24\". Attacks only hit on an unmodified 6, regardless of BS or modifiers, and hit rolls can't be re-rolled. These hits are never critical hits, so they can't trigger abilities such as [Sustained Hits] or [Lethal Hits]. The unit can't start an action afterwards this phase."], ["Colour key", "Blue = your turn, red = your opponent's turn, green = either player's turn."]]}, {"id": "r16", "num": "16", "title": "Actions", "items": [["Performing actions", "Each action lists when it starts, which units can do it, its use limit, when it completes and its effect. Actions come from mission packs and other publications."], ["Starting", "A unit can't start one if it's off the table, an Aircraft or Fortification, battle-shocked, OC 0 or '-', engaged (unless Titanic), Advanced or Fell Back this turn, or already started an action this turn. Once started, the unit can't shoot (unless Titanic) or charge this turn."], ["Completing", "If the unit moves (other than pile-in or consolidation) or leaves the battlefield, the action fails."]]}, {"id": "r17", "num": "17", "title": "Monsters and Vehicles", "items": [["Movement", "During normal and Advance moves, Monster and Vehicle models can move through other models except other Monsters and Vehicles."], ["Frame", "Models with the Frame keyword (usually baseless) measure from the closest point of the model and rotate around their centre."], ["Shooting engaged Monsters and Vehicles", "In your Shooting phase you can target engaged enemy Monsters and Vehicles at -1 to hit, except with Close-Quarters weapons from a unit engaged with them. Your own engaged units still need a shooting type that allows shooting while engaged."]]}, {"id": "r18", "num": "18", "title": "Transports", "items": [["Capacity", "Each Transport lists what it can carry; several units can share it if there's room. Units can start the battle embarked."], ["Embarking", "After a normal, Advance or Fall Back move, a unit wholly within 3\" that wasn't set up this turn, is allowed in, and fits, can embark and is removed from the table."], ["Disembark move", "In your Movement phase, if the Transport is on the table, the unit didn't embark this phase and the Transport didn't Advance or Fall Back. Rapid (Transport made a normal or ingress move): set up within 3\" and can't charge. Tactical (Transport hasn't moved or stayed still): set up within 3\" then make a normal or Advance move. Combat (otherwise): set up within 6\", may set up engaged with enemies the Transport is engaged with, hazard roll per model, and the unit is battle-shocked and can't charge."], ["Emergency disembark", "When the Transport is destroyed: hazard roll per model, set up within 6\" as close as possible (models that can't fit are destroyed), and the unit is battle-shocked and can't charge this turn."]]}, {"id": "r19", "num": "19", "title": "Attached Units", "items": [["Forming", "Before the battle, each Leader or Support unit can join one bodyguard unit it's allowed to lead. A bodyguard can have one Leader and one Support. The result is a single unit for all rules."], ["Toughness", "Attacks use the highest T among bodyguard models, or the leaders' highest T once only they remain."], ["Destroyed", "'When destroyed' rules only trigger when the last model that started the battle in the unit dies."], ["Keywords", "The attached unit has every component unit's keywords, but individual models don't gain each other's keywords."], ["Abilities", "Abilities from a specific model (an enhancement or wargear) only affect that model. Unit-wide abilities from the leader or bodyguard last until the last model of that part dies (finishing the current attacker's attacks first). Leaders keep their 'while leading' abilities even if the bodyguard dies, if they started attached."]]}, {"id": "r20", "num": "20", "title": "Strategic Reserves", "items": [["Placing", "In Declare Battle Formations, put units (not Fortifications) in reserves. Their combined points, including anything embarked, can't exceed half your battle size points."], ["Repositioned units", "Units removed to reserves mid-battle keep any timed effects and still count as having Advanced, Fallen Back or disembarked that turn."], ["Ingress move", "From battle round 2 onwards, set up wholly within 6\" of a battlefield edge and more than 8\" from enemies; before round 3 not in the enemy deployment zone. The unit can't make other moves until the next Charge phase. Units still in reserve at the end of round 3 are destroyed, except embarked units whose Transport arrived and repositioned units."]]}, {"id": "r21", "num": "21", "title": "Flying and Surging", "items": [["Surge moves", "When a rule triggers it, an unengaged, non-battle-shocked unit that hasn't moved this phase moves toward the closest enemy unit, ending engaged with it if possible and engaged with nothing else. It can't move again this phase."], ["Taking to the skies", "Fly units making a normal, Advance, Fall Back or charge move can take to the skies: -2\" to the distance, ignore vertical distance, and move through any models and terrain."]]}, {"id": "r22", "num": "22", "title": "Other Rules and Abilities", "items": [["Aura", "Affects units within range, including the source. The same aura doesn't stack on one unit."], ["Faction abilities", "Army rules only work if your Army Faction matches a faction keyword on the unit."], ["Psychic", "Wounds caused by psychic abilities count as psychic attacks."], ["Wargear abilities", "Apply to the unit, or to the bearer model until it's destroyed."], ["Plunging fire", "+1 BS from 3\"+ terrain, or from Towering models within 12\", against targets on the ground."]]}, {"id": "r23", "num": "23", "title": "Aircraft", "items": [["Aircraft", "Must start in strategic reserves, can only make ingress moves, and return to reserves at the end of your opponent's turn. Other units can move through them, and pile-ins, consolidations and surges ignore them unless the mover can Fly. Being engaged only with Aircraft doesn't stop normal or Advance moves. Aircraft can't charge and can only fight Fly units; only Fly units can charge or fight them. Plunging Fire doesn't apply to or against them."]]}, {"id": "r24", "num": "24", "title": "Core Abilities", "items": [["Duplicates", "The same ability (or weapon ability) from multiple sources doesn't stack, even with different numbers or keywords; choose one. For Scouts, use the lowest value not shared by every model."], ["Keyword-limited abilities", "A weapon ability followed by keywords (e.g. [Lethal Hits: Vehicle]) only works against units with those keywords."], ["[Anti-X Y+]", "Unmodified wound rolls of Y+ against X units are critical wounds."], ["[Assault]", "Lets the unit use assault shooting after Advancing."], ["[Blast] / [Blast X]", "+1 attack (or +X) per 5 models in the target. Can't target engaged units."], ["[Cleave X]", "If all the weapon's attacks go into one target, +X attacks per 5 models in it."], ["[Close-Quarters] / [Pistol]", "Allows close-quarters shooting. Under other shooting types, a non-Monster/Vehicle model fires either its Close-Quarters weapons or its other ranged weapons, not both. [Pistol] works identically."], ["Deadly Demise X", "When the model dies (after any emergency disembark), roll a D6; on a 6 every unit within 6\" takes X mortal wounds."], ["Deep Strike", "If every model has it, ingress moves can set up anywhere more than 8\" from enemies, including the enemy deployment zone."], ["[Devastating Wounds]", "A critical wound ends the attack sequence and inflicts mortal wounds equal to D (after normal damage). Each critical wound can kill at most one model."], ["[Extra Attacks]", "Fight with these weapons in addition to one other melee weapon."], ["Feel No Pain X+", "Roll a D6 for each wound the model would lose; on X+ it isn't lost."], ["Fights First", "A unit where every model has it is picked in the Fights First step."], ["Firing Deck X", "When the Transport shoots, pick up to X embarked models and one ranged weapon each (not One Shot) to fire as part of the Transport; those units can't shoot this turn."], ["[Hazardous]", "After shooting or fighting, one hazard roll per Hazardous weapon used."], ["[Heavy]", "+1 to hit in your Shooting phase if the unit is unengaged, wasn't set up this turn and no model moved more than 3\"."], ["Hover", "No -2\" penalty when taking to the skies."], ["[Ignores Cover]", "The target can't get the benefit of cover, including from Stealth."], ["[Indirect Fire]", "Allows indirect shooting."], ["Infiltrators", "If every model has it, deploy anywhere more than 8\" from the enemy deployment zone and enemy units."], ["[Lance]", "+1 to wound if the unit charged this turn."], ["Leader / Support", "See Attached Units."], ["[Lethal Hits]", "A critical hit can automatically wound (skipping the wound roll, so it can't become a critical wound)."], ["Lone Operative (X\")", "Unless attached, only visible to enemies within 12\" (or X\") and can't be targeted by Indirect Fire from further away."], ["[Melta X]", "+X Damage against targets within half range."], ["[One Shot]", "Can only be fired once per battle (revived models don't reset it; newly added units do)."], ["[Precision]", "If the attacker can see a Character in the target, it can pick that Character's group as the current allocation group."], ["[Psychic]", "Ignore modifiers to BS/WS and hit rolls; these are psychic attacks."], ["[Rapid Fire X]", "+X attacks against targets within half range."], ["Scouts X\"", "If every model has it, before the battle the unit can deploy from reserves into your deployment zone, or make a scout move of up to X\" ending more than 8\" from enemies (Dedicated Transports full of Scouts units can too). Can't embark after a scout move."], ["Stealth", "If every model has it, ranged attacks against the unit treat it as in cover."], ["Super-Heavy Walker", "Moves through non-Titanic models and terrain up to 4\" tall, and can choose to gain Mobile for a move (battle-shocked on a D6 roll of 1 afterwards)."], ["[Sustained Hits X]", "A critical hit scores X extra hits."], ["[Torrent]", "Automatically hits."], ["[Twin-Linked]", "Re-roll the wound roll."]]}, {"id": "r25", "num": "A", "title": "Rules Appendix", "items": [["Starting strength", "The number of models at the start of battle round 1 (attached units count all their models). Single-model units use wounds instead: below starting strength once damaged, at half-strength at exactly half wounds, below half-strength under that. Odd numbers can't be exactly at half-strength."], ["Destroyed", "A unit is destroyed when all its models are. 'When destroyed' rules resolve before removal, after the attacker finishes its attacks. Destroyed models can't use or be targeted by rules."], ["Different Move values", "Each model in a unit moves up to its own M."], ["Mixed keywords", "A unit has every keyword its models have, but each model keeps only its own."], ["Revived models", "Returned models can't take a unit over its starting strength. They come back with their wargear and enhancements at full wounds, in coherency, and can only be set up engaged with enemies already engaged with the unit."], ["FAQ", "A unit with no ranged weapons can still be selected to shoot. Close-quarters Monster/Vehicle Blast weapons can't target engaged units, and nobody can Blast an engaged Monster/Vehicle. Overrun fights need the unit to be eligible to fight. Units can't embark after a scout move."]]}];
+const ICONS={
+  rules:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6M9 9h2"/></svg>',
+  lists:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>',
+  codex:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M12 7v6M9 10h6"/></svg>',
+  settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'};
+const TABS=[['rules','Core Rules'],['lists','Lists'],['play','Play'],['codex','Codex'],['settings','Settings']];
+const THEMES=[['','Default','Follows your device',['#e9ecef','#fbfcfd','#8a5f12']],['t-void','Void','Deep navy, steel blue',['#0b0f17','#121826','#7aa7ff']],['t-forge','Forge','Charcoal, ember orange',['#141110','#1d1917','#ff8a3d']],['t-bone','Bone','Warm grey, crimson',['#ebe8e3','#f8f6f3','#9b1c2c']],['t-ice','Ice','Cool white, cobalt',['#e8eef4','#f7fafd','#1f5fbf']]];
+const FX=Object.fromEntries(FACTIONS.map(f=>[f.id,f]));
+const DISPOSITIONS=['Take and Hold','Purge the Foe','Disruption','Reconnaissance','Priority Assets'];
+const PHASES=['Command','Movement','Shooting','Charge','Fight'];
+const STRAT_TYPES=['Battle Tactic','Strategic Ploy','Epic Deed','Wargear'];
+const TURNS=['Either player\'s turn','Your turn','Opponent\'s turn'];
+const STATS=['M','T','Sv','W','Ld','OC'];
+const DEFAULTS={incDp:2,incEnh:2,incUnit:2,sfDp:3,sfEnh:4,sfUnit:3};
+const SIZES=[[1000,'Incursion'],[2000,'Strike Force']];
+const sizeOf=l=>(+l.limit||2000)<=1000?{name:'Incursion',dp:+S.settings.incDp,enh:+S.settings.incEnh,unit:+S.settings.incUnit}:{name:'Strike Force',dp:+S.settings.sfDp,enh:+S.settings.sfEnh,unit:+S.settings.sfUnit};
+const MSTATS=['M','T','Sv','inv','W','Ld','OC'];const MLABEL={inv:'Inv'};
+
+const S={gearOpen:{},faq:[],missions:{},db:null,user:null,uid:null,canWrite:true,loaded:{dets:false,units:false,lists:false},
+  dets:{},units:{},lists:{},core:{stratagems:[]},settings:{...DEFAULTS},names:{},
+  view:'lists',listId:null,playId:null,cfac:'orks',ctab:'detachments',draft:null,draftKind:null,draftId:null,
+  sheet:null,confirm:null,filter:'all',q:'',game:null,pending:false,pickCat:null,closed:{},theme:'',scrollTo:null,openRule:null,viewId:null};
+
+const $=s=>document.querySelector(s);
+const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rid=()=>Math.random().toString(36).slice(2,10);
+const slug=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||rid();
+const clone=o=>JSON.parse(JSON.stringify(o));
+const badge=(fid,small)=>{const f=FX[fid]||{abbr:'?'};return `<span class="badge f-${fid}${small?' s':''}" aria-hidden="true">${f.abbr}</span>`};
+const CATS=['Epic Hero','Character','Battleline','Transport','Vehicle','Monster','Mounted','Other'];
+const CAT_GROUP={'Epic Hero':'Epic Heroes','Character':'Characters','Battleline':'Battleline','Transport':'Transports','Vehicle':'Vehicles','Monster':'Monsters','Mounted':'Mounted','Other':'Other'};
+const GROUP_ORDER=CATS.map(c=>CAT_GROUP[c]);
+function catOf(u){if(CATS.includes(u.category))return u.category;const r=u.roles||{};if(r.epicHero)return'Epic Hero';if(r.character)return'Character';if(r.battleline)return'Battleline';if(r.transport)return'Transport';return{Vehicle:'Vehicle',Monster:'Monster',Mounted:'Mounted'}[u.kind]||'Other'}
+function rolesOf(u){const c=catOf(u);return{epicHero:c==='Epic Hero',character:c==='Epic Hero'||c==='Character',battleline:c==='Battleline',transport:c==='Transport'}}
+function groupOf(u){return CAT_GROUP[catOf(u)]}
+function grouped(items,getUnit){const m={};for(const it of items){const u=getUnit(it);const g=u?groupOf(u):'Other';(m[g]||(m[g]=[])).push(it)}return GROUP_ORDER.filter(g=>m[g]).map(g=>[g,m[g]])}
+const byName=(a,b)=>String(a.name||'').localeCompare(String(b.name||''));
+const detsOf=fid=>Object.entries(S.dets).filter(([,d])=>d.faction===fid).map(([id,d])=>({id,...d})).sort(byName);
+const unitsOf=fid=>Object.entries(S.units).filter(([,u])=>u.faction===fid).map(([id,u])=>({id,...u})).sort(byName);
+
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2600)}
+async function write(fn,okMsg){
+  if(!S.db){toast('Shared data is not available in this view.');return false}
+  try{await fn();if(okMsg)toast(okMsg);return true}
+  catch(e){
+    if(e&&e.code==='invalid_argument'&&S.canWrite!==false){S.canWrite=false;toast('You have view-only access. Ask the owner for Contributor access to edit.');render()}
+    else toast(e&&e.code==='quota_exceeded'?'Storage is full. Delete some old lists or entries.':'Could not save. Check your connection and try again.');
+    return false}
+}
+
+/* ---------- list maths ---------- */
+function findEnh(key){if(!key)return null;const[did,eid]=key.split(':');const d=S.dets[did];const e=d&&(d.enhancements||[]).find(x=>x.id===eid);return e?{...e,det:d.name}:null}
+const dispsOf=d=>Array.isArray(d.dispositions)&&d.dispositions.length?d.dispositions:(d.disposition?[d.disposition]:[]);
+const phasesOf=s=>Array.isArray(s.phases)&&s.phases.length?s.phases:[s.phase||'Any phase'];
+const modelsOf=u=>u.models?.length?u.models:(u.stats&&STATS.some(k=>u.stats[k])?[{name:'',...u.stats,inv:''}]:[]);
+const ord=n=>n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
+function unitCost(u,e,copy){const t=(u.tiers||[])[e.tier||0];if(!t)return{pts:0,later:false};
+  const later=!!(u.band2From&&copy>=u.band2From&&t.pts2!==''&&t.pts2!=null);let p=+(later?t.pts2:t.pts)||0;
+  for(const[i,n]of Object.entries(e.wg||{}))p+=(+(u.wargear?.[i]?.pts)||0)*(+n||0);return{pts:p,later}}
+const normName=s=>String(s||'').toUpperCase().replace(/[’']/g,"'").trim();
+function calc(l){
+  const dets=(l.detachments||[]).map(id=>S.dets[id]?{id,...S.dets[id]}:null).filter(Boolean);
+  const sz=sizeOf(l);let pts=0,enh=0,war=0;const w=[];const counts={};const cost={},later={};const enhUse={};
+  for(const e of l.entries||[]){
+    const u=S.units[e.unitId];
+    if(!u){w.push('A unit in this list was removed from the codex.');continue}
+    counts[e.unitId]=(counts[e.unitId]||0)+1;
+    const uc=unitCost(u,e,counts[e.unitId]);let ep=uc.pts;later[e.id]=uc.later;
+    if(e.enhId){const en=findEnh(e.enhId);if(en&&(l.detachments||[]).includes(e.enhId.split(':')[0])){ep+=+en.pts||0;enhUse[e.enhId]=(enhUse[e.enhId]||0)+1;if(enhUse[e.enhId]===1)enh++;
+        const r=rolesOf(u);if(r.epicHero)w.push(`${u.name}: Epic Heroes can't take enhancements.`);else if(!r.character&&!en.upgrade)w.push(`${u.name}: only Characters can take ${en.name}.`)}
+      else w.push(`${u.name}: its enhancement isn't offered by your current detachments.`)}
+    cost[e.id]=ep;pts+=ep;
+    if(e.warlord)war++;
+  }
+  for(const[k,n]of Object.entries(enhUse)){const en=findEnh(k);if(!en)continue;if(!en.upgrade&&n>1)w.push(`${en.name} is taken ${n} times. Each enhancement can only be taken once.`);if(en.upgrade&&n>3)w.push(`${en.name} is taken ${n} times. Upgrades are limited to 3.`)}
+  for(const[id,n]of Object.entries(counts)){const u=S.units[id];if(!u)continue;const r=rolesOf(u);
+    const dbl=r.battleline||/dedicated transport/i.test(u.keywords||'');
+    const max=r.epicHero?1:dbl?sz.unit*2:sz.unit;
+    if(max&&n>max)w.push(`${u.name}: ${n} copies. The ${sz.name} limit is ${max}.`)}
+  const ents=l.entries||[];
+  for(const e of ents){const u=S.units[e.unitId];if(!u)continue;
+    if(u.leader==='Support'&&!e.attach)w.push(`${u.name} is a Support unit and must be attached to a bodyguard unit.`)
+    const host=ents.find(x=>x.id===e.attach);if(!host)continue;
+    if(e.enhId&&host.enhId)w.push(`${u.name} and the ${S.units[host.unitId]?.name} it joins both have an enhancement. An attached unit can only have one.`)
+    const same=ents.filter(x=>x.attach===host.id&&S.units[x.unitId]?.leader===u.leader);if(same[0]===e&&same.length>1)w.push(`${S.units[host.unitId]?.name} has ${same.length} ${(u.leader||'leader').toLowerCase()} units attached. Only one is allowed.`)}
+  const tags={};for(const d of dets)if(d.unique){const k=d.unique.toLowerCase();if(tags[k])w.push(`${tags[k]} and ${d.name} are both Unique: ${d.unique}. Only one can be taken.`);else tags[k]=d.name}
+  const dp=dets.reduce((a,d)=>a+(+d.dp||0),0);
+  if(pts>l.limit)w.push(`Over the points limit by ${pts-l.limit}.`);
+  if(!dets.length)w.push('Add at least one detachment.');
+  const incursionBig=sz.name==='Incursion'&&dets.length===1&&dp===3;
+  if(dp>sz.dp&&!incursionBig)w.push(`Detachments cost ${dp} DP. ${sz.name} allows ${sz.dp} DP.`);
+  if(dets.length&&!l.disposition)w.push('Choose a Force Disposition.');
+  if(enh>sz.enh)w.push(`${enh} enhancements taken. ${sz.name} allows ${sz.enh}.`);
+  if((l.entries||[]).length&&war!==1)w.push(war?'Only one unit can be your Warlord.':'Nominate a Warlord.');
+  return{dets,pts,dp,enh,w,cost,later,sz,enhUse};
+}
+const dispositionsFor=dets=>[...new Set(dets.flatMap(dispsOf))];
+
+/* ---------- rendering ---------- */
+function requestRender(){const a=document.activeElement;if(a&&a.closest('#app,#sheet')&&/^(INPUT|TEXTAREA)$/.test(a.tagName)){S.pending=true;return}render()}
+document.addEventListener('focusout',()=>setTimeout(()=>{if(S.pending){S.pending=false;requestRender()}},0));
+
+function render(){
+  const v=S.view;
+  const html=v==='lists'?vLists():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
+    v==='codex'?vCodex():v==='det'?vDet():v==='unit'?vUnit():v==='core'?vCore():v==='limits'?vSettings():v==='io'?vIO():
+    v==='rules'?vRules():v==='settings'?vAppSettings():v==='udata'?vUData():v==='ddata'?vDData():'';
+  const ctx=v==='list'?S.lists[S.listId]?.faction:v==='play'?S.lists[S.playId]?.faction:['det','unit'].includes(v)?S.draft?.faction:v==='codex'?S.cfac:v==='udata'?S.units[S.viewId]?.faction:v==='ddata'?S.dets[S.viewId]?.faction:'';
+  document.body.className=ctx?'f-'+ctx:'';
+  $('#app').innerHTML=(!S.db?`<p class="notice" style="margin-top:16px">Connecting to your group…</p>`:'')+html;
+  const tab=['lists','list'].includes(v)?'lists':['play','playpick'].includes(v)?'play':['rules','core'].includes(v)?'rules':v==='settings'?'settings':'codex';
+  $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-a="tab" data-k="${k}" ${tab===k?'aria-current="page"':''} aria-label="${l}">${ICONS[k]}<span>${l}</span></button>`).join('');
+  renderSheet();
+  if(S.scrollTo){const id=S.scrollTo;S.scrollTo=null;requestAnimationFrame(()=>{const el=document.getElementById(id);if(el){el.scrollIntoView({block:'start'});scrollBy(0,-70);el.classList?.add('flash')}})}
+}
+
+function vLists(){
+  const all=Object.entries(S.lists).map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const shown=S.filter==='all'?all:all.filter(l=>l.faction===S.filter);
+  const chips=[['all','All armies'],...FACTIONS.map(f=>[f.id,f.name])].map(([k,l])=>`<button class="chip${FX[k]?' f-'+k:''}" data-a="filter" data-k="${k}" aria-pressed="${S.filter===k}">${h(l)}</button>`).join('');
+  const cards=shown.map(l=>{const c=calc(l);const f=FX[l.faction];const owner=l.createdByName||S.names[l.createdBy];
+    return `<button class="card f-${h(l.faction)}" data-a="openList" data-id="${h(l.id)}">${badge(l.faction)}<div class="body">
+      <div class="row between"><h3>${h(l.name||'Untitled list')}</h3><span class="num small">${c.pts} / ${h(l.limit)}</span></div>
+      <p class="small muted">${h(f?f.name:'')}${owner?` · ${h(owner)}`:''}</p>
+      <div class="meter${c.pts>l.limit?' over':''}"><i style="width:${Math.min(100,c.pts/(l.limit||1)*100)}%"></i></div>
+      <div class="row">${c.dets.map(d=>`<span class="tag">${h(d.name)}</span>`).join('')}${l.disposition?dtag(l.disposition):''}${c.w.length?`<span class="tag bad">${c.w.length} to fix</span>`:'<span class="tag ok">Legal</span>'}</div>
+    </div></button>`}).join('');
+  const loading=!S.loaded.lists&&S.db;
+  return `<header class="top"><div class="grow"><p class="eyebrow">Warhammer 40,000 · 11th edition</p><h1>Muster</h1></div>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</header>
+  <div class="stack"><div class="chips" role="group" aria-label="Filter by army">${chips}</div>
+  ${loading?'<p class="muted">Loading lists…</p>':shown.length?`<div class="stack" style="gap:10px">${cards}</div>`:
+  `<div class="empty"><h3>No ${S.filter==='all'?'':h(FX[S.filter].name)+' '}lists yet</h3><p>Start a list, pick its detachments and Force Disposition, then add units from the codex. Everyone with the link sees the group's lists.</p>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</div>`}</div>`;
+}
+
+function vList(){
+  const l=S.lists[S.listId];if(!l)return backTo('lists','That list was deleted.');
+  const c=calc(l);const f=FX[l.faction];const ro=!S.canWrite;
+  const disps=dispositionsFor(c.dets);
+  const usedEnh=new Set((l.entries||[]).map(e=>e.enhId).filter(Boolean));
+  const enhPool=c.dets.flatMap(d=>(d.enhancements||[]).map(e=>({key:d.id+':'+e.id,...e,det:d.name})));
+  const entryHtml=e=>{const u=S.units[e.unitId];
+    if(!u)return `<div class="entry"><div class="row between"><strong class="muted">Removed unit</strong>${ro?'':`<button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove</button>`}</div></div>`;
+    const r=rolesOf(u);const tiers=u.tiers||[];const t=tiers[e.tier||0];
+    const pool=r.epicHero?[]:enhPool.filter(x=>r.character||x.upgrade);
+    const leads=(u.leads||[]).map(normName);
+    const hosts=leads.length?(l.entries||[]).filter(x=>x.id!==e.id&&leads.includes(normName(S.units[x.unitId]?.name))):[];
+    const host=(l.entries||[]).find(x=>x.id===e.attach);
+    return `<div class="entry">
+      <div class="row between"><div style="min-width:0"><strong>${h(u.name)}</strong>${e.warlord?' <span class="tag brass">Warlord</span>':''}${r.epicHero?' <span class="tag">Epic Hero</span>':''}${c.later[e.id]?` <span class="tag">${ord(u.band2From)}+ copy price</span>`:''}${host?` <span class="tag">${h(u.leader||'Leader')} · ${h(S.units[host.unitId]?.name)}</span>`:''}</div><span class="num">${c.cost[e.id]??0} pts</span></div>
+      <div class="row">
+        ${tiers.length>1?`<select data-c="tier" data-id="${e.id}" aria-label="Unit size" ${ro?'disabled':''}>${tiers.map((t,i)=>`<option value="${i}" ${i===(e.tier||0)?'selected':''}>${h(t.label||'Option '+(i+1))}</option>`).join('')}</select>`:t?`<span class="small muted">${h(t.label||'')}</span>`:'<span class="small muted">No points set</span>'}
+        ${pool.length?`<select data-c="enh" data-id="${e.id}" aria-label="Enhancement" ${ro?'disabled':''}><option value="">${r.character?'No enhancement':'No upgrade'}</option>${pool.map(x=>`<option value="${x.key}" ${x.key===e.enhId?'selected':''} ${x.key!==e.enhId&&((!x.upgrade&&usedEnh.has(x.key))||(x.upgrade&&(c.enhUse[x.key]||0)>=3))?'disabled':''}>${h(x.name)}${x.upgrade?' (Upgrade)':''} (+${h(x.pts)})${x.restrict?' · '+h(x.restrict):''}</option>`).join('')}</select>`:''}
+        ${hosts.length?`<select data-c="attach" data-id="${e.id}" aria-label="Attach to" ${ro?'disabled':''}><option value="">Not attached</option>${hosts.map(x=>`<option value="${x.id}" ${x.id===e.attach?'selected':''}>${h(u.leader||'Leader')}: ${h(S.units[x.unitId]?.name)}</option>`).join('')}</select>`:''}
+        ${r.character&&!ro?`<button class="btn sm${e.warlord?' primary':''}" data-a="warlord" data-id="${e.id}" aria-pressed="${!!e.warlord}">Warlord</button>`:''}
+        ${ro?'':`<button class="btn sm" data-a="dupEntry" data-id="${e.id}">Duplicate</button><button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove</button>`}
+      </div>
+      ${gearBlock(u,e,ro)}
+      ${(u.wargear||[]).length?`<div class="row">${u.wargear.map((wg,i)=>{const n=+(e.wg?.[i]||0);return `<span class="tag" style="gap:6px">${h(wg.name)} +${h(wg.pts)}${ro?` ×${n}`:` <button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="wg" data-id="${e.id}" data-k="${i}" data-n="-1" aria-label="Fewer ${h(wg.name)}">−</button><span class="num">${n}</span><button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="wg" data-id="${e.id}" data-k="${i}" data-n="1" aria-label="More ${h(wg.name)}">+</button>`}</span>`}).join('')}</div>`:''}
+    </div>`};
+  const facCats=CATS.filter(c=>Object.values(S.units).some(u=>u.faction===l.faction&&catOf(u)===c));
+  const byCat={};for(const e of l.entries||[]){const u=S.units[e.unitId];const c=u?catOf(u):'Other';(byCat[c]||(byCat[c]=[])).push(e)}
+  const cats=[...new Set([...facCats,...Object.keys(byCat)])].sort((a,b)=>CATS.indexOf(a)-CATS.indexOf(b));
+  const entries=cats.map(c=>{const es=byCat[c]||[];const key=S.listId+':'+c;const closed=S.closed[key];
+    return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(CAT_GROUP[c])}</h3><span class="row" style="flex-wrap:nowrap"><span class="cat-count">${es.length}</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
+      ${closed?'':`${es.map(entryHtml).join('')}${ro?'':`<button class="btn sm" style="justify-self:start" data-a="addCat" data-k="${h(c)}">Add ${h(c)}</button>`}`}</div>`}).join('');
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>
+    <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(f?f.name:'')}</p><h1>${h(l.name||'Untitled list')}</h1></div></div></div>
+    <button class="btn primary" data-a="play" data-id="${S.listId}">Play</button></header>
+  <div class="stack">
+    <section class="panel">
+      <div class="panel-head"><span class="eyebrow">Points</span><span class="num">${c.pts} / ${h(l.limit)}</span></div>
+      <div class="meter${c.pts>l.limit?' over':''}"><i style="width:${Math.min(100,c.pts/(l.limit||1)*100)}%"></i></div>
+      ${ro?'':`<div class="grid2"><label class="f">List name<input type="text" id="lname" data-c="lname" value="${h(l.name)}"></label>
+      <label class="f">Battle size<select id="llimit" data-c="limit">${SIZES.map(([p,n])=>`<option value="${p}" ${sizeOf(l).name===n?'selected':''}>${n} · ${p} pts</option>`).join('')}</select></label></div>`}
+    </section>
+    ${c.w.length?`<ul class="warn">${c.w.map(x=>`<li>${h(x)}</li>`).join('')}</ul>`:'<p class="tag ok" style="justify-self:start">List is legal under your group\'s settings</p>'}
+    <section class="panel">
+      <div class="panel-head"><h2>Detachments</h2><span class="num small">${c.dp} / ${c.sz.dp} DP</span></div>
+      ${c.dets.length?c.dets.map(d=>`<div class="row between"><div style="min-width:0"><strong>${h(d.name)}</strong> <span class="tag">${h(d.dp)} DP</span> ${dispsOf(d).map(x=>`${dtag(x)}`).join(' ')}${d.unique?` <span class="tag">Unique: ${h(d.unique)}</span>`:''}</div>${ro?'':`<button class="btn sm danger" data-a="rmDet" data-id="${d.id}">Remove</button>`}</div>`).join(''):'<p class="muted small">No detachments chosen.</p>'}
+      ${ro?'':`<button class="btn" data-a="sheet" data-k="detPicker">Add detachment</button>`}
+      ${c.dets.length?`<label class="f">Force Disposition<select data-c="disp" ${ro?'disabled':''}><option value="">Choose one…</option>${disps.map(d=>`<option ${d===l.disposition?'selected':''}>${h(d)}</option>`).join('')}</select></label>`:''}
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Units</h2><span class="small muted">${(l.entries||[]).length} entries · ${c.enh}/${c.sz.enh} enhancements</span></div>
+      ${entries||'<p class="muted small">This army has no units in the codex yet.</p>'}
+    </section>
+    <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list for everyone</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
+  </div>`;
+}
+function gearBlock(u,e,ro){
+  const sl=u.gearSlots||[],notes=u.gearNotes||[];if(!sl.length&&!notes.length)return '';
+  const gs=e.gs||{};const n=tierSize(u,e);const changed=Object.keys(gs).length>0;
+  const sb=(id,k,d,dis,lab)=>`<button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="gsN" data-id="${id}" data-k="${k}" data-n="${d}" ${dis?'disabled':''} aria-label="${lab}">${d>0?'+':'−'}</button>`;
+  return `<details class="gear" data-gid="${e.id}" ${S.gearOpen[e.id]?'open':''}><summary class="small">Wargear options · ${changed?h(gearPicks(u,e).join(', ')||'default'):'default loadout'}</summary><div class="stack" style="gap:12px;margin-top:8px">
+    ${sl.map((s,i)=>{if(s.kind==='one'){const v=gs[i]??-1;
+      const nm='g-'+e.id+'-'+i;const opts=[[-1,s.add?'None':((s.from||[]).join(' + ')||'Default')],...s.choices.map((c,j)=>[j,c.join(' + ')])];
+      return `<div class="gslot"><p class="small">${h(s.text||'Option')}</p><div class="radios" role="radiogroup">${opts.map(([j,lab])=>`<label><input type="radio" name="${nm}" value="${j}" data-c="gs1" data-id="${e.id}" data-k="${i}" ${+v===j?'checked':''} ${ro?'disabled':''}>${h(lab)}</label>`).join('')}</div></div>`}
+      const mx=slotMax(s,n);const cur=gs[i]||{};const tot=Object.values(cur).reduce((a,b)=>a+ +b,0);
+      return `<div class="gslot"><p class="small">${h(s.text||'Options')} <span class="muted num">${tot}/${mx}</span></p><div class="row">${s.choices.map((c,j)=>{const k=+(cur[j]||0);const nm=c.join(' + ');
+        return `<span class="tag" style="gap:6px">${h(nm)}${ro?` ×${k}`:` ${sb(e.id,i+':'+j,-1,k<=0,'Fewer '+h(nm))}<span class="num">${k}</span>${sb(e.id,i+':'+j,1,tot>=mx,'More '+h(nm))}`}</span>`}).join('')}</div></div>`}).join('')}
+    ${notes.length?`<ul class="small muted" style="margin:0;padding-left:18px">${notes.map(x=>`<li>${h(x)}</li>`).join('')}</ul>`:''}
+    ${changed&&!ro?`<button class="btn sm ghost" style="justify-self:start" data-a="gearReset" data-id="${e.id}">Reset to default loadout</button>`:''}</div></details>`}
+function backTo(v,msg){S.view=v;setTimeout(()=>{toast(msg);render()},0);return ''}
+
+function vPlayPick(){
+  const all=Object.entries(S.lists).map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  return `<header class="top"><div class="grow"><p class="eyebrow">Battle companion</p><h1>Choose your army</h1></div></header>
+  <div class="stack" style="gap:10px">${all.length?all.map(l=>`<button class="card" data-a="play" data-id="${h(l.id)}">${badge(l.faction)}<div class="body"><h3>${h(l.name||'Untitled list')}</h3><p class="small muted">${calc(l).pts} pts${l.disposition?' · '+h(l.disposition):''}</p></div></button>`).join(''):
+  `<div class="empty"><h3>No lists to play yet</h3><p>Build a list first. Play mode tracks CP, VP and battle round, filters your stratagems by phase, and tracks casualties.</p><button class="btn primary" data-a="go" data-k="lists">Go to lists</button></div>`}</div>`;
+}
+
+function stratPool(l){
+  const c=calc(l);
+  return [...c.dets.flatMap(d=>(d.stratagems||[]).map(s=>({...s,src:d.name,key:d.id+':'+s.id}))),
+          ...(S.core.stratagems||[]).map(s=>({...s,src:'Core',key:'core:'+s.id}))];
+}
+function vPlay(){
+  const l=S.lists[S.playId];if(!l)return backTo('playpick','That list was deleted.');
+  const g=S.game;if(!g)return `<p class="muted" style="margin-top:24px">Loading game…</p>`;
+  const c=calc(l);
+  const pool=stratPool(l).filter(s=>{const ps=phasesOf(s);return ps.includes('Any phase')||ps.includes(g.phase)}).filter(s=>(!s.turn||s.turn===TURNS[0]||(g.mine?s.turn==='Your turn':s.turn==="Opponent's turn")));
+  const ctr=(k,label)=>`<div class="ctr"><span class="eyebrow">${label}</span><span class="v">${g[k]}</span><div class="row"><button class="btn sm" data-a="bump" data-k="${k}" data-n="-1" aria-label="${label} down">−</button><button class="btn sm" data-a="bump" data-k="${k}" data-n="1" aria-label="${label} up">+</button></div></div>`;
+  const unitHtml=e=>{const u=S.units[e.unitId];if(!u)return'';const st=g.units[e.id]||{};const t=(u.tiers||[])[e.tier||0];const en=findEnh(e.enhId);const host=(l.entries||[]).find(x=>x.id===e.attach);
+    return `<div class="panel unit${st.dead?' dead':''}">
+      <div class="row between"><div style="min-width:0"><h3>${h(u.name)}</h3><p class="small muted">${h(t?t.label:'')}${e.warlord?' · Warlord':''}${en?' · '+h(en.name):''}${host?' · leading '+h(S.units[host.unitId]?.name):''}</p></div>
+      <div class="row"><button class="btn sm${st.shocked?' primary':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}">Battle-shocked</button><button class="btn sm${st.dead?' danger':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}">${st.dead?'Destroyed':'Destroy'}</button></div></div>
+      ${statlines(u)}
+      ${u.ranged?.length||u.melee?.length||u.weapons||u.abilities||en?`<details><summary>Weapons & abilities</summary><div class="stack" style="gap:10px;margin-top:8px">${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));return weaponTables({...u,ranged:(u.ranged||[]).filter(w=>g.has(baseW(w.name))),melee:(u.melee||[]).filter(w=>g.has(baseW(w.name)))})+(extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:'')})()}${u.composition?.length?`<p class="small muted">${h(u.composition.join(' · '))}</p>`:''}${u.weapons?`<div class="rules">${h(u.weapons)}</div>`:''}${u.abilities?`<div class="rules">${h(u.abilities)}</div>`:''}${en?`<div><strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div></div>`:''}</div></details>`:''}
+    </div>`};
+  const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
+  const me=l.disposition||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
+  const mission=`<section class="panel mission"><div class="mhead"><div style="min-width:0"><p class="eyebrow">Primary mission</p><h2>${h(ms?.name||(me&&op?'Not entered yet':'Set both dispositions'))}</h2></div><button class="btn sm ghost" data-a="sheet" data-k="opp">Opponent…</button></div>
+    <div class="row small">You ${me?dtag(me):'<span class="tag bad">No disposition</span>'} <span class="muted">vs</span> ${h(g.oppName||'Opponent')} ${op?dtag(op):'<span class="tag bad">Not chosen</span>'}</div>
+    ${ms?.secs||ms?.scoring?missionCard(ms):me&&op?`<p class="small muted">No mission for ${h(me)} against ${h(op)} yet. Add it once from your mission deck and it's shared with the group.</p>`:''}
+    ${me&&op&&S.canWrite?(S.editMission?`<label class="f">Mission name<input type="text" id="m-name" value="${h(ms?.name||'')}"></label><label class="f">How you score<textarea id="m-score" rows="5">${h(ms?.scoring||'')}</textarea></label><div class="row"><button class="btn primary sm" data-a="saveMission" data-k="${h(mk)}">Save mission</button><button class="btn sm ghost" data-a="editMission">Cancel</button></div>`:`<button class="btn sm ghost" style="justify-self:start" data-a="editMission">${ms?'Edit mission':'Add mission'}</button>`):''}</section>`;
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="playpick" style="justify-self:start;padding-left:0">‹ Change army</button>
+    <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(l.disposition||'No disposition')}</p><h1>${h(l.name)}</h1></div></div></div>
+    <div class="row" style="align-self:start">${S.confirm==='game'?`<button class="btn sm danger" data-a="resetGame">Reset</button><button class="btn sm ghost" data-a="unconfirm">Cancel</button>`:`<button class="btn sm" data-a="confirm" data-k="game">Reset Game</button>`}</div></header>
+  <div class="stack">
+    ${mission}
+    <div class="score">${ctr('round','Battle round')}${ctr('cp','Command points')}${ctr('vp','Your VP')}${ctr('opp','Opponent VP')}</div>
+    <div class="seg" role="group" aria-label="Whose turn">${[[true,'Your turn'],[false,"Opponent's turn"]].map(([m,lab])=>`<button data-a="turn" data-k="${m}" aria-pressed="${g.mine===m}">${lab}</button>`).join('')}</div>
+    <div class="seg" role="group" aria-label="Phase">${PHASES.map(p=>`<button data-a="phase" data-k="${p}" aria-pressed="${g.phase===p}">${p}</button>`).join('')}</div>
+    <section class="stack" style="gap:10px">
+      <div class="panel-head"><h2>Stratagems · ${h(g.phase)}</h2><span class="small muted">${pool.length} available</span></div>
+      ${pool.length?legend()+pool.map(s=>{const used=g.used[s.key];return stratCard(s,{core:s.src==='Core',src:s.src,used,collapse:true,extra:`<button class="btn sm${used?'':' primary'}" style="justify-self:start" data-a="useStrat" data-k="${h(s.key)}" data-n="${+s.cp||0}" ${used||g.cp<(+s.cp||0)?'disabled':''}>${used?'Used this phase':g.cp<(+s.cp||0)?'Not enough CP':'Use · spend '+(+s.cp||0)+' CP'}</button>`})}).join(''):`<p class="muted small">No stratagems for this phase. Add them to your detachments, or add core stratagems in the Codex.</p>`}
+    </section>
+    <section class="stack" style="gap:10px"><h2>Your army</h2>${units||'<p class="muted small">This list has no units.</p>'}</section>
+    ${(S.core.armyRules?.[l.faction]||[]).length?`<section class="panel"><h2>Army rules</h2>${S.core.armyRules[l.faction].map(r=>`<details><summary>${h(r.name)}</summary><div class="rules" style="margin-top:6px">${h(r.text)}</div></details>`).join('')}</section>`:''}
+    <section class="panel"><h2>Detachment rules</h2>${c.dets.map(d=>`<details><summary>${h(d.ruleName||d.name)}</summary><div class="rules" style="margin-top:6px">${h(d.ruleText||'No rule text entered.')}</div></details>`).join('')||'<p class="muted small">None.</p>'}</section>
+    ${g.log.length?`<section class="panel"><h2>Game log</h2><ul class="small" style="margin:0;padding-left:18px">${g.log.slice(-12).reverse().map(x=>`<li>${h(x)}</li>`).join('')}</ul></section>`:''}
+  </div>`;
+}
+
+function statlines(u){const ms=modelsOf(u);if(!ms.length)return'';const inv=ms.some(m=>m.inv);const cols=inv?MSTATS:STATS;
+  return ms.map(m=>`${ms.length>1&&m.name?`<p class="small" style="font-weight:600">${h(m.name)}</p>`:''}<div class="statline" style="grid-template-columns:repeat(${cols.length},minmax(0,1fr))">${cols.map(k=>`<div><b>${MLABEL[k]||k}</b><span>${h(m[k]||'–')}</span></div>`).join('')}</div>`).join('')}
+function weaponTables(u){
+  const row=(w,cols)=>`<tr><td>${h(w.name)}${w.kw?`<small>[${h(w.kw)}]</small>`:''}</td>${cols.map(c=>`<td>${h(w[c]||'–')}</td>`).join('')}</tr>`;
+  const tab=(title,list,heads,cols)=>list?.length?`<div class="wtab-wrap"><table class="wtab"><thead><tr><th>${title}</th>${heads.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${list.map(w=>row(w,cols)).join('')}</tbody></table></div>`:'';
+  return tab('Ranged weapons',u.ranged,['Range','A','BS','S','AP','D'],['range','a','bs','s','ap','d'])+tab('Melee weapons',u.melee,['Range','A','WS','S','AP','D'],['range','a','ws','s','ap','d']);
+}
+const turnCls=t=>t==='Your turn'?'s-your':t==="Opponent's turn"?'s-opp':'s-either';
+function stratCard(s,o={}){
+  const ph=phasesOf(s).join(' / ');const meta=[o.core?'Core':s.type||'',o.src&&!o.core?o.src:'',ph,s.turn||''].filter(Boolean).join(' · ');
+  const head=`<div class="sh"><div style="min-width:0"><h3>${h(s.name)}</h3><small>${h(meta)}</small></div><span class="cp">${h(s.cp)}CP<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></div>`;
+  return `<details class="strat ${turnCls(s.turn)}${o.used?' used':''}" ${o.anchor?`id="${o.anchor}"`:''} ${o.open?'open':''}><summary>${head}</summary>
+    <div class="sb">${s.text?`<div class="rules">${h(s.text)}</div>`:''}</div></details>${o.extra?`<div style="margin-top:-4px">${o.extra}</div>`:''}`;
+}
+const DISP_CLS={'Take and Hold':'disp-take','Disruption':'disp-disr','Purge the Foe':'disp-purge','Priority Assets':'disp-prio','Reconnaissance':'disp-recon'};
+const dtag=x=>`<span class="tag disp ${DISP_CLS[x]||''}">${h(x)}</span>`;
+const legend=()=>`<div class="legend" aria-label="Stratagem colours"><span><i style="background:#2563c9"></i>Your turn</span><span><i style="background:#c3362b"></i>Opponent's turn</span><span><i style="background:#0f8a72"></i>Either turn</span></div>`;
+function hex2(c){c=c.replace('#','');return [0,2,4].map(i=>parseInt(c.slice(i,i+2),16))}
+const lum=c=>{const[r,g,b]=hex2(c).map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*r+.7152*g+.0722*b};
+const mix=(a,b,t)=>'#'+hex2(a).map((v,i)=>Math.round(v+(hex2(b)[i]-v)*t).toString(16).padStart(2,'0')).join('');
+function customTokens(t){const dark=lum(t.bg)<.3;const ink=dark?'#eceef1':'#16191d';
+  return {'--bg':t.bg,'--surface':t.surface,'--surface2':mix(t.surface,ink,.06),'--ink':ink,'--muted':mix(ink,t.bg,.42),'--line':mix(t.surface,ink,.16),'--brass':t.accent,'--brass-ink':lum(t.accent)>.35?'#111':'#fff','--brass-soft':mix(t.bg,t.accent,.22),'color-scheme':dark?'dark':'light'}}
+function applyTheme(){const r=document.documentElement;THEMES.forEach(([c])=>c&&r.classList.remove(c));r.removeAttribute('style');
+  const c=(S.customThemes||[]).find(x=>x.id===S.theme);
+  if(c){for(const[k,v]of Object.entries(customTokens(c)))r.style.setProperty(k,v)}else if(S.theme)r.classList.add(S.theme)}
+function saveThemes(){try{localStorage.setItem('muster-custom-themes',JSON.stringify(S.customThemes||[]))}catch(e){}}
+const FAQ_BASE=(CORE_RULES.flatMap(x=>x.items).find(([t])=>t==='FAQ')||['',''])[1].split(/(?<=\.)\s+/).filter(Boolean);
+function vRules(){
+  const cs=(S.core.stratagems||[]);
+  return `<header class="top"><div class="grow"><p class="eyebrow">Warhammer 40,000 · 11th edition</p><h1>Core Rules</h1></div></header>
+  <div class="stack">
+    <p class="small muted">A condensed reference in plain language. For exact wording, check the official Core Rules from Games Workshop.</p>
+    <section class="panel" id="core-strats"><div class="panel-head"><h2>Core stratagems</h2>${S.canWrite?'<button class="btn sm" data-a="go" data-k="core">Edit</button>':''}</div>
+      ${legend()}
+      ${cs.length?cs.map(x=>stratCard(x,{core:true,anchor:'cs-'+x.id,open:S.openStrat==='cs-'+x.id})).join(''):'<p class="small">No core stratagems yet.</p>'}</section>
+    ${CORE_RULES.map(sec=>`<details class="rulebox" id="rule-${sec.id}" ${S.openRule===sec.id?'open':''}><summary><span class="num">${sec.num}</span> &nbsp;<strong>${h(sec.title)}</strong></summary>
+      <div style="margin-top:8px">${sec.items.filter(([t])=>t!=='FAQ').map(([t,x],i)=>`<div class="rule-item" id="rule-${sec.id}-${i}"><strong>${h(t)}</strong><p>${h(x)}</p></div>`).join('')}</div></details>`).join('')}
+    <section class="panel" id="faq"><div class="panel-head"><h2>FAQ</h2>${S.canWrite?`<button class="btn sm" data-a="faqForm">${S.faqDraft?'Cancel':'Add FAQ'}</button>`:''}</div>
+      ${S.faqDraft?`<div class="item"><label class="f">Question<input type="text" id="faq-q" placeholder="e.g. Can a battle-shocked unit hold an objective?"></label><label class="f">Answer<textarea id="faq-a" rows="3"></textarea></label><button class="btn primary sm" style="justify-self:start" data-a="addFaq">Save FAQ entry</button></div>`:''}
+      <ul class="faq">${FAQ_BASE.map(x=>`<li>${h(x)}</li>`).join('')}
+      ${S.faq.map(x=>`<li><strong>${h(x.q)}</strong>${x.a?` ${h(x.a)}`:''} <span class="tag">Group</span>${S.canWrite?` <button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="delFaq" data-id="${h(x.id)}" aria-label="Remove FAQ entry">Remove</button>`:''}</li>`).join('')}</ul></section>
+  </div>`;
+}
+function vAppSettings(){
+  return `<header class="top"><div class="grow"><p class="eyebrow">This device</p><h1>Settings</h1></div></header>
+  <div class="stack"><section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
+    <section class="panel"><h2>App theme</h2><p class="small muted">Changes the background and accents across the app. Army colours, stratagem colours and the Core Rules pages stay the same. Saved on this device only.</p>
+    <div class="themes">${THEMES.map(([c,n,d,sw])=>`<button class="theme" data-a="theme" data-k="${c}" aria-pressed="${S.theme===c}"><span class="sw">${sw.map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${n}</strong><span class="small muted">${d}</span></button>`).join('')}
+    ${(S.customThemes||[]).map(t=>`<div class="theme" style="cursor:default" aria-pressed="${S.theme===t.id}"><button class="btn ghost" style="padding:0;display:grid;gap:8px;text-align:left;min-height:0" data-a="theme" data-k="${t.id}"><span class="sw">${[t.bg,t.surface,t.accent].map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${h(t.name)}</strong><span class="small muted">Custom</span></button><button class="btn sm ghost danger" style="justify-self:start" data-a="delTheme" data-k="${t.id}">Delete</button></div>`).join('')}</div>
+    ${S.themeDraft?`<div class="item"><h3>New theme</h3>${fld('Theme name','name',S.themeDraft.name)}
+      <div class="grid2">${[['bg','Background'],['surface','Panels'],['accent','Accent']].map(([k,l])=>`<label class="f">${l}<input type="color" data-t="${k}" value="${S.themeDraft[k]}" style="height:44px;padding:4px"></label>`).join('')}</div>
+      <div class="row"><button class="btn primary" data-a="saveTheme">Save theme</button><button class="btn" data-a="cancelTheme">Cancel</button></div></div>`:`<button class="btn" style="justify-self:start" data-a="newTheme">Create your own theme</button>`}
+    </section></div>`;
+}
+const baseW=n=>String(n||'').split(' - ')[0].split(' – ')[0].trim();
+const CHEV='<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+const catBlock=(key,title,count,inner)=>{const closed=S.closed[key];return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(title)}</h3><span class="row" style="flex-wrap:nowrap"><span class="cat-count">${count}</span>${CHEV}</span></button>${closed?'':inner}</div>`};
+const MISSIONS={"Take and Hold|Take and Hold": {"name": "Battlefield Dominance", "secs": [["First & second battle round", "End of your turn", [["You control more objectives than your opponent.", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["For each objective you control.", "3VP"], ["For each of those objectives (excluding your home objective) if you control your home objective.", "+2VP", "c"]]]]}, "Take and Hold|Purge the Foe": {"name": "Immovable Object", "secs": [["Any battle round", "End of your turn", [["You control one or more central objectives.", "3VP"]]], ["Second to fourth battle round", "End of your Command phase", [["For each objective you control (excluding your home objective).", "5VP"]]], ["Fifth battle round", "End of your turn", [["For each objective you control (excluding your home objective).", "5VP"]]]]}, "Take and Hold|Disruption": {"name": "Determined Acquisition", "secs": [["Any battle round", "End of your turn", [["For each objective you control that you did not control at the start of the turn (excluding your home objective).", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["For each objective you control.", "3VP"], ["For each of those objectives that is within your opponent's territory.", "+3VP", "c"]]]]}, "Take and Hold|Reconnaissance": {"name": "Purge and Secure", "secs": [["Any battle round", "End of your turn", [["One or more enemy units were destroyed this turn by a friendly unit that was within range of one or more objectives.", "3VP"], ["One or more enemy units that started the turn within range of one or more objectives were destroyed this turn.", "3VP", "or"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["For each objective you control (excluding your home objective).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["You control one or more objectives you did not control at the start of the turn (excluding your home objective).", "3VP"]]]]}, "Take and Hold|Priority Assets": {"name": "Inescapable Dominion", "secs": [["Any battle round", "End of your turn", [["You control three or more objectives.", "4VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control two or more objectives.", "5VP"], ["You control more objectives than your opponent.", "4VP"]]], ["End of battle", "", [["You control your opponent's home objective.", "5VP"]]]]}, "Purge the Foe|Take and Hold": {"name": "Unstoppable Force", "secs": [["Any battle round", "End of your turn", [["One or more enemy units were destroyed this turn.", "3VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["For each objective you control (excluding your home objective).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["You control one or more objectives you did not control at the start of the turn (excluding your home objective).", "3VP"]]], ["End of battle", "", [["You control one or more central objectives.", "5VP"]]]]}, "Purge the Foe|Purge the Foe": {"name": "Meatgrinder", "secs": [["Any battle round", "End of your turn", [["One or more enemy units were destroyed this turn.", "3VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["More enemy units were destroyed this turn than friendly units were destroyed in the previous turn.", "5VP"], ["You control your opponent's home objective.", "5VP"]]]]}, "Purge the Foe|Disruption": {"name": "Punishment", "pre": "Start of your turn: select one to three enemy units on the battlefield that are within range of objectives and/or destroyed one or more friendly units in the previous turn. If you can't, select one enemy unit on the battlefield. Until the start of your next turn, those units are condemned.", "secs": [["Any battle round", "End of a turn", [["One or more condemned enemy units left the battlefield this turn.", "5VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["You control more objectives than your opponent.", "5VP"]]], ["End of battle", "", [["You control your opponent's home objective.", "8VP"]]]]}, "Purge the Foe|Reconnaissance": {"name": "Consecrate", "pre": "Each time a friendly unit destroys a unit, it becomes a consecration unit. At the end of your turn, for each consecration unit, you can select one objective it is within range of (excluding your home objective) that hasn't been consecrated: place an operation marker there. That objective is consecrated and the unit is no longer a consecration unit.", "secs": [["Any battle round", "End of your turn", [["One or two objectives are consecrated.", "3VP"], ["Three or more objectives are consecrated.", "6VP", "or"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["You control more objectives than your opponent.", "4VP"]]], ["End of battle", "", [["Your opponent's home objective is consecrated.", "5VP"]]]]}, "Purge the Foe|Priority Assets": {"name": "Destroyer's Wrath", "secs": [["Any battle round", "End of your turn", [["One or more enemy units were destroyed this turn.", "3VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["You control more objectives than your opponent.", "6VP"]]], ["Second battle round onwards", "End of your turn", [["More enemy units were destroyed this turn than friendly units were destroyed in the previous turn.", "4VP"]]]]}, "Disruption|Take and Hold": {"name": "Death Trap", "action": {"name": "Booby Trap", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one objective (excluding your home objective) or within one terrain area not in your deployment zone that you have not yet trapped.", "limit": "Unlimited. Each unit that starts this action this phase must be within a different terrain area.", "completes": "Immediately.", "effect": "That terrain area is trapped: place one of your operation markers within it."}, "secs": [["Any battle round", "End of your turn", [["For each terrain area trapped this turn.", "2VP"], ["For each of those terrain areas that is an objective.", "+3VP", "c"]]], ["Any battle round", "End of your turn", [["One or more enemy units that started the turn within a terrain area were destroyed, if that terrain area is trapped.", "3VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]]]}, "Disruption|Purge the Foe": {"name": "Delaying Action", "secs": [["Any battle round", "End of your turn", [["For each enemy unit destroyed this turn.", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding home objectives).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["You control one or more central objectives and one or more expansion objectives.", "3VP"]]]]}, "Disruption|Disruption": {"name": "Outmanoeuvre", "secs": [["Any battle round", "End of your turn", [["You control your opponent's home objective.", "10VP"]]], ["First battle round", "End of your turn", [["For each objective you control (excluding your home objective).", "4VP"]]], ["Second & third battle round", "End of your Command phase", [["For each objective you control (excluding your home objective).", "5VP"]]], ["Fourth battle round onwards", "End of your turn", [["For each objective you control (excluding your home objective).", "6VP"]]]]}, "Disruption|Reconnaissance": {"name": "Smoke and Mirrors", "action": {"name": "Decoy", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one objective (excluding your home objective) that is not decoyed.", "limit": "Unlimited. Each unit that starts this action this phase must be within range of a different objective.", "completes": "End of your turn, if your unit controls that objective.", "effect": "That objective is decoyed: place one of your operation markers within range of it."}, "secs": [["Any battle round", "End of your turn", [["For each objective that is decoyed.", "2VP"], ["For each of those objectives that is within your opponent's territory.", "+2VP", "c"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["End of battle", "", [["Four or more objectives are decoyed.", "10VP"]]]]}, "Disruption|Priority Assets": {"name": "Locate and Deny", "pre": "Start of the battle: select five terrain areas not within your deployment zone and place one of your operation markers within each. If you can't, do so for each terrain area not within your deployment zone.", "action": {"name": "Sensor Sweep", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one central objective.", "limit": "Once per turn.", "completes": "End of your turn, if your unit controls that objective.", "effect": "Your unit performs a sensor sweep: remove one operation marker from the battlefield.", "restrict": "Can't be started if there is only one operation marker on the battlefield."}, "secs": [["Any battle round", "End of your turn", [["One or more enemy units that started the turn within range of one or more objectives are destroyed.", "4VP"], ["Only one of your operation markers is on the battlefield, one or more of your units are within the same terrain area as that marker, and no enemy units are within that terrain area.", "4VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["End of battle", "", [["Only one of your operation markers is on the battlefield, one or more of your units are within the same terrain area as that marker, and no enemy units are within that terrain area.", "5VP"]]]]}, "Reconnaissance|Take and Hold": {"name": "Reconnaissance Sweep", "secs": [["Any battle round", "End of your turn", [["Three or more friendly units are wholly within three different table quarters and not within 6\" of the centre of the battlefield.", "3VP"], ["Four or more friendly units are wholly within four different table quarters and not within 6\" of the centre of the battlefield.", "6VP", "or"]]], ["Any battle round", "End of your turn", [["For each enemy unit destroyed this turn.", "1VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "3VP"]]]]}, "Reconnaissance|Purge the Foe": {"name": "Triangulation", "action": {"name": "Triangulate", "starts": "Your Shooting phase, from the second battle round onwards.", "units": "One friendly unit within range of one objective (excluding your home objective).", "limit": "Once per turn.", "completes": "End of your turn, if your unit controls that objective.", "effect": "That objective is triangulated: place one of your operation markers within range of it."}, "secs": [["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["One objective is triangulated.", "3VP"], ["Two objectives are triangulated.", "6VP", "or"], ["Three or more objectives are triangulated.", "10VP", "or"]]], ["End of battle", "", [["You control four or more objectives.", "10VP"]]]]}, "Reconnaissance|Disruption": {"name": "Surveil the Foe", "pre": "Each time a friendly unit ends a move within range of an objective that has any of your opponent's operation markers within range of it, remove those markers from the battlefield.", "action": {"name": "Surveil the Foe", "starts": "Your Shooting phase.", "units": "One friendly unit.", "limit": "Unlimited.", "completes": "Immediately.", "effect": "Select one enemy unit within 18\" of and visible to your unit that has not been surveilled this turn: until the end of the turn, it is surveilled."}, "secs": [["Any battle round", "End of your turn", [["One or more enemy units were surveilled this turn, unless each of those units is within range of one or more objectives that have one or more operation markers within range of them.", "4VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["You control more objectives than your opponent.", "4VP"]]], ["Second battle round onwards", "End of your turn", [["None of your opponent's operation markers are on the battlefield.", "5VP"]]]]}, "Reconnaissance|Reconnaissance": {"name": "Gather Intel", "action": {"name": "Extract Intelligence", "starts": "Your Shooting phase, from the second battle round onwards.", "units": "One unit within range of one objective (excluding your home objective) that does not have any of your operation markers within range of it.", "limit": "Unlimited. Each unit that starts this action this phase must be within range of a different objective.", "completes": "End of your turn, if your unit controls that objective.", "effect": "Place one of your operation markers within range of that objective."}, "secs": [["First battle round", "End of your turn", [["You control one or more central objectives.", "6VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["Second battle round onwards", "End of your turn", [["For each friendly unit that completed the Extract Intelligence action this turn.", "7VP"]]], ["End of battle", "", [["Three or more of your operation markers are on the battlefield.", "5VP"], ["One of your operation markers is within range of your opponent's home objective.", "5VP"]]]]}, "Reconnaissance|Priority Assets": {"name": "Search and Scour", "secs": [["Any battle round", "End of your turn", [["You control one or more central objectives.", "3VP"], ["One or more enemy units that started the turn within a terrain area are destroyed.", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["For each objective you control (excluding your home objective).", "4VP"]]], ["End of battle", "", [["No enemy units are wholly within your territory.", "5VP"]]]]}, "Priority Assets|Take and Hold": {"name": "Secure Asset", "action": {"name": "Secure Asset", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one objective (excluding your home objective).", "limit": "Once per turn.", "completes": "End of your turn, if your unit controls that objective.", "effect": "Your unit secures the asset."}, "secs": [["Any battle round", "End of your turn", [["A friendly unit secured the asset this turn.", "4VP"], ["One or more enemy units that started the turn within range of one or more central objectives are destroyed.", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["You control three or more objectives.", "4VP"]]]]}, "Priority Assets|Purge the Foe": {"name": "Vital Link", "action": {"name": "Maintain Control", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one central objective.", "limit": "Once per turn.", "completes": "End of your turn, if your unit controls that objective.", "effect": "Place one of your operation markers within range of that objective."}, "secs": [["Any battle round", "End of your turn", [["You control one or more central objectives.", "2VP"], ["For each of your operation markers within range of one of those objectives.", "+1VP", "c"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"], ["One or more of those objectives is a central objective.", "+4VP", "c"]]], ["End of battle", "", [["You control your opponent's home objective.", "10VP"]]]]}, "Priority Assets|Disruption": {"name": "Extract Relic", "action": {"name": "Sensor Sweep", "starts": "Your Shooting phase.", "units": "One friendly unit within range of one central objective.", "limit": "Once per turn.", "completes": "End of your turn, if your unit controls that objective.", "effect": "Your unit performs a sensor sweep: remove one operation marker from the battlefield.", "restrict": "Can't be started if there is only one operation marker on the battlefield."}, "secs": [["Any battle round", "End of your turn", [["A friendly unit performed a sensor sweep this turn.", "4VP"], ["One or more enemy units that started the turn within range of one or more objectives are destroyed.", "3VP"], ["Only one of your opponent's operation markers is on the battlefield, one or more of your units are within the same terrain area as it, and no enemy units are within that terrain area.", "4VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["End of battle", "", [["Only one of your opponent's operation markers is on the battlefield, one or more of your units are within the same terrain area as it, and no enemy units are within that terrain area.", "5VP"]]]]}, "Priority Assets|Reconnaissance": {"name": "Vanguard Operation", "action": {"name": "Vanguard Operation", "starts": "Your Shooting phase.", "units": "One friendly unit within one terrain area that is within your opponent's territory.", "limit": "Once per turn.", "completes": "End of your turn, if no enemy units are within that terrain area.", "effect": "Your unit performs a vanguard operation."}, "secs": [["Any battle round", "End of your turn", [["A friendly unit performed a vanguard operation this turn.", "4VP"], ["One or more enemy units were destroyed this turn.", "2VP"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]], ["End of battle", "", [["You control your opponent's home objective.", "10VP"]]]]}, "Priority Assets|Priority Assets": {"name": "Sabotage", "action": {"name": "Sabotage", "starts": "Your Shooting phase.", "units": "One unit within range of one objective (excluding your home objective).", "limit": "Unlimited. Each unit that starts this action this phase must be within range of a different objective.", "completes": "End of your turn, if that unit controls that objective.", "effect": "Your unit commits sabotage."}, "secs": [["Any battle round", "End of your turn", [["For each friendly unit that committed sabotage this turn.", "3VP"], ["For each of those units that is within range of one or more objectives in your opponent's territory.", "+2VP", "c"]]], ["Second battle round onwards", "End of your Command phase (or the end of your turn in the fifth battle round)", [["You control one or more objectives (excluding your home objective).", "4VP"]]]]}};
+function missionCard(m){if(!m)return '';
+  const sec=([title,when,rows])=>`<div class="msec"><div class="msec-h">${h(title)}</div>${when?`<div class="mwhen"><b>When</b> ${h(when)}</div>`:''}${rows.map(([t,vp,k])=>`${k==='or'?'<div class="mor">or</div>':''}<div class="mrow${k==='c'?' cum':''}"><span>${k==='c'?'<b class="plus">+</b> ':''}${h(t)}</span><span class="vp">${h(vp)}${k==='c'?'<small>cumulative</small>':''}</span></div>`).join('')}</div>`;
+  const a=m.action;
+  return `${m.pre?`<p class="mpre">${h(m.pre)}</p>`:''}${(m.secs||[]).map(sec).join('')}${m.scoring&&!m.secs?`<div class="rules">${h(m.scoring)}</div>`:''}
+  ${a?`<div class="msec act"><div class="msec-h">${h(a.name)} · Objective action</div><div class="mact">${[['Starts',a.starts],['Units',a.units],['Use limit',a.limit],['Completes',a.completes],['Effect',a.effect],['Restriction',a.restrict]].filter(x=>x[1]).map(([k,v])=>`<p><b>${k}:</b> ${h(v)}</p>`).join('')}</div></div>`:''}`};
+const tierSize=(u,e)=>{const t=(u.tiers||[])[e?.tier||0];const m=String(t?.label||'').match(/\d+/);return m?+m[0]:1};
+function slotMax(s,n){const m=s.max;if(!m||m[0]==='all')return n;if(m[0]==='per')return Math.max(1,Math.floor(n/m[1]))*m[2];if(m[0]==='n')return m[1];return n}
+function gearOf(u,e){
+  const base=u.defaultGear?.length?u.defaultGear:[...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name));const g=new Set(base);
+  const sl=u.gearSlots||[];if(!sl.length)return g;const gs=e?.gs||{};const n=tierSize(u,e);
+  sl.forEach((s,i)=>{const v=gs[i];if(v==null)return;
+    if(s.kind==='one'){const ch=s.choices[+v];if(!ch)return;if(n<=1&&!s.add)(s.from||[]).forEach(x=>g.delete(x));ch.forEach(x=>g.add(x))}
+    else{let tot=0;for(const[ci,c]of Object.entries(v||{}))if(+c>0){tot+=+c;(s.choices[ci]||[]).forEach(x=>g.add(x))}
+      if(!s.add&&tot>=n)(s.from||[]).forEach(x=>g.delete(x))}});
+  return g}
+function gearPicks(u,e){const out=[];const gs=e.gs||{};(u.gearSlots||[]).forEach((s,i)=>{const v=gs[i];if(v==null)return;
+  if(s.kind==='one'){const c=s.choices[+v];if(c)out.push(c.join(' + '))}else for(const[ci,c]of Object.entries(v||{}))if(+c>0&&s.choices[ci])out.push(`${c}× ${s.choices[ci].join(' + ')}`)});return out}
+function datasheet(u,gear){
+  const f=w=>!gear||gear.has(baseW(w.name));
+  const v={...u,ranged:(u.ranged||[]).filter(f),melee:(u.melee||[]).filter(f)};
+  return `${statlines(u)}${weaponTables(v)}`;
+}
+function vUData(){
+  const u=S.units[S.viewId];if(!u)return backTo('codex','That unit was deleted.');const f=FX[u.faction];
+  const pts=(u.tiers||[]).map(t=>`${h(t.label)}: ${h(t.pts)}${t.pts2!=null&&u.band2From?` (${ord(u.band2From)}+ copy: ${h(t.pts2)})`:''}`).join(' · ');
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(f.name)} · ${h(catOf(u))}</p><h1>${h(u.name)}</h1></div>${S.canWrite?`<button class="btn" data-a="editUnit" data-id="${h(S.viewId)}">Edit</button>`:''}</header>
+  <div class="stack"><section class="panel"><p class="num small">${pts||'No points set'} pts</p>${(u.wargear||[]).length?`<p class="small muted">Wargear costs: ${u.wargear.map(w=>h(w.name)+' +'+h(w.pts)).join(', ')}</p>`:''}${datasheet(u)}</section>
+  ${u.abilities?`<section class="panel"><h2>Abilities</h2><div class="rules">${h(u.abilities)}</div></section>`:''}
+  ${(u.options||[]).length||u.loadout?`<section class="panel"><h2>Wargear options</h2>${u.loadout?`<p class="small">${h(u.loadout)}</p>`:''}${(u.options||[]).length?`<ul class="small" style="margin:0;padding-left:18px">${u.options.map(o=>`<li class="rules">${h(o)}</li>`).join('')}</ul>`:''}</section>`:''}
+  <section class="panel"><p class="small"><strong>Keywords:</strong> ${h(u.keywords||'–')}</p>${u.composition?.length?`<p class="small"><strong>Composition:</strong> ${h(u.composition.join(' · '))}</p>`:''}</section></div>`;
+}
+function vDData(){
+  const d=S.dets[S.viewId];if(!d)return backTo('codex','That detachment was deleted.');const f=FX[d.faction];
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(f.name)} detachment · ${h(d.dp)} DP</p><h1>${h(d.name)}</h1></div>${S.canWrite?`<button class="btn" data-a="editDet" data-id="${h(S.viewId)}">Edit</button>`:''}</header>
+  <div class="stack"><div class="row">${dispsOf(d).map(x=>`${dtag(x)}`).join('')}${d.unique?`<span class="tag">Unique: ${h(d.unique)}</span>`:''}</div>
+  <section class="panel"><h2>${h(d.ruleName||'Detachment rule')}</h2><div class="rules">${h(d.ruleText||'No rule text entered.')}</div></section>
+  <section class="panel"><h2>Enhancements</h2>${(d.enhancements||[]).map(e=>`<div id="enh-${h(e.id)}" style="display:grid;gap:4px"><div class="row between"><strong>${h(e.name)}${e.upgrade?' <span class="tag">Upgrade</span>':''}${e.aura?' <span class="tag">Aura</span>':''}</strong><span class="num small">${h(e.pts)} pts</span></div>${e.restrict?`<p class="small muted">${h(e.restrict)}</p>`:''}<div class="rules small">${h(e.text||'')}</div></div>`).join('')||'<p class="muted small">None.</p>'}</section>
+  <section class="stack" style="gap:10px"><div class="panel-head"><h2>Stratagems</h2></div>${legend()}${(d.stratagems||[]).map(x=>stratCard(x,{anchor:'st-'+x.id,open:S.scrollTo==='st-'+x.id})).join('')||'<p class="muted small">None.</p>'}</section></div>`;
+}
+/* search */
+function buildIndex(){
+  const ix=[];const add=(g,t,sub,k,id,n,text)=>ix.push({g,t,sub,k,id,n,s:(t+' '+(sub||'')+' '+(text||'')).toLowerCase()});
+  for(const sec of CORE_RULES){add('Core rules',sec.title,'Section '+sec.num,'rule',sec.id,'rule-'+sec.id,'');sec.items.forEach(([t,x],i)=>add('Core rules',t,sec.title,'rule',sec.id,`rule-${sec.id}-${i}`,x))}
+  for(const x of S.core.stratagems||[])add('Core stratagems',x.name,`${x.cp}CP · ${x.turn}`,'cstrat',x.id,'',x.text);
+  for(const[fid,rs]of Object.entries(S.core.armyRules||{}))for(const r of rs)add('Army rules',r.name,FX[fid]?.name,'army',fid,'',r.text);
+  for(const[id,u]of Object.entries(S.units))add('Units',u.name,`${FX[u.faction]?.name||''} · ${catOf(u)}`,'unit',id,'',u.keywords);
+  for(const[id,d]of Object.entries(S.dets)){add('Detachments',d.name,`${FX[d.faction]?.name||''} · ${d.dp} DP`,'det',id,'',dispsOf(d).join(' '));
+    for(const e of d.enhancements||[])add('Enhancements',e.name,`${d.name} · ${e.pts} pts`,'det',id,'enh-'+e.id,e.text);
+    for(const x of d.stratagems||[])add('Stratagems',x.name,`${d.name} · ${x.cp}CP`,'det',id,'st-'+x.id,x.text)}
+  for(const[id,l]of Object.entries(S.lists))add('Lists',l.name||'Untitled list',FX[l.faction]?.name,'list',id,'','');
+  return ix;
+}
+function runSearch(q){
+  const box=$('#results');q=q.trim().toLowerCase();if(q.length<2){box.hidden=true;box.innerHTML='';return}
+  const terms=q.split(/\s+/);const hits=buildIndex().map(x=>{if(!terms.every(t=>x.s.includes(t)))return null;const tl=x.t.toLowerCase();return{...x,score:(tl===q?0:tl.startsWith(q)?1:tl.includes(q)?2:3)}}).filter(Boolean).sort((a,b)=>a.score-b.score||a.t.localeCompare(b.t)).slice(0,40);
+  const groups={};hits.forEach(x=>(groups[x.g]||(groups[x.g]=[])).push(x));
+  box.innerHTML=hits.length?Object.entries(groups).map(([g,xs])=>`<p class="grp">${h(g)}</p>${xs.map(x=>`<button class="res" data-a="goto" data-k="${x.k}" data-id="${h(x.id)}" data-n="${h(x.n||'')}"><span class="body"><span>${h(x.t)}</span><small>${h(x.sub||'')}</small></span></button>`).join('')}`).join(''):`<p class="small muted" style="padding:10px">No matches for “${h(q)}”.</p>`;
+  box.hidden=false;
+}
+function closeSearch(){const i=$('#gsearch');if(i){i.value='';i.blur()}const b=$('#results');b.hidden=true;b.innerHTML=''}
+document.addEventListener('input',e=>{if(e.target.dataset.t&&S.themeDraft){S.themeDraft[e.target.dataset.t]=e.target.value}});
+document.addEventListener('input',e=>{if(e.target.id==='gsearch')runSearch(e.target.value)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#results').hidden)closeSearch()});
+document.addEventListener('click',e=>{if(!e.target.closest('#searchwrap'))$('#results').hidden=true});
+document.addEventListener('focusin',e=>{if(e.target.id==='gsearch'&&e.target.value.trim().length>1)runSearch(e.target.value)});
+
+function codexHead(){
+  return `<header class="top"><div class="grow"><p class="eyebrow">Group rules data</p><h1>Codex</h1></div>
+    <div class="row"><button class="btn sm" data-a="go" data-k="limits">List limits</button><button class="btn sm" data-a="go" data-k="io">Import / export</button></div></header>`;
+}
+function vCodex(){
+  const fid=S.cfac;const ro=!S.canWrite;
+  const chips=FACTIONS.map(f=>[f.id,f.name]).map(([k,l])=>`<button class="chip f-${k}" data-a="cfac" data-k="${k}" aria-pressed="${S.cfac===k}">${h(l)}</button>`).join('');
+  const dets=detsOf(fid),units=unitsOf(fid);const f=FX[fid];
+  const body=S.ctab==='detachments'?
+    (dets.length?dets.map(d=>`<button class="card" data-a="viewDet" data-id="${h(d.id)}"><div class="body"><div class="row between"><h3>${h(d.name)}</h3><span class="tag">${h(d.dp)} DP</span></div>
+      <div class="row">${dispsOf(d).length?dispsOf(d).map(x=>`${dtag(x)}`).join(''):'<span class="tag bad">No disposition</span>'}${d.unique?`<span class="tag">Unique: ${h(d.unique)}</span>`:''}<span class="small muted">${(d.enhancements||[]).length} enhancements · ${(d.stratagems||[]).length} stratagems</span></div></div></button>`).join(''):
+      `<div class="empty"><h3>No ${h(f.name)} detachments yet</h3><p>Add each detachment from your faction pack: its DP cost, Force Disposition, rule, enhancements and stratagems. To add many at once, use Import.</p>${ro?'':'<button class="btn primary" data-a="newDet">Add detachment</button>'}</div>`):
+    (units.length?grouped(units,u=>u).map(([g,us])=>catBlock('codex:'+fid+':'+g,g,us.length,us.map(u=>`<button class="card" data-a="viewUnit" data-id="${h(u.id)}"><div class="body"><div class="row between"><h3>${h(u.name)}</h3><span class="num small">${(u.tiers||[]).map(t=>h(t.pts)).join(' / ')||'–'} pts</span></div>
+      <p class="small muted">${h(u.keywords||catOf(u))}${(u.tiers||[]).length?' · '+(u.tiers||[]).map(t=>h(t.label)).filter(Boolean).join(' / '):''}</p></div></button>`).join(''))).join(''):
+      `<div class="empty"><h3>No ${h(f.name)} units yet</h3><p>Add units with their category, points options, statline, weapons and abilities so they can go into lists.</p>${ro?'':'<button class="btn primary" data-a="newUnit">Add unit</button>'}</div>`);
+  const showAdd=!ro&&(S.ctab==='detachments'?dets.length:units.length);
+  return codexHead()+`<div class="stack"><div class="chips" role="group" aria-label="Army">${chips}</div>
+    <div class="seg" role="group" aria-label="Section"><button data-a="ctab" data-k="detachments" aria-pressed="${S.ctab==='detachments'}">Detachments (${dets.length})</button><button data-a="ctab" data-k="units" aria-pressed="${S.ctab==='units'}">Units (${units.length})</button></div>
+    ${(S.core.armyRules?.[fid]||[]).length?`<details class="panel" ${S.openArmy?'open':''}><summary>Army rules</summary>${S.core.armyRules[fid].map(r=>`<div><strong>${h(r.name)}</strong><div class="rules">${h(r.text)}</div></div>`).join('')}</details>`:''}
+    ${showAdd?`<button class="btn primary" style="justify-self:start" data-a=""${S.ctab==='detachments'?'newDet':'newUnit'}">${S.ctab==='detachments'?'Add detachment':'Add unit'}</button>`:''}
+    <div class="stack" style="gap:10px">${body}</div></div>`;
+}
+
+const fld=(label,path,val,opt={})=>{const id='d-'+path.replace(/\./g,'-');
+  if(opt.select)return `<label class="f">${label}<select id="${id}" data-d="${path}">${opt.select.map(o=>`<option ${String(o)===String(val)?'selected':''}>${h(o)}</option>`).join('')}</select></label>`;
+  if(opt.area)return `<label class="f">${label}<textarea id="${id}" data-d="${path}" rows="${opt.rows||4}">${h(val)}</textarea></label>`;
+  return `<label class="f">${label}<input type="${opt.num?'number':'text'}" ${opt.num?'data-num inputmode="numeric"':''} id="${id}" data-d="${path}" value="${h(val)}"></label>`};
+function stratFields(arr,base){
+  return arr.map((s,i)=>`<div class="item"><div class="grid2">${fld('Name',`${base}.${i}.name`,s.name)}${fld('CP cost',`${base}.${i}.cp`,s.cp,{num:1})}</div>
+    <div class="grid2">${base==='core'?'':fld('Type',`${base}.${i}.type`,s.type||'',{select:['',...STRAT_TYPES]})}${fld('When',`${base}.${i}.turn`,s.turn||TURNS[0],{select:TURNS})}</div>
+    <div class="row" role="group" aria-label="Phases">${['Any phase',...PHASES].map(p=>`<button class="chip" data-a="toggleArr" data-k="${base}.${i}.phases" data-n="${p}" aria-pressed="${phasesOf(s).includes(p)}">${p}</button>`).join('')}</div>
+    ${fld('Rules text',`${base}.${i}.text`,s.text,{area:1})}
+    <button class="btn sm danger" style="justify-self:start" data-a="rmItem" data-k="${base}" data-n="${i}">Remove stratagem</button></div>`).join('');
+}
+function editorFoot(kind){
+  return `<div class="row" style="position:sticky;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--bg);padding-block:10px">
+    <button class="btn primary" data-a="save${kind}">Save</button><button class="btn" data-a="go" data-k="codex">Cancel</button>
+    ${S.draftId?(S.confirm==='draft'?`<button class="btn danger" data-a="del${kind}">Delete for everyone</button>`:`<button class="btn ghost" data-a="confirm" data-k="draft">Delete…</button>`):''}</div>`;
+}
+function vDet(){
+  const d=S.draft;
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(FX[d.faction].name)} detachment</p><h1>${h(d.name||'New detachment')}</h1></div></header>
+  <div class="stack">
+    <section class="panel"><div class="grid2">${fld('Detachment name','name',d.name)}${fld('Detachment Points','dp',d.dp,{select:[1,2,3]})}${fld('Unique group','unique',d.unique)}</div>
+      <p class="eyebrow">Force Dispositions</p><div class="row" role="group" aria-label="Force Dispositions">${DISPOSITIONS.map(x=>`<button data-a="toggleArr" data-k="dispositions" data-n="${x}" class="chip disp ${DISP_CLS[x]}" aria-pressed="${d.dispositions.includes(x)}">${x}</button>`).join('')}</div>
+      ${fld('Detachment rule name','ruleName',d.ruleName)}${fld('Detachment rule text','ruleText',d.ruleText,{area:1,rows:6})}</section>
+    <section class="panel"><div class="panel-head"><h2>Enhancements</h2><span class="small muted">${d.enhancements.length}</span></div>
+      ${d.enhancements.map((e,i)=>`<div class="item"><div class="grid2">${fld('Name',`enhancements.${i}.name`,e.name)}${fld('Points',`enhancements.${i}.pts`,e.pts,{num:1})}${fld('Restriction',`enhancements.${i}.restrict`,e.restrict)}</div>
+        <div class="row"><button class="chip" data-a="toggleFlag" data-k="enhancements.${i}.upgrade" aria-pressed="${!!e.upgrade}">Upgrade (goes on a unit)</button><button class="chip" data-a="toggleFlag" data-k="enhancements.${i}.aura" aria-pressed="${!!e.aura}">Aura</button></div>
+        ${fld('Rules text',`enhancements.${i}.text`,e.text,{area:1})}<button class="btn sm danger" style="justify-self:start" data-a="rmItem" data-k="enhancements" data-n="${i}">Remove enhancement</button></div>`).join('')}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="enhancements">Add enhancement</button></section>
+    <section class="panel"><div class="panel-head"><h2>Stratagems</h2><span class="small muted">${d.stratagems.length}</span></div>
+      ${stratFields(d.stratagems,'stratagems')}<button class="btn" style="justify-self:start" data-a="addItem" data-k="stratagems">Add stratagem</button></section>
+    ${editorFoot('Det')}</div>`;
+}
+function wEdit(w,k,i){const p=`${k}.${i}`;const m=k==='melee';
+  return `<div class="item">${fld('Weapon name',p+'.name',w.name)}
+    <div class="wgrid">${fld('Range',p+'.range',w.range)}${fld('A',p+'.a',w.a)}${fld(m?'WS':'BS',p+(m?'.ws':'.bs'),m?w.ws:w.bs)}${fld('S',p+'.s',w.s)}${fld('AP',p+'.ap',w.ap)}${fld('D',p+'.d',w.d)}</div>
+    ${fld('Weapon keywords',p+'.kw',w.kw)}
+    <div class="row"><button class="btn sm" data-a="dupItem" data-k="${k}" data-n="${i}">Duplicate profile</button><button class="btn sm danger" data-a="rmItem" data-k="${k}" data-n="${i}">Remove</button></div></div>`}
+function vUnit(){
+  const u=S.draft;
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(FX[u.faction].name)} unit</p><h1>${h(u.name||'New unit')}</h1></div></header>
+  <div class="stack">
+    <section class="panel">${fld('Unit name','name',u.name)}
+      ${fld('Category','category',catOf(u),{select:CATS})}
+      ${fld('Keywords','keywords',u.keywords)}</section>
+    <section class="panel"><div class="panel-head"><h2>Points options</h2></div>
+      ${u.tiers.map((t,i)=>`<div class="grid2" style="align-items:end">${fld('Unit size',`tiers.${i}.label`,t.label)}${fld('Points',`tiers.${i}.pts`,t.pts,{num:1})}${fld('Points for later copies',`tiers.${i}.pts2`,t.pts2??'',{num:1})}${u.tiers.length>1?`<button class="btn sm danger" data-a="rmItem" data-k="tiers" data-n="${i}">Remove</button>`:''}</div>`).join('')}
+      ${fld('Later-copy price starts at copy number (blank = never)','band2From',u.band2From??'',{num:1})}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="tiers">Add size option</button></section>
+    <section class="panel"><div class="panel-head"><h2>Wargear costs</h2><span class="small muted">${u.wargear.length}</span></div>
+      ${u.wargear.map((w,i)=>`<div class="grid2" style="align-items:end">${fld('Wargear',`wargear.${i}.name`,w.name)}${fld('Points each',`wargear.${i}.pts`,w.pts,{num:1})}<button class="btn sm danger" data-a="rmItem" data-k="wargear" data-n="${i}">Remove</button></div>`).join('')}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="wargear">Add wargear cost</button></section>
+    <section class="panel"><div class="panel-head"><h2>Model profiles</h2><span class="small muted">${u.models.length}</span></div>
+      ${u.models.map((m,i)=>`<div class="item">${fld('Model name',`models.${i}.name`,m.name)}<div class="wgrid" style="grid-template-columns:repeat(7,minmax(0,1fr))">${MSTATS.map(k=>fld(MLABEL[k]||k,`models.${i}.${k}`,m[k])).join('')}</div>
+        <div class="row"><button class="btn sm" data-a="dupItem" data-k="models" data-n="${i}">Duplicate profile</button><button class="btn sm danger" data-a="rmItem" data-k="models" data-n="${i}">Remove</button></div></div>`).join('')}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="models">Add model profile</button></section>
+    <section class="panel"><h2>Leader</h2><div class="grid2">${fld('Role','leader',u.leader||'None',{select:['None','Leader','Support']})}${fld('Can join (comma separated)','leadsText',u.leadsText)}</div>
+      ${fld('Unit composition (one per line)','compText',u.compText,{area:1,rows:3})}</section>
+    <section class="panel"><div class="panel-head"><h2>Ranged weapons</h2><span class="small muted">${u.ranged.length} profiles</span></div>
+      ${u.ranged.map((w,i)=>wEdit(w,'ranged',i)).join('')}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="ranged">Add ranged profile</button></section>
+    <section class="panel"><div class="panel-head"><h2>Melee weapons</h2><span class="small muted">${u.melee.length} profiles</span></div>
+      ${u.melee.map((w,i)=>wEdit(w,'melee',i)).join('')}
+      <button class="btn" style="justify-self:start" data-a="addItem" data-k="melee">Add melee profile</button></section>
+    <section class="panel">${u.weapons?fld('Old weapons notes','weapons',u.weapons,{area:1,rows:3}):''}${fld('Abilities','abilities',u.abilities,{area:1,rows:6})}</section>
+    ${editorFoot('Unit')}</div>`;
+}
+function vCore(){
+  const ro=!S.canWrite;
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="rules" style="justify-self:start;padding-left:0">‹ Core Rules</button><p class="eyebrow">Editing</p><h1>Core stratagems</h1></div></header><div class="stack">
+    <p class="muted small">Core stratagems are available to every army in play mode, alongside the stratagems from the chosen detachments.</p>
+    ${S.draft.length?stratFields(S.draft,'core'):'<div class="empty"><h3>No core stratagems yet</h3><p>Add the core stratagems from the 11th edition rules so they show up in play mode.</p></div>'}
+    ${ro?'':`<div class="row"><button class="btn" data-a="addItem" data-k="core">Add stratagem</button><button class="btn primary" data-a="saveCore">Save core stratagems</button><button class="btn" data-a="go" data-k="rules">Cancel</button></div>`}</div>`;
+}
+function vSettings(){
+  const s=S.draft;
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">List validation</p><h1>List limits</h1></div></header>
+  <div class="stack"><p class="muted">These limits come from the 11th edition battle size table and drive the warnings in the list builder. Battleline and Dedicated Transports get double the unit limit, and Epic Heroes are always limited to 1.</p>
+  <section class="panel"><h2>Incursion · 1000 pts</h2><div class="grid2">${fld('Detachment Points','incDp',s.incDp,{num:1})}${fld('Enhancement limit','incEnh',s.incEnh,{num:1})}${fld('Unit limit','incUnit',s.incUnit,{num:1})}</div></section>
+  <section class="panel"><h2>Strike Force · 2000 pts</h2><div class="grid2">${fld('Detachment Points','sfDp',s.sfDp,{num:1})}${fld('Enhancement limit','sfEnh',s.sfEnh,{num:1})}${fld('Unit limit','sfUnit',s.sfUnit,{num:1})}</div></section>
+  ${S.canWrite?'<div class="row"><button class="btn primary" data-a="saveSettings">Save settings</button><button class="btn" data-a="go" data-k="codex">Cancel</button></div>':''}</div>`;
+}
+const SAMPLE={detachments:[{faction:"orks",name:"Example Detachment",dp:2,dispositions:["Purge the Foe"],unique:"",ruleName:"Rule name",ruleText:"Rule summary…",
+  enhancements:[{name:"Enhancement",pts:20,upgrade:false,aura:false,restrict:"",text:"Rules…"}],stratagems:[{name:"Stratagem",cp:1,type:"Battle Tactic",phases:["Fight"],turn:"Either player's turn",text:"Summary…"}]}],
+  units:[{faction:"orks",name:"Boyz",category:"Battleline",keywords:"Infantry, Battleline, Mob",tiers:[{label:"10 models",pts:85,pts2:95},{label:"20 models",pts:170,pts2:180}],band2From:4,
+    wargear:[],leader:"",leads:[],composition:["9-19 Boyz","1 Boss Nob"],models:[{name:"Boy",M:'6"',T:"5",Sv:"5+",inv:"",W:"1",Ld:"7+",OC:"2"}],
+    ranged:[{name:"Slugga",range:'12"',a:"1",bs:"5+",s:"4",ap:"0",d:"1",kw:"Pistol"}],melee:[{name:"Choppa",range:"Melee",a:"3",ws:"3+",s:"4",ap:"-1",d:"1",kw:""}],abilities:"…"}],
+  coreStratagems:[]};
+function vIO(){
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">Bulk data</p><h1>Import / export</h1></div></header>
+  <div class="stack">
+    <section class="panel"><h2>Export</h2><p class="small muted">Copies every detachment, datasheet and core stratagem as JSON. Keep it as a backup, or edit it and import it back.</p><button class="btn" style="justify-self:start" data-a="exportJson">Copy codex JSON</button></section>
+    ${S.canWrite?`<section class="panel"><h2>Import</h2><p class="small muted">Paste JSON in this shape. Entries with the same faction and name replace the existing ones. Valid factions: ${FACTIONS.map(f=>f.id).join(', ')}.</p>
+      <label class="f">JSON<textarea id="importText" rows="10" spellcheck="false"></textarea></label>
+      <div class="row"><button class="btn primary" data-a="importJson">Import</button></div>
+      <details><summary>Show format</summary><pre style="margin-top:8px">${h(JSON.stringify(SAMPLE,null,2))}</pre></details></section>`:''}
+  </div>`;
+}
+
+function renderSheet(){
+  const el=$('#sheet');const s=S.sheet;if(!s){el.hidden=true;el.innerHTML='';return}
+  let body='';
+  if(s==='newList'){
+    body=`<h2>New list</h2><label class="f">List name<input type="text" id="nl-name" placeholder="e.g. Waaagh! 2000"></label>
+      <label class="f">Army<select id="nl-fac">${FACTIONS.map(f=>`<option value="${f.id}" ${S.filter===f.id?'selected':''}>${h(f.name)}</option>`).join('')}</select></label>
+      <label class="f">Battle size<select id="nl-lim">${SIZES.map(([p,n])=>`<option value="${p}" ${p===2000?'selected':''}>${n} · ${p} pts</option>`).join('')}</select></label>
+      <div class="row"><button class="btn primary" data-a="createList">Create list</button><button class="btn" data-a="closeSheet">Cancel</button></div>`;
+  }else if(s==='detPicker'){
+    const l=S.lists[S.listId];const c=calc(l);const dets=detsOf(l.faction);
+    body=`<div class="panel-head"><h2>Add detachment</h2><span class="num small">${c.dp} / ${c.sz.dp} DP used</span></div>
+      ${dets.length?dets.map(d=>{const taken=(l.detachments||[]).includes(d.id);const over=c.dp+(+d.dp||0)>c.sz.dp&&!(c.sz.name==='Incursion'&&!c.dets.length&&+d.dp===3);
+        return `<button class="pick" data-a="addDet" data-id="${h(d.id)}" ${taken?'disabled':''}><span class="body"><strong>${h(d.name)}</strong><span class="small muted">${h(dispsOf(d).join(' / ')||'No disposition')}${d.unique?' · Unique: '+h(d.unique):''}${taken?' · already in list':over?' · over DP budget':''}</span></span><span class="tag">${h(d.dp)} DP</span></button>`}).join(''):
+      `<div class="empty"><h3>No detachments in the codex</h3><p>Add ${h(FX[l.faction].name)} detachments in the Codex tab first.</p><button class="btn primary" data-a="toCodex" data-k="detachments">Open codex</button></div>`}`;
+  }else if(s==='unitPicker'){
+    const l=S.lists[S.listId];const q=S.q.toLowerCase();const us=unitsOf(l.faction).filter(u=>(!S.pickCat||catOf(u)===S.pickCat)&&(!q||u.name.toLowerCase().includes(q)||(u.keywords||'').toLowerCase().includes(q)));
+    body=`<h2>Add ${h(S.pickCat||'unit')}</h2><input type="text" id="uq" data-c="uq" placeholder="Search name or keyword" value="${h(S.q)}" aria-label="Search units">
+      ${unitsOf(l.faction).length?grouped(us,u=>u).map(([lab,xs])=>{return `<p class="grp">${lab}</p>${xs.map(u=>`<button class="pick" data-a="addUnit" data-id="${h(u.id)}"><span class="body"><strong>${h(u.name)}</strong><span class="small muted">${(u.tiers||[]).map(t=>h(t.label)).join(' / ')}</span></span><span class="num small">${(u.tiers||[]).length?unitCost(u,{tier:0},(l.entries||[]).filter(e=>e.unitId===u.id).length+1).pts:'–'} pts</span></button>`).join('')}`}).join('')||'<p class="muted">No matches.</p>':
+      `<div class="empty"><h3>No units in the codex</h3><p>Add ${h(FX[l.faction].name)} units in the Codex tab first.</p><button class="btn primary" data-a="toCodex" data-k="units">Open codex</button></div>`}`;
+  }else if(s==='opp'){
+    const others=Object.entries(S.lists).filter(([id])=>id!==S.playId).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+    body=`<h2>Who are you playing?</h2><p class="small muted">Pick your opponent's army from the shared lists. Their Force Disposition sets which primary mission you play.</p>
+      ${others.map(([id,o])=>`<button class="pick" data-a="setOpp" data-id="${h(id)}"><span class="row" style="flex-wrap:nowrap;min-width:0">${badge(o.faction)}<span class="body"><strong>${h(o.name||'Untitled list')}</strong><span class="small muted">${calc(o).pts} pts · ${h(o.disposition||'No disposition')}</span></span></span></button>`).join('')||'<p class="muted small">No other lists yet.</p>'}
+      <p class="eyebrow" style="margin-top:6px">Not in Muster? Pick their disposition</p><div class="row">${DISPOSITIONS.map(x=>`<button class="chip disp ${DISP_CLS[x]||''}" data-a="setOppDisp" data-k="${x}">${x}</button>`).join('')}</div>
+      <div class="row"><button class="btn ghost" data-a="skipOpp">Skip for now</button></div>`;
+  }else if(s==='export'||s.type==='text'){
+    const txt=s==='export'?rosterText(S.lists[S.listId]):s.text;
+    body=`<h2>${s==='export'?'Roster':'Codex JSON'}</h2><textarea id="exportText" rows="14" readonly spellcheck="false" class="num" style="font-size:.85rem">${h(txt)}</textarea>
+      <div class="row"><button class="btn primary" data-a="copyText">Copy</button><button class="btn" data-a="closeSheet">Close</button></div>`;
+  }
+  el.className='sheet';el.hidden=false;el.innerHTML=`<div class="pane" role="dialog" aria-modal="true">${body}</div>`;
+}
+function rosterText(l){
+  const c=calc(l);const lines=[`${l.name} — ${FX[l.faction].name} — ${c.pts}/${l.limit} pts`,
+    `Detachments: ${c.dets.map(d=>`${d.name} (${d.dp} DP)`).join(', ')||'none'}`,`Force Disposition: ${l.disposition||'—'}`,''];
+  for(const e of l.entries||[]){const u=S.units[e.unitId];if(!u)continue;const t=(u.tiers||[])[e.tier||0];const en=findEnh(e.enhId);const host=(l.entries||[]).find(x=>x.id===e.attach);
+    const wg=Object.entries(e.wg||{}).filter(([,n])=>+n>0).map(([i,n])=>`${n}× ${u.wargear?.[i]?.name}`);
+    lines.push(`• ${u.name}${t?` (${t.label})`:''} — ${c.cost[e.id]} pts${e.warlord?' [Warlord]':''}${en?`\n    ${en.upgrade?'Upgrade':'Enhancement'}: ${en.name} (+${en.pts})`:''}${wg.length?`\n    Wargear: ${wg.join(', ')}`:''}${gearPicks(u,e).length?`\n    Loadout: ${gearPicks(u,e).join(', ')}`:''}${host?`\n    Attached to: ${S.units[host.unitId]?.name}`:''}`)}
+  return lines.join('\n');
+}
+
+/* ---------- actions ---------- */
+function listRef(id){return S.db.doc('lists/'+id)}
+async function patchList(patch){const id=S.listId;return write(()=>listRef(id).update(patch))}
+function newDraft(kind){
+  if(kind==='Det')return{faction:S.cfac,name:'',dp:2,dispositions:[],unique:'',ruleName:'',ruleText:'',enhancements:[],stratagems:[]};
+  return{faction:S.cfac,name:'',category:'Other',keywords:'',tiers:[{label:'',pts:0}],band2From:'',models:[{name:'',M:'',T:'',Sv:'',inv:'',W:'',Ld:'',OC:''}],wargear:[],leader:'None',leadsText:'',compText:'',ranged:[],melee:[],weapons:'',abilities:''};
+}
+function normDet(d){return{faction:d.faction,name:String(d.name||'').trim(),dp:+d.dp||1,dispositions:dispsOf(d).filter(x=>DISPOSITIONS.includes(x)),unique:String(d.unique||'').trim(),ruleName:d.ruleName||'',ruleText:d.ruleText||'',
+  enhancements:(d.enhancements||[]).map(e=>({id:e.id||rid(),name:e.name||'',pts:+e.pts||0,upgrade:!!e.upgrade,aura:!!e.aura,restrict:e.restrict||'',text:e.text||''})),
+  stratagems:(d.stratagems||[]).map(normStrat)}}
+function normStrat(s){let ph=phasesOf(s).filter(p=>p==='Any phase'||PHASES.includes(p));if(!ph.length||ph.includes('Any phase'))ph=['Any phase'];
+  return{id:s.id||rid(),name:s.name||'',cp:+s.cp||0,type:STRAT_TYPES.includes(s.type)?s.type:'',phases:ph,turn:TURNS.includes(s.turn)?s.turn:TURNS[0],text:s.text||''}}
+const WF=['name','range','a','bs','ws','s','ap','d','kw'];
+const normW=(w,m)=>{const o={};for(const k of WF)if(!(m&&k==='bs')&&!(!m&&k==='ws'))o[k]=String(w[k]??'').trim();if(m&&!o.range)o.range='Melee';return o};
+function normUnit(u){const leads=Array.isArray(u.leads)?u.leads:String(u.leadsText||'').split(',');const comp=Array.isArray(u.composition)?u.composition:String(u.compText||'').split('\n');
+  const b2=+u.band2From||null;
+  return{faction:u.faction,name:String(u.name||'').trim(),category:catOf(u),
+  ranged:(u.ranged||[]).map(w=>normW(w,false)).filter(w=>w.name),melee:(u.melee||[]).map(w=>normW(w,true)).filter(w=>w.name),keywords:u.keywords||'',
+  tiers:(u.tiers||[]).map(t=>{const o={label:t.label||'',pts:+t.pts||0};if(b2&&t.pts2!==''&&t.pts2!=null)o.pts2=+t.pts2||0;return o}),band2From:b2,
+  wargear:(u.wargear||[]).map(w=>({name:String(w.name||'').trim(),pts:+w.pts||0})).filter(w=>w.name),
+  models:modelsOf(u).map(m=>Object.fromEntries([['name',String(m.name||'')],...MSTATS.map(k=>[k,String(m[k]??'')])])),
+  leader:['Leader','Support'].includes(u.leader)?u.leader:'',leads:leads.map(x=>x.trim()).filter(Boolean),composition:comp.map(x=>x.trim()).filter(Boolean),
+  loadout:u.loadout||'',options:Array.isArray(u.options)?u.options:[],defaultGear:Array.isArray(u.defaultGear)?u.defaultGear:[],gearSlots:Array.isArray(u.gearSlots)?u.gearSlots:[],gearNotes:Array.isArray(u.gearNotes)?u.gearNotes:[],
+  weapons:u.weapons||'',abilities:u.abilities||''}}
+
+async function loadGame(listId){
+  S.game=null;render();
+  const blank={round:1,cp:0,vp:0,opp:0,phase:'Command',mine:true,used:{},units:{},log:[]};
+  let g=null;
+  if(S.db&&S.uid){try{const snap=await S.db.doc(`data/users/${S.uid}/game-${listId}`).get();if(snap.exists)g=snap.data()}catch(e){}}
+  else{try{g=JSON.parse(localStorage.getItem('game-'+listId)||'null')}catch(e){}}
+  S.game={...blank,...clone(g||{})};if(!S.game.oppName&&!S.game.oppSkip&&S.view==='play')S.sheet='opp';render();
+}
+function saveGame(){clearTimeout(saveGame.t);const id=S.playId,g=clone(S.game);saveGame.t=setTimeout(async()=>{
+  if(S.db&&S.uid){try{await S.db.doc(`data/users/${S.uid}/game-${id}`).set(g)}catch(e){toast('Game state could not be saved to your account.')}}
+  else{try{localStorage.setItem('game-'+id,JSON.stringify(g))}catch(e){}}},500)}
+function gameLog(msg){S.game.log.push(`R${S.game.round} ${S.game.phase}: ${msg}`);if(S.game.log.length>60)S.game.log=S.game.log.slice(-60)}
+
+function getPath(o,p){return p.split('.').reduce((a,k)=>a?.[k],o)}
+function setPath(o,p,v){const k=p.split('.');let t=o;for(let i=0;i<k.length-1;i++)t=t[k[i]]??(t[k[i]]={});t[k.at(-1)]=v}
+
+const A={
+  tab(k){S.confirm=null;if(k==='lists')S.view='lists';else if(k==='play')S.view=S.playId&&S.lists[S.playId]?'play':'playpick';else S.view=k;render();scrollTo(0,0)},
+  go(k){S.confirm=null;S.view=k;if(k==='limits')S.draft={...S.settings};if(k==='core')S.draft=clone(S.core.stratagems||[]);render();scrollTo(0,0)},
+  newTheme(){S.themeDraft={name:'',bg:'#1a1d22',surface:'#24282f',accent:'#d9a744'};S.draft=S.themeDraft;render()},
+  cancelTheme(){S.themeDraft=null;S.draft=null;render()},
+  saveTheme(){const t=S.themeDraft;if(!t.name.trim())return toast('Give the theme a name.');const id='c-'+rid();S.customThemes=[...(S.customThemes||[]),{...t,name:t.name.trim(),id}];saveThemes();S.themeDraft=null;S.draft=null;A.theme(id)},
+  delTheme(k){S.customThemes=(S.customThemes||[]).filter(t=>t.id!==k);saveThemes();if(S.theme===k)A.theme('');else render()},
+  theme(k){S.theme=k||'';applyTheme();try{localStorage.setItem('muster-theme',S.theme)}catch(e){}render()},
+  toggleCat(k){S.closed[k]=!S.closed[k];render()},
+  gsN(k,id,n){const l=S.lists[S.listId];const[i,j]=k.split(':');patchList({entries:l.entries.map(x=>{if(x.id!==id)return x;const gs={...(x.gs||{})};const cur={...(gs[i]||{})};cur[j]=Math.max(0,(+cur[j]||0)+ +n);if(!cur[j])delete cur[j];if(Object.keys(cur).length)gs[i]=cur;else delete gs[i];return {...x,gs}})})},
+  setOpp(_,id){const o=S.lists[id];if(!o)return;Object.assign(S.game,{oppList:id,oppName:o.name||'Untitled list',oppFac:o.faction,oppDisp:o.disposition||''});S.sheet=null;gameLog(`Opponent: ${o.name}`);render();saveGame()},
+  setOppDisp(k){Object.assign(S.game,{oppList:null,oppName:'Opponent',oppFac:null,oppDisp:k});S.sheet=null;render();saveGame()},
+  skipOpp(){S.game.oppSkip=true;S.sheet=null;render();saveGame()},
+  async saveMission(k){const name=document.getElementById('m-name')?.value.trim()||'';const scoring=document.getElementById('m-score')?.value.trim()||'';
+    const rows={...S.missions,[k]:{name,scoring}};if(await write(()=>S.db.doc('core/missions').set({rows}),'Mission saved')){S.missions=rows;S.editMission=false;render()}},
+  editMission(){S.editMission=!S.editMission;render()},
+  async addFaq(){const q=document.getElementById('faq-q')?.value.trim();const a=document.getElementById('faq-a')?.value.trim();if(!q){toast('Type a question first.');return}
+    const items=[...S.faq,{id:rid(),q,a:a||'',at:Date.now()}];if(await write(()=>S.db.doc('core/faq').set({items}),'FAQ entry added')){S.faq=items;S.faqDraft=false;render()}},
+  faqForm(){S.faqDraft=!S.faqDraft;render()},
+  async delFaq(_,id){const items=S.faq.filter(x=>x.id!==id);if(await write(()=>S.db.doc('core/faq').set({items}),'FAQ entry removed')){S.faq=items;render()}},
+  addCat(k){S.sheet='unitPicker';S.pickCat=k;S.q='';render()},
+  viewUnit(_,id){S.viewId=id;S.view='udata';S.confirm=null;render();scrollTo(0,0)},
+  viewDet(_,id){S.viewId=id;S.view='ddata';S.confirm=null;render();scrollTo(0,0)},
+  goto(k,id,n){closeSearch();S.confirm=null;
+    if(k==='unit'){S.viewId=id;S.view='udata'}
+    else if(k==='det'){S.viewId=id;S.view='ddata';if(n)S.scrollTo=n}
+    else if(k==='rule'){S.view='rules';S.openRule=id;S.scrollTo=n||('rule-'+id)}
+    else if(k==='cstrat'){S.view='rules';S.scrollTo='cs-'+id;S.openStrat='cs-'+id}
+    else if(k==='army'){S.view='codex';S.cfac=id;S.openArmy=true}
+    else if(k==='list'){S.listId=id;S.view='list'}
+    scrollTo(0,0);render()},
+  filter(k){S.filter=k;render()},
+  newList(){S.sheet='newList';render();setTimeout(()=>$('#nl-name')?.focus(),50)},
+  closeSheet(){S.sheet=null;render()},
+  async createList(){
+    const name=$('#nl-name').value.trim()||'New list';const faction=$('#nl-fac').value;const limit=+$('#nl-lim').value;
+    const id=rid();const ok=await write(()=>S.db.doc('lists/'+id).set({name,faction,limit,detachments:[],disposition:'',entries:[],createdBy:S.uid||'',createdByName:S.myName||'',createdAt:Date.now()}));
+    if(ok){S.sheet=null;S.listId=id;S.view='list';S.lists[id]=S.lists[id]||{name,faction,limit,detachments:[],disposition:'',entries:[],createdBy:S.uid||'',createdAt:Date.now()};render()}
+  },
+  openList(_,id){S.listId=id;S.view='list';S.confirm=null;render();scrollTo(0,0)},
+  sheet(k){S.sheet=k;S.q='';S.pickCat=null;render()},
+  async addDet(_,id){const l=S.lists[S.listId];const dets=[...(l.detachments||[]),id];
+    const disps=dispositionsFor(dets.map(x=>S.dets[x]).filter(Boolean));const disposition=disps.includes(l.disposition)?l.disposition:(disps.length===1?disps[0]:'');
+    S.sheet=null;await patchList({detachments:dets,disposition})},
+  async rmDet(_,id){const l=S.lists[S.listId];const dets=(l.detachments||[]).filter(x=>x!==id);
+    const disps=dispositionsFor(dets.map(x=>S.dets[x]).filter(Boolean));
+    const entries=(l.entries||[]).map(e=>e.enhId&&e.enhId.startsWith(id+':')?{...e,enhId:''}:e);
+    await patchList({detachments:dets,disposition:disps.includes(l.disposition)?l.disposition:(disps.length===1?disps[0]:''),entries})},
+  async addUnit(_,id){const l=S.lists[S.listId];const u=S.units[id];const hasWar=(l.entries||[]).some(e=>e.warlord);
+    const e={id:rid(),unitId:id,tier:0,enhId:'',warlord:!!(rolesOf(u).character&&!hasWar)};
+    S.sheet=null;await patchList({entries:[...(l.entries||[]),e]});toast(`Added ${u.name}`)},
+  async rmEntry(_,id){const l=S.lists[S.listId];await patchList({entries:(l.entries||[]).filter(e=>e.id!==id).map(e=>e.attach===id?{...e,attach:''}:e)})},
+  async dupEntry(_,id){const l=S.lists[S.listId];const es=[...(l.entries||[])];const i=es.findIndex(e=>e.id===id);es.splice(i+1,0,{...es[i],id:rid(),enhId:'',warlord:false,attach:''});await patchList({entries:es})},
+  async warlord(_,id){const l=S.lists[S.listId];await patchList({entries:(l.entries||[]).map(e=>({...e,warlord:e.id===id?!e.warlord:false}))})},
+  confirm(k){S.confirm=k;render()},unconfirm(){S.confirm=null;render()},
+  async delList(){const id=S.listId;if(await write(()=>listRef(id).delete(),'List deleted')){S.confirm=null;S.view='lists';delete S.lists[id];render()}},
+  play(_,id){S.playId=id;S.view='play';S.confirm=null;loadGame(id);scrollTo(0,0)},
+  bump(k,_,n){const g=S.game;g[k]=Math.max(k==='round'?1:0,g[k]+ +n);if(k==='round')g[k]=Math.min(5,g[k]);if(k==='round'){g.phase='Command';g.used={};gameLog(`Battle round ${g.round}`)}render();saveGame()},
+  turn(k){S.game.mine=k==='true';S.game.used={};render();saveGame()},
+  phase(k){S.game.phase=k;S.game.used={};render();saveGame()},
+  useStrat(k,_,n){const g=S.game;const l=S.lists[S.playId];const s=stratPool(l).find(x=>x.key===k);if(!s||g.cp<+n)return;g.cp-=+n;g.used[k]=true;gameLog(`${s.name} (−${n} CP)`);render();saveGame()},
+  ustate(k,id){const g=S.game;const st=g.units[id]||(g.units[id]={});st[k]=!st[k];if(k==='dead'&&st.dead){const e=S.lists[S.playId].entries.find(x=>x.id===id);gameLog(`${S.units[e?.unitId]?.name||'Unit'} destroyed`)}render();saveGame()},
+  resetGame(){S.game={round:1,cp:0,vp:0,opp:0,phase:'Command',mine:true,used:{},units:{},log:[]};S.confirm=null;S.sheet='opp';render();saveGame();toast('Game reset')},
+  cfac(k){S.confirm=null;S.openArmy=false;S.cfac=k;S.view='codex';render()},
+  ctab(k){S.ctab=k;render()},
+  toCodex(k){const l=S.lists[S.listId];S.sheet=null;S.cfac=l.faction;S.ctab=k;S.view='codex';render()},
+  newDet(){S.draftKind='Det';S.draftId=null;S.draft=newDraft('Det');S.view='det';S.confirm=null;render();scrollTo(0,0)},
+  newUnit(){S.draftKind='Unit';S.draftId=null;S.draft=newDraft('Unit');S.view='unit';S.confirm=null;render();scrollTo(0,0)},
+  editDet(_,id){if(!S.canWrite)return toast('You have view-only access.');S.draftKind='Det';S.draftId=id;S.draft={...newDraft('Det'),...clone(S.dets[id])};S.draft.dispositions=dispsOf(S.draft);S.draft.stratagems=S.draft.stratagems.map(x=>({...x,phases:phasesOf(x)}));S.view='det';S.confirm=null;render();scrollTo(0,0)},
+  editUnit(_,id){if(!S.canWrite)return toast('You have view-only access.');const u=clone(S.units[id]);S.draftKind='Unit';S.draftId=id;S.draft={...newDraft('Unit'),...u,category:catOf(u),ranged:u.ranged||[],melee:u.melee||[],models:modelsOf(u).length?clone(modelsOf(u)):newDraft('Unit').models,wargear:u.wargear||[],band2From:u.band2From??'',leader:u.leader||'None',leadsText:(u.leads||[]).join(', '),compText:(u.composition||[]).join('\n'),tiers:u.tiers?.length?u.tiers:[{label:'',pts:0}]};S.view='unit';S.confirm=null;render();scrollTo(0,0)},
+  addItem(k){const d=S.view==='core'?S.draft:getPath(S.draft,k);const arr=S.view==='core'?S.draft:d;
+    arr.push(k==='enhancements'?{id:rid(),name:'',pts:0,text:''}:k==='tiers'?{label:'',pts:0}:k==='ranged'?{name:'',range:'',a:'',bs:'',s:'',ap:'',d:'',kw:''}:k==='melee'?{name:'',range:'Melee',a:'',ws:'',s:'',ap:'',d:'',kw:''}:k==='wargear'?{name:'',pts:0}:k==='models'?{name:'',M:'',T:'',Sv:'',inv:'',W:'',Ld:'',OC:''}:normStrat({}));render()},
+  toggleArr(k,_,v){const root=S.view==='core'?{core:S.draft}:S.draft;let arr=getPath(root,k);if(!Array.isArray(arr)){arr=[];setPath(root,k,arr)}
+    if(k.endsWith('phases')){if(v==='Any phase'){arr.splice(0,arr.length,'Any phase')}else{const i=arr.indexOf('Any phase');if(i>=0)arr.splice(i,1);const j=arr.indexOf(v);if(j>=0)arr.splice(j,1);else arr.push(v);if(!arr.length)arr.push('Any phase')}}
+    else{const j=arr.indexOf(v);if(j>=0)arr.splice(j,1);else arr.push(v)}render()},
+  toggleFlag(k){setPath(S.draft,k,!getPath(S.draft,k));render()},
+  async gearReset(_,id){const l=S.lists[S.listId];await patchList({entries:l.entries.map(x=>{if(x.id!==id)return x;const y={...x};delete y.gear;delete y.gs;return y})})},
+  async wg(k,id,n){const l=S.lists[S.listId];await patchList({entries:l.entries.map(x=>{if(x.id!==id)return x;const wg={...(x.wg||{})};wg[k]=Math.max(0,(+wg[k]||0)+ +n);return{...x,wg}})})},
+  dupItem(k,_,n){const arr=getPath(S.draft,k);arr.splice(+n+1,0,{...arr[+n]});render()},
+  rmItem(k,_,n){const arr=S.view==='core'?S.draft:getPath(S.draft,k);arr.splice(+n,1);render()},
+  async saveDet(){const d=normDet(S.draft);if(!d.name)return toast('Give the detachment a name.');
+    const id=S.draftId||`${d.faction}-${slug(d.name)}-${rid().slice(0,4)}`;
+    if(await write(()=>S.db.doc('detachments/'+id).set(d),'Detachment saved')){S.dets[id]=d;S.ctab='detachments';S.view='codex';render()}},
+  async saveUnit(){const u=normUnit(S.draft);if(!u.name)return toast('Give the unit a name.');
+    const id=S.draftId||`${u.faction}-${slug(u.name)}-${rid().slice(0,4)}`;
+    if(await write(()=>S.db.doc('units/'+id).set(u),'Unit saved')){S.units[id]=u;S.ctab='units';S.view='codex';render()}},
+  async delDet(){const id=S.draftId;if(await write(()=>S.db.doc('detachments/'+id).delete(),'Detachment deleted')){delete S.dets[id];S.view='codex';render()}},
+  async delUnit(){const id=S.draftId;if(await write(()=>S.db.doc('units/'+id).delete(),'Unit deleted')){delete S.units[id];S.view='codex';render()}},
+  async saveCore(){const st=S.draft.map(normStrat);if(await write(()=>S.db.doc('core/rules').set({...S.settings,stratagems:st,armyRules:S.core.armyRules||{}}),'Core stratagems saved')){S.core.stratagems=st;S.view='rules';render()}},
+  async saveSettings(){const s=Object.fromEntries(Object.keys(DEFAULTS).map(k=>[k,Math.max(0,+S.draft[k]||0)]));
+    if(await write(()=>S.db.doc('core/rules').set({...s,stratagems:S.core.stratagems||[],armyRules:S.core.armyRules||{}}),'Settings saved')){S.settings=s;S.view='codex';render()}},
+  exportJson(){const data={detachments:Object.values(S.dets),units:Object.values(S.units),coreStratagems:S.core.stratagems||[],armyRules:S.core.armyRules||{}};S.sheet={type:'text',text:JSON.stringify(data,null,2)};render()},
+  async importJson(){
+    let data;try{data=JSON.parse($('#importText').value)}catch(e){return toast('That isn\'t valid JSON. Check for a missing comma or bracket.')}
+    const dets=(data.detachments||[]).filter(d=>FX[d.faction]&&d.name),units=(data.units||[]).filter(u=>FX[u.faction]&&u.name);
+    const findId=(coll,f,n)=>Object.entries(coll).find(([,x])=>x.faction===f&&x.name.toLowerCase()===n.trim().toLowerCase())?.[0];
+    let n=0;toast('Importing…');
+    for(const d of dets){const nd=normDet(d);const id=findId(S.dets,nd.faction,nd.name)||`${nd.faction}-${slug(nd.name)}-${rid().slice(0,4)}`;if(!await write(()=>S.db.doc('detachments/'+id).set(nd)))return;S.dets[id]=nd;n++}
+    for(const u of units){const nu=normUnit(u);const id=findId(S.units,nu.faction,nu.name)||`${nu.faction}-${slug(nu.name)}-${rid().slice(0,4)}`;if(!await write(()=>S.db.doc('units/'+id).set(nu)))return;S.units[id]=nu;n++}
+    const hasCore=Array.isArray(data.coreStratagems)&&data.coreStratagems.length,hasAR=data.armyRules&&typeof data.armyRules==='object';
+    if(hasCore||hasAR){const st=hasCore?data.coreStratagems.map(normStrat):(S.core.stratagems||[]);const ar=hasAR?{...(S.core.armyRules||{}),...data.armyRules}:(S.core.armyRules||{});
+      if(await write(()=>S.db.doc('core/rules').set({...S.settings,stratagems:st,armyRules:ar}))){S.core.stratagems=st;S.core.armyRules=ar;n+=hasCore?st.length:0}}
+    const skipped=(data.detachments||[]).length-dets.length+(data.units||[]).length-units.length;
+    toast(`Imported ${n} entries${skipped?`, skipped ${skipped} with a missing name or unknown faction`:''}.`);S.view='codex';render()},
+  async copyText(){const t=$('#exportText');try{await navigator.clipboard.writeText(t.value);toast('Copied')}catch(e){t.focus();t.select();toast('Selected. Use your device\'s copy.')}}
+};
+
+document.addEventListener('click',e=>{
+  if(e.target.id==='sheet'){S.sheet=null;render();return}
+  const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
+  const fn=A[b.dataset.a];if(fn)fn(b.dataset.k,b.dataset.id,b.dataset.n);
+});
+document.addEventListener('toggle',e=>{const g=e.target?.dataset?.gid;if(g)S.gearOpen[g]=e.target.open},true);
+document.addEventListener('change',e=>{
+  const t=e.target;const c=t.dataset.c;if(!c)return;const l=S.lists[S.listId];
+  if(c==='myname'){S.myName=t.value.trim();try{localStorage.setItem('muster-name',S.myName)}catch(e){}toast('Name saved');return}
+  if(c==='lname')patchList({name:t.value.trim()||'Untitled list'});
+  else if(c==='limit')patchList({limit:+t.value});
+  else if(c==='disp')patchList({disposition:t.value});
+  else if(c==='tier')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,tier:+t.value}:x)});
+  else if(c==='gs1'){const v=+t.value;patchList({entries:l.entries.map(x=>{if(x.id!==t.dataset.id)return x;const gs={...(x.gs||{})};if(v<0)delete gs[t.dataset.k];else gs[t.dataset.k]=v;return {...x,gs}})})}
+  else if(c==='attach')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,attach:t.value}:x)});
+  else if(c==='enh')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,enhId:t.value}:x)});
+});
+function onDraft(e){const t=e.target;const p=t.dataset.d;if(!p||!S.draft)return;let v=t.value;if(t.hasAttribute('data-num'))v=v===''?'':+v;
+  if(S.view==='core')setPath({core:S.draft},p,v);else setPath(S.draft,p,v)}
+document.addEventListener('input',e=>{onDraft(e);if(e.target.dataset.c==='uq'){S.q=e.target.value;const pos=e.target.selectionStart;renderSheet();const q=$('#uq');q.focus();q.setSelectionRange(pos,pos)}});
+document.addEventListener('change',onDraft);
+
+/* ---------- boot ---------- */
+const EDITING=new Set(['det','unit','core','limits','io','settings']);
+const live=()=>{if(!EDITING.has(S.view))requestRender()};
+async function resolveNames(){if(!S.user)return;const ids=[...new Set(Object.values(S.lists).map(l=>l.createdBy).filter(Boolean))];if(!ids.length)return;
+  const ps=await S.user.profiles(ids);let ch=false;for(const id of ids){const n=ps[id]?.name||'';if(S.names[id]!==n){S.names[id]=n;ch=true}}if(ch)live()}
+function sub(coll,key){
+  S.db.collection(coll).onSnapshot(snap=>{const o={};for(const d of snap.docs)o[d.id]=d.data();S[key]=o;S.loaded[key]=true;if(key==='lists')resolveNames();live()},
+    e=>{S.loaded[key]=true;live()})}
+const FIREBASE_CONFIG={
+  apiKey: "AIzaSyB3FQVqiWwkGd1GHjZpk6McOZHWyUgsNvY",
+  authDomain: "muster-efc72.firebaseapp.com",
+  projectId: "muster-efc72",
+  storageBucket: "muster-efc72.firebasestorage.app",
+  messagingSenderId: "724539897955",
+  appId: "1:724539897955:web:a17de2313e048ca3b7a056"
+};
+const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
+function groupKey(){
+  const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
+  if(m){try{localStorage.setItem('muster-group',m[1])}catch(e){}history.replaceState(null,'',location.pathname+location.search);return m[1]}
+  try{return localStorage.getItem('muster-group')}catch(e){return null}}
+async function fbConnect(group){
+  const[A,AU,F]=await Promise.all([import(FBV+'firebase-app.js'),import(FBV+'firebase-auth.js'),import(FBV+'firebase-firestore.js')]);
+  const app=A.initializeApp(FIREBASE_CONFIG);const auth=AU.getAuth(app);
+  await AU.setPersistence(auth,AU.browserLocalPersistence).catch(()=>{});
+  if(!auth.currentUser)await AU.signInAnonymously(auth);
+  let fs;try{fs=F.initializeFirestore(app,{localCache:F.persistentLocalCache()})}catch(e){fs=F.getFirestore(app)}
+  const root='groups/'+group+'/';
+  const snapOf=x=>({exists:x.exists(),id:x.id,data:()=>x.data()});
+  const doc=p=>{const r=F.doc(fs,root+p);return{set:d=>F.setDoc(r,d),update:d=>F.updateDoc(r,d),delete:()=>F.deleteDoc(r),get:async()=>snapOf(await F.getDoc(r)),onSnapshot:(cb,err)=>F.onSnapshot(r,x=>cb(snapOf(x)),err)}};
+  const collection=c=>({onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+c),x=>cb({docs:x.docs.map(d=>({id:d.id,data:()=>d.data()}))}),err)});
+  const meta=await F.getDoc(F.doc(fs,root+'meta/seed'));
+  if(!meta.exists()){toast('Setting up your group for the first time…');
+    const seed=await (await fetch('seed.json')).json();const ops=[];
+    for(const[c,docs]of Object.entries(seed))for(const[id,d]of Object.entries(docs))ops.push([c+'/'+id,d]);
+    for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400))b.set(F.doc(fs,root+p),d);await b.commit()}
+    await F.setDoc(F.doc(fs,root+'meta/seed'),{at:Date.now()})}
+  return{db:{doc,collection},uid:auth.currentUser.uid};
+}
+async function boot(){
+  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||''}catch(e){S.customThemes=[]}applyTheme();S.view='lists';
+  const g=groupKey();
+  if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Ask the person who runs your group for the invite link.</p></main>';return}
+  render();
+  let c;try{c=await fbConnect(g)}catch(e){console.error(e);toast('Could not connect. Check your internet and reload.');render();return}
+  S.db=c.db;S.uid=c.uid;const db=c.db;
+  sub('detachments','dets');sub('units','units');sub('lists','lists');
+  db.doc('core/faq').onSnapshot(s=>{S.faq=(s.exists?s.data().items:null)||[];live()},()=>{});
+  db.doc('core/missions').onSnapshot(s=>{S.missions=(s.exists?s.data().rows:null)||{};live()},()=>{});
+  db.doc('core/rules').onSnapshot(s=>{const d=s.exists?s.data():{};S.core={stratagems:d.stratagems||[],armyRules:d.armyRules||{}};S.settings={...DEFAULTS,...Object.fromEntries(Object.keys(DEFAULTS).filter(k=>d[k]!=null).map(k=>[k,d[k]]))};live()},()=>{});
+  render();
+}
+boot();
+</script>
