@@ -6,6 +6,11 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#16191d">
 <title>Muster</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Muster">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
@@ -975,14 +980,16 @@ async function fbConnect(group){
   if(!auth.currentUser)await AU.signInAnonymously(auth);
   let fs;try{fs=F.initializeFirestore(app,{localCache:F.persistentLocalCache()})}catch(e){fs=F.getFirestore(app)}
   const root='groups/'+group+'/';
-  const snapOf=x=>({exists:x.exists(),id:x.id,data:()=>x.data()});
-  const doc=p=>{const r=F.doc(fs,root+p);return{set:d=>F.setDoc(r,d),update:d=>F.updateDoc(r,d),delete:()=>F.deleteDoc(r),get:async()=>snapOf(await F.getDoc(r)),onSnapshot:(cb,err)=>F.onSnapshot(r,x=>cb(snapOf(x)),err)}};
-  const collection=c=>({onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+c),x=>cb({docs:x.docs.map(d=>({id:d.id,data:()=>d.data()}))}),err)});
+  const enc=v=>Array.isArray(v)?(v.some(Array.isArray)?{__json:JSON.stringify(v)}:v.map(enc)):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,enc(x)])):v;
+  const dec=v=>Array.isArray(v)?v.map(dec):v&&typeof v==='object'?(typeof v.__json==='string'&&Object.keys(v).length===1?JSON.parse(v.__json):Object.fromEntries(Object.entries(v).map(([k,x])=>[k,dec(x)]))):v;
+  const snapOf=x=>({exists:x.exists(),id:x.id,data:()=>dec(x.data())});
+  const doc=p=>{const r=F.doc(fs,root+p);return{set:d=>F.setDoc(r,enc(d)),update:d=>F.updateDoc(r,enc(d)),delete:()=>F.deleteDoc(r),get:async()=>snapOf(await F.getDoc(r)),onSnapshot:(cb,err)=>F.onSnapshot(r,x=>cb(snapOf(x)),err)}};
+  const collection=c=>({onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+c),x=>cb({docs:x.docs.map(d=>({id:d.id,data:()=>dec(d.data())}))}),err)});
   const meta=await F.getDoc(F.doc(fs,root+'meta/seed'));
   if(!meta.exists()){toast('Setting up your group for the first time…');
     const seed=await (await fetch('seed.json')).json();const ops=[];
     for(const[c,docs]of Object.entries(seed))for(const[id,d]of Object.entries(docs))ops.push([c+'/'+id,d]);
-    for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400))b.set(F.doc(fs,root+p),d);await b.commit()}
+    for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400))b.set(F.doc(fs,root+p),enc(d));await b.commit()}
     await F.setDoc(F.doc(fs,root+'meta/seed'),{at:Date.now()})}
   return{db:{doc,collection},uid:auth.currentUser.uid};
 }
@@ -1000,4 +1007,5 @@ async function boot(){
   render();
 }
 boot();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
