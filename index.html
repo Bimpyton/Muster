@@ -351,12 +351,46 @@ function calc(l){
   if(!dets.length)w.push('Add at least one detachment.');
   const incursionBig=sz.name==='Incursion'&&dets.length===1&&dp===3;
   if(dp>sz.dp&&!incursionBig)w.push(`Detachments cost ${dp} DP. ${sz.name} allows ${sz.dp} DP.`);
-  if(dets.length&&!l.disposition)w.push('Choose a Force Disposition.');
+  if(dets.length&&!l.disposition&&!l.parent)w.push('Choose a Force Disposition.');
   if(enh>sz.enh)w.push(`${enh} enhancements taken. ${sz.name} allows ${sz.enh}.`);
-  if((l.entries||[]).length&&war!==1)w.push(war?'Only one unit can be your Warlord.':'Nominate a Warlord.');
+  if((l.entries||[]).length&&war!==1&&!l.parent)w.push(war?'Only one unit can be your Warlord.':'Nominate a Warlord.');
   return{dets,pts,dp,enh,w,cost,later,sz,enhUse};
 }
 const dispositionsFor=dets=>[...new Set(dets.flatMap(dispsOf))];
+const isDbl=l=>!!l&&l.type==='doubles';
+const parentOf=l=>l&&l.parent?S.lists[l.parent]:null;
+const singles=()=>Object.entries(S.lists).filter(([,l])=>!isDbl(l)&&!l.parent);
+function calcDbl(d){const kids=(d.armies||[]).map(id=>S.lists[id]?{id,...S.lists[id]}:null).filter(Boolean);const cs=kids.map(calc);const w=[];
+  const pts=cs.reduce((a,c)=>a+c.pts,0);
+  kids.forEach((k,i)=>cs[i].w.forEach(x=>w.push(`${k.name}: ${x}`)));
+  const eh={},en={};kids.forEach((k,i)=>{for(const e of k.entries||[]){const u=S.units[e.unitId];if(!u)continue;
+    if(rolesOf(u).epicHero)(eh[u.name]=eh[u.name]||new Set()).add(i);
+    if(e.enhId){const x=findEnh(e.enhId);if(x)(en[x.name]=en[x.name]||new Set()).add(i)}}});
+  for(const[n,st]of Object.entries(eh))if(st.size>1)w.push(`${n} is in both armies. Epic Heroes can only be taken once across the force.`);
+  for(const[n,st]of Object.entries(en))if(st.size>1)w.push(`${n} is in both armies. Enhancements and Upgrades can't appear in both armies.`);
+  const war=kids.flatMap(k=>(k.entries||[]).filter(e=>e.warlord).map(e=>({k,e})));
+  if(kids.some(k=>(k.entries||[]).length)&&war.length!==1)w.push(war.length?'Only one Warlord is allowed across the force.':"Choose the force's Warlord.");
+  const disps=[...new Set(cs.flatMap(c=>dispositionsFor(c.dets)))];
+  if(cs.some(c=>c.dets.length)&&!d.disposition)w.push('Choose a Force Disposition for the force.');
+  const unified=kids.length===2&&kids[0].faction===kids[1].faction;
+  return{kids,cs,pts,w,disps,unified,war}}
+function vDbl(){const d=S.lists[S.dblId];if(!isDbl(d))return backTo('lists','That doubles force was deleted.');const c=calcDbl(d);const ro=!S.canWrite;
+  const chars=c.kids.flatMap(k=>(k.entries||[]).filter(e=>{const u=S.units[e.unitId];return u&&rolesOf(u).character}).map(e=>({k,e})));const cur=c.war[0];
+  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button><p class="eyebrow">Doubles · ${c.unified?'Unified force':'Force of convenience'}</p><h1>${h(d.name||'Doubles force')}</h1></div></header>
+  <div class="stack">
+    <section class="panel"><div class="panel-head"><span class="eyebrow">Points</span><span class="num">${c.pts} / ${h(d.limit)}</span></div>
+      <div class="meter${c.pts>d.limit?' over':''}"><i style="width:${Math.min(100,c.pts/(d.limit||1)*100)}%"></i></div>
+      <p class="small muted">Each army gets ${h(d.limit/2)} pts.</p></section>
+    ${c.w.length?`<ul class="warn">${c.w.map(x=>`<li>${h(x)}</li>`).join('')}</ul>`:'<p class="tag ok" style="justify-self:start">Force is legal</p>'}
+    <section class="panel"><h2>Force</h2>
+      <label class="f">Force Disposition<select data-c="ddisp" ${ro?'disabled':''}><option value="">${c.disps.length?'Choose one…':'Add detachments to the armies first'}</option>${c.disps.map(x=>`<option ${x===d.disposition?'selected':''}>${h(x)}</option>`).join('')}</select></label>
+      <label class="f">Warlord<select data-c="dwar" ${ro?'disabled':''}><option value="">${chars.length?'Choose your Warlord…':'Add a Character first'}</option>${chars.map(({k,e})=>`<option value="${k.id}|${e.id}" ${cur&&cur.e.id===e.id?'selected':''}>${h(S.units[e.unitId].name)} · ${h(k.name)}</option>`).join('')}</select></label>
+      <p class="small muted">${c.unified?'Both armies share faction keywords: units in both armies count as friendly, share transports, and use army rules as one force.':'Different factions: each army uses its own army and detachment rules, and units in the other army are neither friendly nor enemy.'} CP is shared by the whole team.</p></section>
+    <section class="stack" style="gap:10px"><h2>Armies</h2>${c.kids.map((k,i)=>`<button class="card f-${h(k.faction)}" data-a="openList" data-id="${h(k.id)}">${badge(k.faction)}<div class="body"><div class="row between"><h3>${h(k.name)}</h3><span class="num small">${c.cs[i].pts} / ${h(k.limit)}</span></div>
+      <div class="meter${c.cs[i].pts>k.limit?' over':''}"><i style="width:${Math.min(100,c.cs[i].pts/(k.limit||1)*100)}%"></i></div>
+      <div class="row">${c.cs[i].dets.map(x=>`<span class="tag">${h(x.name)}</span>`).join('')}</div></div></button>`).join('')}</section>
+    <div class="row">${ro?'':S.confirm==='dbl'?`<button class="btn danger" data-a="delDbl">Delete force and both armies</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="dbl">Delete doubles force…</button>`}</div>
+  </div>`}
 
 /* ---------- rendering ---------- */
 function requestRender(){const a=document.activeElement;if(a&&a.closest('#app,#sheet')&&/^(INPUT|TEXTAREA)$/.test(a.tagName)){S.pending=true;return}render()}
@@ -364,21 +398,24 @@ document.addEventListener('focusout',()=>setTimeout(()=>{if(S.pending){S.pending
 
 function render(){
   const v=S.view;
-  const html=v==='lists'?vLists():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
+  const html=v==='lists'?vLists():v==='dbl'?vDbl():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
     v==='codex'?vCodex():v==='det'?vDet():v==='unit'?vUnit():v==='core'?vCore():v==='limits'?vSettings():v==='io'?vIO():
     v==='rules'?vRules():v==='settings'?vAppSettings():v==='udata'?vUData():v==='ddata'?vDData():'';
   const ctx=v==='list'?S.lists[S.listId]?.faction:v==='play'?S.lists[S.playId]?.faction:['det','unit'].includes(v)?S.draft?.faction:v==='codex'?S.cfac:v==='udata'?S.units[S.viewId]?.faction:v==='ddata'?S.dets[S.viewId]?.faction:'';
   document.body.className=ctx?'f-'+ctx:'';
   $('#app').innerHTML=(!S.db?`<p class="notice" style="margin-top:16px">Connecting to your group…</p>`:'')+html;
-  const tab=['lists','list'].includes(v)?'lists':['play','playpick'].includes(v)?'play':['rules','core'].includes(v)?'rules':v==='settings'?'settings':'codex';
+  const tab=['lists','list','dbl'].includes(v)?'lists':['play','playpick'].includes(v)?'play':['rules','core'].includes(v)?'rules':v==='settings'?'settings':'codex';
   $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-a="tab" data-k="${k}" ${tab===k?'aria-current="page"':''} aria-label="${l}">${ICONS[k]}<span>${l}</span></button>`).join('');
   renderSheet();
   if(S.scrollTo){const id=S.scrollTo;S.scrollTo=null;requestAnimationFrame(()=>{const el=document.getElementById(id);if(el){el.scrollIntoView({block:'start'});scrollBy(0,-70);el.classList?.add('flash')}})}
 }
 
 function vLists(){
-  const all=Object.entries(S.lists).map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const all=singles().map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   const shown=S.filter==='all'?all:all.filter(l=>l.faction===S.filter);
+  const dbls=Object.entries(S.lists).filter(([,l])=>isDbl(l)).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  const dcards=dbls.map(([id,d])=>{const c=calcDbl(d);return `<button class="card" data-a="openDbl" data-id="${h(id)}"><span class="row" style="gap:2px;flex-wrap:nowrap">${c.kids.map(k=>badge(k.faction)).join('')}</span><div class="body"><div class="row between"><h3>${h(d.name||'Doubles force')}</h3><span class="num small">${c.pts} / ${h(d.limit)}</span></div>
+    <p class="small muted">${c.kids.map(k=>h(k.name)).join(' + ')}</p><div class="row">${d.disposition?dtag(d.disposition):''}${c.w.length?`<span class="tag bad">${c.w.length} to fix</span>`:'<span class="tag ok">Legal</span>'}</div></div></button>`}).join('');
   const chips=[['all','All armies'],...FACTIONS.map(f=>[f.id,f.name])].map(([k,l])=>`<button class="chip${FX[k]?' f-'+k:''}" data-a="filter" data-k="${k}" aria-pressed="${S.filter===k}">${h(l)}</button>`).join('');
   const cards=shown.map(l=>{const c=calc(l);const f=FX[l.faction];const owner=l.createdByName||S.names[l.createdBy];
     return `<button class="card f-${h(l.faction)}" data-a="openList" data-id="${h(l.id)}">${badge(l.faction)}<div class="body">
@@ -390,6 +427,7 @@ function vLists(){
   const loading=!S.loaded.lists&&S.db;
   return `<header class="top"><div class="grow"><p class="eyebrow">Warhammer 40,000 · 11th edition</p><h1>Muster</h1></div>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</header>
   <div class="stack"><div class="chips" role="group" aria-label="Filter by army">${chips}</div>
+  ${S.canWrite||dbls.length?`<section class="stack" style="gap:10px"><div class="panel-head"><h2>Doubles</h2>${S.canWrite?'<button class="btn sm" data-a="sheet" data-k="newDbl">New doubles</button>':''}</div>${dcards||'<p class="small muted">No doubles forces yet. A doubles force is two armies that split the points evenly and play as one team.</p>'}</section><h2>Lists</h2>`:''}
   ${loading?'<p class="muted">Loading lists…</p>':shown.length?`<div class="stack" style="gap:10px">${cards}</div>`:
   `<div class="empty"><h3>No ${S.filter==='all'?'':h(FX[S.filter].name)+' '}lists yet</h3><p>Start a list, pick its detachments and Force Disposition, then add units from the codex. Everyone with the link sees the group's lists.</p>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</div>`}</div>`;
 }
@@ -424,10 +462,11 @@ function vList(){
   const cats=[...new Set([...facCats,...Object.keys(byCat)])].sort((a,b)=>CATS.indexOf(a)-CATS.indexOf(b));
   const wl=(l.entries||[]).filter(x=>{const uu=S.units[x.unitId];return uu&&rolesOf(uu).character});const cur=(l.entries||[]).find(x=>x.warlord);
   const warSel=`<label class="f">Warlord<select data-c="warlord" ${ro?'disabled':''}><option value="">${wl.length?'Choose your Warlord…':'Add a Character first'}</option>${wl.map(x=>`<option value="${x.id}" ${cur&&cur.id===x.id?'selected':''}>${h(entLabel(l,x).replace(/ \(1\)/,''))}</option>`).join('')}</select></label>`;
-  const entries=warSel+cats.map(c=>{const es=byCat[c]||[];const key=S.listId+':'+c;const closed=S.closed[key];
+  const entries=(l.parent?'':warSel)+cats.map(c=>{const es=byCat[c]||[];const key=S.listId+':'+c;const closed=S.closed[key];
     return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(CAT_GROUP[c])}</h3><span class="row" style="flex-wrap:nowrap"><span class="cat-count">${es.length}</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
       ${closed?'':`${es.map(entryHtml).join('')}${ro?'':`<button class="btn sm" style="justify-self:start" data-a="addCat" data-k="${h(c)}">Add ${h(c)}</button>`}`}</div>`}).join('');
-  return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>
+  const par=parentOf(l);
+  return `<header class="top"><div class="grow">${par?`<button class="btn ghost sm" data-a="openDbl" data-id="${h(l.parent)}" style="justify-self:start;padding-left:0">‹ ${h(par.name||'Doubles force')}</button>`:`<button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>`}
     <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(f?f.name:'')}</p><h1>${h(l.name||'Untitled list')}</h1></div></div></div>
     <button class="btn primary" data-a="play" data-id="${S.listId}">Play</button></header>
   <div class="stack">
@@ -442,13 +481,13 @@ function vList(){
       <div class="panel-head"><h2>Detachments</h2><span class="num small">${c.dp} / ${c.sz.dp} DP</span></div>
       ${c.dets.length?c.dets.map(d=>`<div class="row between"><div style="min-width:0"><strong>${h(d.name)}</strong> <span class="tag">${h(d.dp)} DP</span> ${dispsOf(d).map(x=>`${dtag(x)}`).join(' ')}${d.unique?` <span class="tag">Unique: ${h(d.unique)}</span>`:''}</div>${ro?'':`<button class="btn sm danger" data-a="rmDet" data-id="${d.id}">Remove</button>`}</div>`).join(''):'<p class="muted small">No detachments chosen.</p>'}
       ${ro?'':`<button class="btn" data-a="sheet" data-k="detPicker">Add detachment</button>`}
-      ${c.dets.length?`<label class="f">Force Disposition<select data-c="disp" ${ro?'disabled':''}><option value="">Choose one…</option>${disps.map(d=>`<option ${d===l.disposition?'selected':''}>${h(d)}</option>`).join('')}</select></label>`:''}
+      ${par?`<p class="small muted">Force Disposition and Warlord are chosen for the whole doubles force.</p>`:''}${c.dets.length&&!par?`<label class="f">Force Disposition<select data-c="disp" ${ro?'disabled':''}><option value="">Choose one…</option>${disps.map(d=>`<option ${d===l.disposition?'selected':''}>${h(d)}</option>`).join('')}</select></label>`:''}
     </section>
     <section class="panel">
       <div class="panel-head"><h2>Units</h2><span class="small muted">${(l.entries||[]).length} entries · ${c.enh}/${c.sz.enh} enhancements</span></div>
       ${entries||'<p class="muted small">This army has no units in the codex yet.</p>'}
     </section>
-    <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list for everyone</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
+    <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro||l.parent?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list for everyone</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
   </div>`;
 }
 function gearBlock(u,e,ro){
@@ -467,9 +506,11 @@ function gearBlock(u,e,ro){
 function backTo(v,msg){S.view=v;setTimeout(()=>{toast(msg);render()},0);return ''}
 
 function vPlayPick(){
-  const all=Object.entries(S.lists).map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const dbls=Object.entries(S.lists).filter(([,l])=>isDbl(l));
+  const dsec=dbls.length?`<h2>Doubles</h2><div class="stack" style="gap:10px">${dbls.map(([id,d])=>{const c=calcDbl(d);return `<button class="card" data-a="pickDbl" data-id="${h(id)}"><span class="row" style="gap:2px;flex-wrap:nowrap">${c.kids.map(k=>badge(k.faction)).join('')}</span><div class="body"><h3>${h(d.name||'Doubles force')}</h3><p class="small muted">${c.pts} pts${d.disposition?' · '+h(d.disposition):''}</p></div></button>`}).join('')}</div><h2>Single armies</h2>`:'';
+  const all=singles().map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   return `<header class="top"><div class="grow"><p class="eyebrow">Battle companion</p><h1>Choose your army</h1></div></header>
-  <div class="stack" style="gap:10px">${all.length?all.map(l=>`<button class="card" data-a="play" data-id="${h(l.id)}">${badge(l.faction)}<div class="body"><h3>${h(l.name||'Untitled list')}</h3><p class="small muted">${calc(l).pts} pts${l.disposition?' · '+h(l.disposition):''}</p></div></button>`).join(''):
+  ${dsec}<div class="stack" style="gap:10px">${all.length?all.map(l=>`<button class="card" data-a="play" data-id="${h(l.id)}">${badge(l.faction)}<div class="body"><h3>${h(l.name||'Untitled list')}</h3><p class="small muted">${calc(l).pts} pts${l.disposition?' · '+h(l.disposition):''}</p></div></button>`).join(''):
   `<div class="empty"><h3>No lists to play yet</h3><p>Build a list first. Play mode tracks CP, VP and battle round, filters your stratagems by phase, and tracks casualties.</p><button class="btn primary" data-a="go" data-k="lists">Go to lists</button></div>`}</div>`;
 }
 
@@ -492,7 +533,7 @@ function vPlay(){
       ${u.ranged?.length||u.melee?.length||u.weapons||u.abilities||en?`<details><summary>Weapons & abilities</summary><div class="stack" style="gap:10px;margin-top:8px">${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));return weaponTables({...u,ranged:(u.ranged||[]).filter(w=>g.has(baseW(w.name))),melee:(u.melee||[]).filter(w=>g.has(baseW(w.name)))},weaponCounts(u,e))+(extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:'')})()}${u.composition?.length?`<p class="small muted">${h(u.composition.join(' · '))}</p>`:''}${u.weapons?`<div class="rules">${h(u.weapons)}</div>`:''}${abilitiesHtml(u)}${en?`<div><strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div></div>`:''}</div></details>`:''}
     </div>`};
   const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
-  const me=l.disposition||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
+  const par=parentOf(l);const me=(par?par.disposition:l.disposition)||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
   const mission=`<section class="panel mission"><div class="mhead"><div style="min-width:0"><p class="eyebrow">Primary mission</p><h2>${h(ms?.name||(me&&op?'Not entered yet':'Set both dispositions'))}</h2></div><button class="btn sm ghost" data-a="sheet" data-k="opp">Opponent…</button></div>
     <div class="row small">You ${me?dtag(me):'<span class="tag bad">No disposition</span>'} <span class="muted">vs</span> ${h(g.oppName||'Opponent')} ${op?dtag(op):'<span class="tag bad">Not chosen</span>'}</div>
     ${ms?.secs||ms?.scoring?missionCard(ms):me&&op?`<p class="small muted">No mission for ${h(me)} against ${h(op)} yet. Add it once from your mission deck and it's shared with the group.</p>`:''}
@@ -659,7 +700,7 @@ function buildIndex(){
   for(const[id,d]of Object.entries(S.dets)){add('Detachments',d.name,`${FX[d.faction]?.name||''} · ${d.dp} DP`,'det',id,'',dispsOf(d).join(' '));
     for(const e of d.enhancements||[])add('Enhancements',e.name,`${d.name} · ${e.pts} pts`,'det',id,'enh-'+e.id,e.text);
     for(const x of d.stratagems||[])add('Stratagems',x.name,`${d.name} · ${x.cp}CP`,'det',id,'st-'+x.id,x.text)}
-  for(const[id,l]of Object.entries(S.lists))add('Lists',l.name||'Untitled list',FX[l.faction]?.name,'list',id,'','');
+  for(const[id,l]of singles())add('Lists',l.name||'Untitled list',FX[l.faction]?.name,'list',id,'','');
   return ix;
 }
 function runSearch(q){
@@ -816,8 +857,22 @@ function renderSheet(){
     body=`<h2>Add ${h(S.pickCat||'unit')}</h2><input type="text" id="uq" data-c="uq" placeholder="Search name or keyword" value="${h(S.q)}" aria-label="Search units">
       ${unitsOf(l.faction).length?grouped(us,u=>u).map(([lab,xs])=>{return `<p class="grp">${lab}</p>${xs.map(u=>`<button class="pick" data-a="addUnit" data-id="${h(u.id)}"><span class="body"><strong>${h(u.name)}</strong><span class="small muted">${(u.tiers||[]).map(t=>h(t.label)).join(' / ')}</span></span><span class="num small">${(u.tiers||[]).length?unitCost(u,{tier:0},(l.entries||[]).filter(e=>e.unitId===u.id).length+1).pts:'–'} pts</span></button>`).join('')}`}).join('')||'<p class="muted">No matches.</p>':
       `<div class="empty"><h3>No units in the codex</h3><p>Add ${h(FX[l.faction].name)} units in the Codex tab first.</p><button class="btn primary" data-a="toCodex" data-k="units">Open codex</button></div>`}`;
+  }else if(s==='newDbl'){
+    body=`<h2>New doubles force</h2><label class="f">Force name<input type="text" id="nd-name" placeholder="e.g. Green & Gold"></label>
+      <label class="f">Total points<select id="nd-lim"><option value="2000">2000 pts (1000 each)</option><option value="4000" selected>4000 pts (2000 each)</option></select></label>
+      ${[1,2].map(i=>`<div class="grid2"><label class="f">Player ${i}<input type="text" id="nd-p${i}" placeholder="Name"></label><label class="f">Army<select id="nd-f${i}">${FACTIONS.map(f=>`<option value="${f.id}">${h(f.name)}</option>`).join('')}</select></label></div>`).join('')}
+      <div class="row"><button class="btn primary" data-a="createDbl">Create force</button><button class="btn" data-a="closeSheet">Cancel</button></div>`;
+  }else if(s==='dblArmy'){
+    const d=S.lists[S.pickDbl];const c=calcDbl(d);
+    body=`<h2>Which army are you playing?</h2><p class="small muted">${h(d.name)}</p>${c.kids.map((k,i)=>`<button class="pick" data-a="play" data-id="${h(k.id)}"><span class="row" style="flex-wrap:nowrap;min-width:0">${badge(k.faction)}<span class="body"><strong>${h(k.name)}</strong><span class="small muted">${c.cs[i].pts} pts</span></span></span></button>`).join('')}<div class="row"><button class="btn" data-a="closeSheet">Cancel</button></div>`;
+  }else if(s==='opp'&&parentOf(S.lists[S.playId])){
+    const me=S.lists[S.playId].parent;const others=Object.entries(S.lists).filter(([id,l])=>isDbl(l)&&id!==me);
+    body=`<h2>Which force are you playing against?</h2><p class="small muted">Their Force Disposition sets your team's primary mission.</p>
+      ${others.map(([id,o])=>{const c=calcDbl(o);return `<button class="pick" data-a="setOppDbl" data-id="${h(id)}"><span class="row" style="flex-wrap:nowrap;min-width:0"><span class="row" style="gap:2px;flex-wrap:nowrap">${c.kids.map(k=>badge(k.faction)).join('')}</span><span class="body"><strong>${h(o.name||'Doubles force')}</strong><span class="small muted">${c.pts} pts · ${h(o.disposition||'No disposition')}</span></span></span></button>`}).join('')||'<p class="muted small">No other doubles forces yet.</p>'}
+      <p class="eyebrow" style="margin-top:6px">Not in Muster? Pick their disposition</p><div class="row">${DISPOSITIONS.map(x=>`<button class="chip disp ${DISP_CLS[x]||''}" data-a="setOppDisp" data-k="${x}">${x}</button>`).join('')}</div>
+      <div class="row"><button class="btn ghost" data-a="skipOpp">Skip for now</button></div>`;
   }else if(s==='opp'){
-    const others=Object.entries(S.lists).filter(([id])=>id!==S.playId).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+    const others=singles().filter(([id])=>id!==S.playId).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
     body=`<h2>Who are you playing?</h2><p class="small muted">Pick your opponent's army from the shared lists. Their Force Disposition sets which primary mission you play.</p>
       ${others.map(([id,o])=>`<button class="pick" data-a="setOpp" data-id="${h(id)}"><span class="row" style="flex-wrap:nowrap;min-width:0">${badge(o.faction)}<span class="body"><strong>${h(o.name||'Untitled list')}</strong><span class="small muted">${calc(o).pts} pts · ${h(o.disposition||'No disposition')}</span></span></span></button>`).join('')||'<p class="muted small">No other lists yet.</p>'}
       <p class="eyebrow" style="margin-top:6px">Not in Muster? Pick their disposition</p><div class="row">${DISPOSITIONS.map(x=>`<button class="chip disp ${DISP_CLS[x]||''}" data-a="setOppDisp" data-k="${x}">${x}</button>`).join('')}</div>
@@ -918,6 +973,15 @@ const A={
     const id=rid();const ok=await write(()=>S.db.doc('lists/'+id).set({name,faction,limit,detachments:[],disposition:'',entries:[],createdBy:S.uid||'',createdByName:S.myName||'',createdAt:Date.now()}));
     if(ok){S.sheet=null;S.listId=id;S.view='list';S.lists[id]=S.lists[id]||{name,faction,limit,detachments:[],disposition:'',entries:[],createdBy:S.uid||'',createdAt:Date.now()};render()}
   },
+  openDbl(_,id){S.dblId=id;S.view='dbl';S.confirm=null;render();scrollTo(0,0)},
+  pickDbl(_,id){S.pickDbl=id;S.sheet='dblArmy';render()},
+  setOppDbl(_,id){const o=S.lists[id];if(!o)return;Object.assign(S.game,{oppList:id,oppName:o.name||'Doubles force',oppFac:null,oppDisp:o.disposition||''});S.sheet=null;gameLog(`Opponent: ${o.name}`);render();saveGame()},
+  async createDbl(){const v=id=>document.getElementById(id)?.value.trim()||'';const lim=+v('nd-lim')||4000;const name=v('nd-name')||'Doubles force';const did=rid(),a=rid(),b=rid();const now=Date.now();
+    const kid=(i,id)=>{const f=v('nd-f'+i);const p=v('nd-p'+i)||'Player '+i;return [id,{name:`${p} · ${FX[f].name}`,faction:f,limit:lim/2,detachments:[],disposition:'',entries:[],parent:did,createdBy:S.uid||'',createdByName:S.myName||'',createdAt:now}]};
+    const ks=[kid(1,a),kid(2,b)];
+    const ok=await write(async()=>{for(const[id,d]of ks)await S.db.doc('lists/'+id).set(d);await S.db.doc('lists/'+did).set({type:'doubles',name,limit:lim,armies:[a,b],disposition:'',createdBy:S.uid||'',createdByName:S.myName||'',createdAt:now})},'Doubles force created');
+    if(ok){S.sheet=null;S.dblId=did;S.view='dbl';render()}},
+  async delDbl(){const d=S.lists[S.dblId];if(!d)return;const ids=[...(d.armies||[]),S.dblId];if(await write(async()=>{for(const id of ids)await S.db.doc('lists/'+id).delete()},'Doubles force deleted')){ids.forEach(id=>delete S.lists[id]);S.confirm=null;S.view='lists';render()}},
   openList(_,id){S.listId=id;S.view='list';S.confirm=null;render();scrollTo(0,0)},
   sheet(k){S.sheet=k;S.q='';S.pickCat=null;render()},
   async addDet(_,id){const l=S.lists[S.listId];const dets=[...(l.detachments||[]),id];
@@ -935,7 +999,7 @@ const A={
   async warlord(_,id){const l=S.lists[S.listId];await patchList({entries:(l.entries||[]).map(e=>({...e,warlord:e.id===id?!e.warlord:false}))})},
   confirm(k){S.confirm=k;render()},unconfirm(){S.confirm=null;render()},
   async delList(){const id=S.listId;if(await write(()=>listRef(id).delete(),'List deleted')){S.confirm=null;S.view='lists';delete S.lists[id];render()}},
-  play(_,id){S.playId=id;S.view='play';S.confirm=null;loadGame(id);scrollTo(0,0)},
+  play(_,id){S.sheet=null;S.playId=id;S.view='play';S.confirm=null;loadGame(id);scrollTo(0,0)},
   bump(k,_,n){const g=S.game;g[k]=Math.max(k==='round'?1:0,g[k]+ +n);if(k==='round')g[k]=Math.min(5,g[k]);if(k==='round'){g.phase='Command';g.used={};gameLog(`Battle round ${g.round}`)}render();saveGame()},
   turn(k){S.game.mine=k==='true';S.game.used={};render();saveGame()},
   phase(k){S.game.phase=k;S.game.used={};render();saveGame()},
@@ -1006,6 +1070,8 @@ document.addEventListener('change',e=>{
   else if(c==='disp')patchList({disposition:t.value});
   else if(c==='tier')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,tier:+t.value}:x)});
   else if(c==='gs1'){const v=+t.value;patchList({entries:l.entries.map(x=>{if(x.id!==t.dataset.id)return x;const gs={...(x.gs||{})};if(v<0)delete gs[t.dataset.k];else gs[t.dataset.k]=v;return {...x,gs}})})}
+  else if(c==='ddisp'){write(()=>S.db.doc('lists/'+S.dblId).update({disposition:t.value}))}
+  else if(c==='dwar'){const d=S.lists[S.dblId];const[lid,eid]=t.value.split('|');for(const k of d.armies||[]){const L=S.lists[k];if(!L)continue;const es=(L.entries||[]).map(x=>({...x,warlord:k===lid&&x.id===eid}));write(()=>S.db.doc('lists/'+k).update({entries:es}))}}
   else if(c==='warlord')patchList({entries:l.entries.map(x=>({...x,warlord:x.id===t.value}))});
   else if(c==='utitle')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,title:t.value.trim()}:x)});
   else if(c==='attach')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,attach:t.value}:x)});
