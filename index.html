@@ -212,6 +212,15 @@ textarea{min-height:88px;resize:vertical}
 .wtab th:first-child{text-align:left}
 .wtab td{padding:6px;border-top:1px solid var(--line);text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;vertical-align:top}
 .wtab td:first-child{text-align:left;font-family:var(--body);font-weight:600}
+.kwb{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline dotted;text-underline-offset:2px;cursor:pointer}
+#kwpop{position:fixed;z-index:40;max-width:min(340px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;box-shadow:0 10px 30px rgb(0 0 0 / .35);font-size:.88rem;line-height:1.4}
+#kwpop b{display:block;margin-bottom:4px}
+.abil h4{font:700 .8rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--a-text);margin:10px 0 6px}
+.abil h4:first-child{margin-top:0}
+.abil .chips2{display:flex;flex-wrap:wrap;gap:6px}
+.abil .chips2 .kwb{border:1px solid var(--line);border-radius:999px;padding:3px 10px;text-decoration:none;background:var(--surface2)}
+.abil p{margin:0 0 6px}
+.wcount{font-family:var(--mono);color:var(--a-text);margin-right:4px}
 .wtab td small{display:block;font-weight:400;color:var(--a-text);font-size:.75rem;letter-spacing:.02em}
 .wgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .wgrid.m{grid-template-columns:repeat(5,minmax(0,1fr))}
@@ -476,7 +485,7 @@ function vPlay(){
       <div class="row between"><div style="min-width:0"><h3>${h(u.name)}</h3><p class="small muted">${h(t?t.label:'')}${e.warlord?' · Warlord':''}${en?' · '+h(en.name):''}${host?' · leading '+h(groupName(l,host)):''}${attachedTo(l,e).length?' · '+h(groupName(l,e)):''}</p></div>
       <div class="row"><button class="btn sm${st.shocked?' primary':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}">Battle-shocked</button><button class="btn sm${st.dead?' danger':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}">${st.dead?'Destroyed':'Destroy'}</button></div></div>
       ${statlines(u)}
-      ${u.ranged?.length||u.melee?.length||u.weapons||u.abilities||en?`<details><summary>Weapons & abilities</summary><div class="stack" style="gap:10px;margin-top:8px">${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));return weaponTables({...u,ranged:(u.ranged||[]).filter(w=>g.has(baseW(w.name))),melee:(u.melee||[]).filter(w=>g.has(baseW(w.name)))})+(extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:'')})()}${u.composition?.length?`<p class="small muted">${h(u.composition.join(' · '))}</p>`:''}${u.weapons?`<div class="rules">${h(u.weapons)}</div>`:''}${u.abilities?`<div class="rules">${h(u.abilities)}</div>`:''}${en?`<div><strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div></div>`:''}</div></details>`:''}
+      ${u.ranged?.length||u.melee?.length||u.weapons||u.abilities||en?`<details><summary>Weapons & abilities</summary><div class="stack" style="gap:10px;margin-top:8px">${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));return weaponTables({...u,ranged:(u.ranged||[]).filter(w=>g.has(baseW(w.name))),melee:(u.melee||[]).filter(w=>g.has(baseW(w.name)))},weaponCounts(u,e))+(extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:'')})()}${u.composition?.length?`<p class="small muted">${h(u.composition.join(' · '))}</p>`:''}${u.weapons?`<div class="rules">${h(u.weapons)}</div>`:''}${abilitiesHtml(u)}${en?`<div><strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div></div>`:''}</div></details>`:''}
     </div>`};
   const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
   const me=l.disposition||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
@@ -505,8 +514,9 @@ function vPlay(){
 
 function statlines(u){const ms=modelsOf(u);if(!ms.length)return'';const inv=ms.some(m=>m.inv);const cols=inv?MSTATS:STATS;
   return ms.map(m=>`${ms.length>1&&m.name?`<p class="small" style="font-weight:600">${h(m.name)}</p>`:''}<div class="statline" style="grid-template-columns:repeat(${cols.length},minmax(0,1fr))">${cols.map(k=>`<div><b>${MLABEL[k]||k}</b><span>${h(m[k]||'–')}</span></div>`).join('')}</div>`).join('')}
-function weaponTables(u){
-  const row=(w,cols)=>`<tr><td>${h(w.name)}${w.kw?`<small>[${h(w.kw)}]</small>`:''}</td>${cols.map(c=>`<td>${h(w[c]||'–')}</td>`).join('')}</tr>`;
+function weaponTables(u,cnt){
+  const kwl=w=>{const ks=String(w.kw||'').split(',').map(x=>x.trim()).filter(Boolean);if(/- Hunter$/.test(w.name))ks.unshift('Hunter: Monster/Vehicle');return ks};
+  const row=(w,cols)=>{const c=cnt?.[baseW(w.name)];const ks=kwl(w);return `<tr><td>${c?`<span class="wcount">${c}×</span>`:''}${h(w.name)}${ks.length?`<small>[${ks.map(k=>kwBtn(k,u.faction)).join(', ')}]</small>`:''}</td>${cols.map(k=>`<td>${h(w[k]||'–')}</td>`).join('')}</tr>`};
   const tab=(title,list,heads,cols)=>list?.length?`<div class="wtab-wrap"><table class="wtab"><thead><tr><th>${title}</th>${heads.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${list.map(w=>row(w,cols)).join('')}</tbody></table></div>`:'';
   return tab('Ranged weapons',u.ranged,['Range','A','BS','S','AP','D'],['range','a','bs','s','ap','d'])+tab('Melee weapons',u.melee,['Range','A','WS','S','AP','D'],['range','a','ws','s','ap','d']);
 }
@@ -576,6 +586,31 @@ function gearOf(u,e){
     else{let tot=0;for(const[ci,c]of Object.entries(v||{}))if(+c>0){tot+=+c;(s.choices[ci]||[]).forEach(x=>g.add(x))}
       if(!s.add&&tot>=n)(s.from||[]).forEach(x=>g.delete(x))}});
   return g}
+const kwNorm=t=>{let k=String(t).toLowerCase().replace(/[\[\]]/g,'').trim();if(k.startsWith('anti-'))return'anti';k=k.split(':')[0].trim();
+  for(let i=0;i<3;i++)k=k.replace(/\s*\(?\s*(d?\d+(\+|")?|x\+?"?|y\+|x")\s*\)?$/,'').trim();return k};
+let GLOSS=null;
+function gloss(){if(GLOSS)return GLOSS;GLOSS={};for(const sec of CORE_RULES)for(const[t,x]of sec.items)for(const p of t.split(' / '))GLOSS[kwNorm(p)]=[p.replace(/[\[\]]/g,''),x];
+  GLOSS['hunter']=['Hunter','Before selecting targets for this weapon, pick one of its profiles. Hunter profiles can only target units with the listed keywords (here: Monster or Vehicle).'];return GLOSS}
+function kwInfo(t,fac){const ar=(S.core.armyRules?.[fac]||[]).find(r=>r.name.toLowerCase()===String(t).toLowerCase().trim());if(ar)return[ar.name,ar.text];return gloss()[kwNorm(t)]||null}
+const kwBtn=(t,fac)=>kwInfo(t,fac)?`<button type="button" class="kwb" data-kw="${h(t)}" data-fac="${h(fac||'')}">${h(t)}</button>`:h(t);
+function abilitiesHtml(u){if(!u.abilities)return'';const core=[],fac=[],unit=[];
+  for(const line of String(u.abilities).split('\n').filter(Boolean)){const m=line.match(/^(Core|Faction):\s*(.*)$/);
+    if(m)(m[1]==='Core'?core:fac).push(...m[2].split(',').map(x=>x.trim()).filter(Boolean));
+    else{const i=line.indexOf(': ');unit.push(i>0?`<p><strong>${h(line.slice(0,i))}:</strong> ${h(line.slice(i+2))}</p>`:`<p>${h(line)}</p>`)}}
+  return `<div class="abil">${core.length?`<h4>Core</h4><div class="chips2">${core.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${fac.length?`<h4>Faction</h4><div class="chips2">${fac.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${unit.length?`<h4>Unit abilities</h4>${unit.join('')}`:''}</div>`}
+function modelGroups(u,n){const gs=(u.composition||[]).map(c=>{const m=String(c).match(/^(\d+)(?:-(\d+))?\s+(.*)$/);return m?{min:+m[1],max:+(m[2]||m[1]),name:m[3].replace(/ models?$/i,'').trim()}:null}).filter(Boolean);
+  if(!gs.length)return[{name:'model',n}];const mn=gs.reduce((a,g)=>a+g.min,0);gs.forEach(g=>g.n=g.min);
+  const k=n/mn;if(Number.isInteger(k)&&gs.every(g=>g.min*k<=g.max))gs.forEach(g=>g.n=g.min*k);
+  else{let rem=n-mn;for(const g of [...gs].sort((a,b)=>(b.max-b.min)-(a.max-a.min))){const add=Math.min(rem,g.max-g.n);g.n+=add;rem-=add}}return gs}
+function weaponCounts(u,e){const n=tierSize(u,e);const gs=modelGroups(u,n);const cnt={};const bases=[...new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)))];
+  const find=t=>bases.find(b=>b.toLowerCase()===t.toLowerCase())||bases.find(b=>b.toLowerCase().replace(/s$/,'')===t.toLowerCase().replace(/s$/,''));
+  for(const line of String(u.loadout||'').split('\n')){const m=line.match(/^(?:Every|The|Each)\s+(.+?)\s+(?:is|are)\s+equipped with:\s*(.*)$/i);if(!m)continue;
+    const who=m[1].toLowerCase();let num=gs.filter(g=>who.includes(g.name.toLowerCase().replace(/s$/,''))||g.name.toLowerCase().includes(who.replace(/s$/,''))).reduce((a,g)=>a+g.n,0);
+    if(!num)num=/model/.test(who)?n:(gs.length===1?gs[0].n:0);if(!num)continue;
+    for(const it of m[2].replace(/\.$/,'').split(';')){const mm=it.trim().match(/^(\d+)\s+(.*)$/);const per=mm?+mm[1]:1;const b=find((mm?mm[2]:it).trim());if(b)cnt[b]=(cnt[b]||0)+per*num}}
+  const gsel=e?.gs||{};(u.gearSlots||[]).forEach((s,i)=>{const v=gsel[i];if(v==null)return;const apply=(items,k)=>{items.forEach(x=>cnt[x]=(cnt[x]||0)+k);if(!s.add)(s.from||[]).forEach(x=>{if(cnt[x])cnt[x]=Math.max(0,cnt[x]-k)})};
+    if(s.kind==='one'){const c=s.choices[+v];if(c)apply(c,1)}else for(const[ci,k]of Object.entries(v||{}))if(+k>0&&s.choices[ci])apply(s.choices[ci],+k)});
+  return cnt}
 const SQUADWORD={orks:'Mob',tyranids:'Brood',custodes:'Host','dark-angels':'Squad'};
 function entLabel(l,x){const u=S.units[x.unitId];if(!u)return'Unit';const n=tierSize(u,x);const same=(l.entries||[]).filter(y=>y.unitId===x.unitId&&tierSize(u,y)===n);
   const base=`${u.name} (${n})`;return same.length>1?`${base} #${same.indexOf(x)+1}`:base}
@@ -593,7 +628,7 @@ function vUData(){
   const pts=(u.tiers||[]).map(t=>`${h(t.label)}: ${h(t.pts)}${t.pts2!=null&&u.band2From?` (${ord(u.band2From)}+ copy: ${h(t.pts2)})`:''}`).join(' · ');
   return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(f.name)} · ${h(catOf(u))}</p><h1>${h(u.name)}</h1></div>${S.canWrite?`<button class="btn" data-a="editUnit" data-id="${h(S.viewId)}">Edit</button>`:''}</header>
   <div class="stack"><section class="panel"><p class="num small">${pts||'No points set'} pts</p>${(u.wargear||[]).length?`<p class="small muted">Wargear costs: ${u.wargear.map(w=>h(w.name)+' +'+h(w.pts)).join(', ')}</p>`:''}${datasheet(u)}</section>
-  ${u.abilities?`<section class="panel"><h2>Abilities</h2><div class="rules">${h(u.abilities)}</div></section>`:''}
+  ${u.abilities?`<section class="panel"><h2>Abilities</h2>${abilitiesHtml(u)}</section>`:''}
   ${(u.options||[]).length||u.loadout?`<section class="panel"><h2>Wargear options</h2>${u.loadout?`<p class="small">${h(u.loadout)}</p>`:''}${(u.options||[]).length?`<ul class="small" style="margin:0;padding-left:18px">${u.options.map(o=>`<li class="rules">${h(o)}</li>`).join('')}</ul>`:''}</section>`:''}
   <section class="panel"><p class="small"><strong>Keywords:</strong> ${h(u.keywords||'–')}</p>${u.composition?.length?`<p class="small"><strong>Composition:</strong> ${h(u.composition.join(' · '))}</p>`:''}</section></div>`;
 }
@@ -651,7 +686,7 @@ function vCodex(){
   return codexHead()+`<div class="stack"><div class="chips" role="group" aria-label="Army">${chips}</div>
     <div class="seg" role="group" aria-label="Section"><button data-a="ctab" data-k="detachments" aria-pressed="${S.ctab==='detachments'}">Detachments (${dets.length})</button><button data-a="ctab" data-k="units" aria-pressed="${S.ctab==='units'}">Units (${units.length})</button></div>
     ${(S.core.armyRules?.[fid]||[]).length?`<details class="panel" ${S.openArmy?'open':''}><summary>Army rules</summary>${S.core.armyRules[fid].map(r=>`<div><strong>${h(r.name)}</strong><div class="rules">${h(r.text)}</div></div>`).join('')}</details>`:''}
-    ${showAdd?`<button class="btn primary" style="justify-self:start" data-a=""${S.ctab==='detachments'?'newDet':'newUnit'}">${S.ctab==='detachments'?'Add detachment':'Add unit'}</button>`:''}
+    ${showAdd?`<button class="btn primary" style="justify-self:start" data-a="${S.ctab==='detachments'?'newDet':'newUnit'}">${S.ctab==='detachments'?'Add detachment':'Add unit'}</button>`:''}
     <div class="stack" style="gap:10px">${body}</div></div>`;
 }
 
@@ -943,6 +978,12 @@ const A={
 };
 
 document.addEventListener('click',e=>{
+  const kb=e.target.closest('.kwb');let pop=document.getElementById('kwpop');
+  if(kb){e.preventDefault();e.stopPropagation();const inf=kwInfo(kb.dataset.kw,kb.dataset.fac);if(!inf)return;if(!pop){pop=document.createElement('div');pop.id='kwpop';document.body.appendChild(pop)}
+    pop.innerHTML=`<b>${h(inf[0])}</b>${h(inf[1])}`;pop.hidden=false;const r=kb.getBoundingClientRect();const w=Math.min(340,innerWidth-24);
+    pop.style.left=Math.max(12,Math.min(r.left,innerWidth-w-12))+'px';pop.style.top='0px';const ph=pop.offsetHeight;
+    pop.style.top=(r.bottom+8+ph<innerHeight?r.bottom+8:Math.max(8,r.top-ph-8))+'px';return}
+  if(pop&&!pop.hidden){pop.hidden=true;if(!e.target.closest('[data-a]'))return}
   if(e.target.id==='sheet'){S.sheet=null;render();return}
   const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
   const fn=A[b.dataset.a];if(fn)fn(b.dataset.k,b.dataset.id,b.dataset.n);
