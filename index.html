@@ -244,6 +244,32 @@ details[open]>summary::before{content:"▾ "}
 .notice{background:var(--brass-soft);border-radius:var(--r);padding:12px;font-size:.92rem}
 pre{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;font:500 .8rem/1.5 var(--mono);margin:0}
 @media (prefers-reduced-motion:no-preference){.sheet .pane{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+
+body{line-height:1.6}
+.rules{line-height:1.65;font-size:.95rem}
+.stack{gap:18px}
+.panel{gap:14px;padding:16px;border-color:color-mix(in srgb,var(--line) 70%,var(--a-text))}
+.panel>h2,.panel-head>h2{font-size:1.25rem;color:var(--a-text);padding-bottom:6px;border-bottom:2px solid color-mix(in srgb,var(--a-text) 35%,transparent)}
+.entry{border:1px solid var(--line);border-left:4px solid var(--a-text);border-radius:10px;padding:12px 12px 12px 14px;background:color-mix(in srgb,var(--surface) 92%,var(--a-text));gap:10px;margin-bottom:4px}
+.entry:first-child,.grp+.entry{border-top:1px solid var(--line);padding-top:12px}
+.cat{gap:14px;border-top:0;padding-top:6px}
+.cat+.cat{margin-top:10px}
+.panel.unit{border-left:4px solid var(--a-text);background:color-mix(in srgb,var(--surface) 94%,var(--a-text));margin-bottom:6px}
+.panel.unit h3{font-size:1.2rem}
+.sec{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.sec>summary{padding:10px 12px;background:color-mix(in srgb,var(--a-text) 14%,var(--surface));font:700 .85rem/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--a-text)}
+.sec>summary::before{color:var(--a-text)}
+.sec[open]>summary{border-bottom:1px solid var(--line)}
+.sec-b{padding:12px;display:grid;gap:10px;line-height:1.6}
+.sec-b .wtab-wrap{border:0;border-radius:0;margin:-12px}
+.abil{font-size:.93rem}
+.abil p{margin:0 0 10px;line-height:1.6}
+.abil h4{margin:14px 0 8px;padding-bottom:4px;border-bottom:1px dashed var(--line)}
+.sparts{line-height:1.6;gap:8px 12px}
+.strat{margin-bottom:6px}
+.wtab td{padding-block:8px}
+.wtab tbody tr:nth-child(even){background:color-mix(in srgb,var(--a-text) 6%,transparent)}
+.gear{border:1px dashed var(--line)}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -278,7 +304,7 @@ const SIZES=[[1000,'Incursion'],[2000,'Strike Force']];
 const sizeOf=l=>(+l.limit||2000)<=1000?{name:'Incursion',dp:+S.settings.incDp,enh:+S.settings.incEnh,unit:+S.settings.incUnit}:{name:'Strike Force',dp:+S.settings.sfDp,enh:+S.settings.sfEnh,unit:+S.settings.sfUnit};
 const MSTATS=['M','T','Sv','inv','W','Ld','OC'];const MLABEL={inv:'Inv'};
 
-const S={gearOpen:{},faq:[],missions:{},db:null,user:null,uid:null,canWrite:true,loaded:{dets:false,units:false,lists:false},
+const S={secOpen:{},gearOpen:{},faq:[],missions:{},db:null,user:null,uid:null,canWrite:true,loaded:{dets:false,units:false,lists:false},
   dets:{},units:{},lists:{},core:{stratagems:[]},settings:{...DEFAULTS},names:{},
   view:'lists',listId:null,playId:null,cfac:'orks',ctab:'detachments',draft:null,draftKind:null,draftId:null,
   sheet:null,confirm:null,filter:'all',q:'',game:null,pending:false,pickCat:null,closed:{},theme:'',scrollTo:null,openRule:null,viewId:null};
@@ -530,13 +556,17 @@ function vPlay(){
       <div class="row between"><div style="min-width:0"><h3>${h(u.name)}</h3><p class="small muted">${h(t?t.label:'')}${e.warlord?' · Warlord':''}${en?' · '+h(en.name):''}${host?' · leading '+h(groupName(l,host)):''}${attachedTo(l,e).length?' · '+h(groupName(l,e)):''}</p></div>
       <div class="row"><button class="btn sm${st.shocked?' primary':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}">Battle-shocked</button><button class="btn sm${st.dead?' danger':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}">${st.dead?'Destroyed':'Destroy'}</button></div></div>
       ${statlines(u)}
-      ${u.ranged?.length||u.melee?.length||u.weapons||u.abilities||en?`<details><summary>Weapons & abilities</summary><div class="stack" style="gap:10px;margin-top:8px">${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));return weaponTables({...u,ranged:(u.ranged||[]).filter(w=>g.has(baseW(w.name))),melee:(u.melee||[]).filter(w=>g.has(baseW(w.name)))},weaponCounts(u,e))+(extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:'')})()}${u.composition?.length?`<p class="small muted">${h(u.composition.join(' · '))}</p>`:''}${u.weapons?`<div class="rules">${h(u.weapons)}</div>`:''}${abilitiesHtml(u)}${en?`<div><strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div></div>`:''}</div></details>`:''}
+      ${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));const cnt=weaponCounts(u,e);
+        const rg=(u.ranged||[]).filter(w=>g.has(baseW(w.name))),ml=(u.melee||[]).filter(w=>g.has(baseW(w.name)));const k=e.id;
+        return `${rg.length?secBlock(k+':r','Ranged weapons',weaponTables({...u,ranged:rg,melee:[]},cnt)):''}${ml.length?secBlock(k+':m','Melee weapons',weaponTables({...u,ranged:[],melee:ml},cnt)):''}
+        ${u.abilities?secBlock(k+':a','Abilities',abilitiesHtml(u)):''}${en?secBlock(k+':e',en.upgrade?'Upgrade':'Enhancement',`<strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div>`):''}
+        ${extra.length||u.composition?.length?secBlock(k+':c','Composition & wargear',`${u.composition?.length?`<p class="small">${h(u.composition.join(' · '))}</p>`:''}${extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:''}`):''}`})()}
     </div>`};
   const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
   const par=parentOf(l);const me=(par?par.disposition:l.disposition)||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
   const mission=`<section class="panel mission"><div class="mhead"><div style="min-width:0"><p class="eyebrow">Primary mission</p><h2>${h(ms?.name||(me&&op?'Not entered yet':'Set both dispositions'))}</h2></div><button class="btn sm ghost" data-a="sheet" data-k="opp">Opponent…</button></div>
     <div class="row small">You ${me?dtag(me):'<span class="tag bad">No disposition</span>'} <span class="muted">vs</span> ${h(g.oppName||'Opponent')} ${op?dtag(op):'<span class="tag bad">Not chosen</span>'}</div>
-    ${ms?.secs||ms?.scoring?missionCard(ms):me&&op?`<p class="small muted">No mission for ${h(me)} against ${h(op)} yet. Add it once from your mission deck and it's shared with the group.</p>`:''}
+    ${ms?.secs||ms?.scoring?secBlock('mission','How you score',missionCard(ms)):me&&op?`<p class="small muted">No mission for ${h(me)} against ${h(op)} yet. Add it once from your mission deck and it's shared with the group.</p>`:''}
     ${me&&op&&S.canWrite?(S.editMission?`<label class="f">Mission name<input type="text" id="m-name" value="${h(ms?.name||'')}"></label><label class="f">How you score<textarea id="m-score" rows="5">${h(ms?.scoring||'')}</textarea></label><div class="row"><button class="btn primary sm" data-a="saveMission" data-k="${h(mk)}">Save mission</button><button class="btn sm ghost" data-a="editMission">Cancel</button></div>`:`<button class="btn sm ghost" style="justify-self:start" data-a="editMission">${ms?'Edit mission':'Add mission'}</button>`):''}</section>`;
   return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="playpick" style="justify-self:start;padding-left:0">‹ Change army</button>
     <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(l.disposition||'No disposition')}</p><h1>${h(l.name)}</h1></div></div></div>
@@ -643,6 +673,7 @@ function gloss(){if(GLOSS)return GLOSS;GLOSS={};for(const sec of CORE_RULES)for(
   GLOSS['hunter']=['Hunter','Before selecting targets for this weapon, pick one of its profiles. Hunter profiles can only target units with the listed keywords (here: Monster or Vehicle).'];return GLOSS}
 function kwInfo(t,fac){const ar=(S.core.armyRules?.[fac]||[]).find(r=>r.name.toLowerCase()===String(t).toLowerCase().trim());if(ar)return[ar.name,ar.text];return gloss()[kwNorm(t)]||null}
 const kwBtn=(t,fac)=>kwInfo(t,fac)?`<button type="button" class="kwb" data-kw="${h(t)}" data-fac="${h(fac||'')}">${h(t)}</button>`:h(t);
+const secBlock=(key,title,inner)=>`<details class="sec" data-sk="${h(key)}" ${S.secOpen[key]?'open':''}><summary>${h(title)}</summary><div class="sec-b">${inner}</div></details>`;
 function abilitiesHtml(u){if(!u.abilities)return'';const core=[],fac=[],unit=[];
   for(const line of String(u.abilities).split('\n').filter(Boolean)){const m=line.match(/^(Core|Faction):\s*(.*)$/);
     if(m)(m[1]==='Core'?core:fac).push(...m[2].split(',').map(x=>x.trim()).filter(Boolean));
@@ -677,8 +708,9 @@ function vUData(){
   const u=S.units[S.viewId];if(!u)return backTo('codex','That unit was deleted.');const f=FX[u.faction];
   const pts=(u.tiers||[]).map(t=>`${h(t.label)}: ${h(t.pts)}${t.pts2!=null&&u.band2From?` (${ord(u.band2From)}+ copy: ${h(t.pts2)})`:''}`).join(' · ');
   return `<header class="top"><div class="grow"><button class="btn ghost sm" data-a="go" data-k="codex" style="justify-self:start;padding-left:0">‹ Codex</button><p class="eyebrow">${h(f.name)} · ${h(catOf(u))}</p><h1>${h(u.name)}</h1></div>${S.canWrite?`<button class="btn" data-a="editUnit" data-id="${h(S.viewId)}">Edit</button>`:''}</header>
-  <div class="stack"><section class="panel"><p class="num small">${pts||'No points set'} pts</p>${(u.wargear||[]).length?`<p class="small muted">Wargear costs: ${u.wargear.map(w=>h(w.name)+' +'+h(w.pts)).join(', ')}</p>`:''}${datasheet(u)}</section>
-  ${u.abilities?`<section class="panel"><h2>Abilities</h2>${abilitiesHtml(u)}</section>`:''}
+  <div class="stack"><section class="panel"><p class="num small">${pts||'No points set'} pts</p>${(u.wargear||[]).length?`<p class="small muted">Wargear costs: ${u.wargear.map(w=>h(w.name)+' +'+h(w.pts)).join(', ')}</p>`:''}${statlines(u)}</section>
+  ${(u.ranged||[]).length?secBlock('cx:'+S.viewId+':r','Ranged weapons',weaponTables({...u,melee:[]})):''}${(u.melee||[]).length?secBlock('cx:'+S.viewId+':m','Melee weapons',weaponTables({...u,ranged:[]})):''}
+  ${u.abilities?secBlock('cx:'+S.viewId+':a','Abilities',abilitiesHtml(u)):''}
   ${(u.options||[]).length||u.loadout?`<section class="panel"><h2>Wargear options</h2>${u.loadout?`<p class="small">${h(u.loadout)}</p>`:''}${(u.options||[]).length?`<ul class="small" style="margin:0;padding-left:18px">${u.options.map(o=>`<li class="rules">${h(o)}</li>`).join('')}</ul>`:''}</section>`:''}
   <section class="panel"><p class="small"><strong>Keywords:</strong> ${h(u.keywords||'–')}</p>${u.composition?.length?`<p class="small"><strong>Composition:</strong> ${h(u.composition.join(' · '))}</p>`:''}</section></div>`;
 }
@@ -1061,7 +1093,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
   const fn=A[b.dataset.a];if(fn)fn(b.dataset.k,b.dataset.id,b.dataset.n);
 });
-document.addEventListener('toggle',e=>{const g=e.target?.dataset?.gid;if(g)S.gearOpen[g]=e.target.open},true);
+document.addEventListener('toggle',e=>{const g=e.target?.dataset?.gid;if(g)S.gearOpen[g]=e.target.open;const k=e.target?.dataset?.sk;if(k)S.secOpen[k]=e.target.open},true);
 document.addEventListener('change',e=>{
   const t=e.target;const c=t.dataset.c;if(!c)return;const l=S.lists[S.listId];
   if(c==='myname'){S.myName=t.value.trim();try{localStorage.setItem('muster-name',S.myName)}catch(e){}toast('Name saved');return}
