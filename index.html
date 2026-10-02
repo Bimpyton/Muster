@@ -827,7 +827,7 @@ function vCodex(){
   const dets=detsOf(fid),units=unitsOf(fid);const f=FX[fid];
   const body=S.ctab==='detachments'?
     (dets.length?dets.map(d=>`<button class="card" data-a="viewDet" data-id="${h(d.id)}"><div class="body"><div class="row between"><h3>${h(d.name)}</h3><span class="tag">${h(d.dp)} DP</span></div>
-      <div class="row">${dispsOf(d).length?dispsOf(d).map(x=>`${dtag(x)}`).join(''):'<span class="tag bad">No disposition</span>'}${d.unique?`<span class="tag">Unique: ${h(d.unique)}</span>`:''}<span class="small muted">${(d.enhancements||[]).length} enhancements · ${(d.stratagems||[]).length} stratagems</span></div></div></button>`).join(''):
+      <div class="row">${dispsOf(d).length?dispsOf(d).map(x=>`${dtag(x)}`).join(''):'<span class="tag bad">No disposition</span>'}${d.unique?`<span class="tag">Unique: ${h(d.unique)}</span>`:''}${d.pending?'<span class="tag bad">DP / disposition unconfirmed</span>':''}<span class="small muted">${(d.enhancements||[]).length} enhancements · ${(d.stratagems||[]).length} stratagems</span></div></div></button>`).join(''):
       `<div class="empty"><h3>No ${h(f.name)} detachments yet</h3><p>Add each detachment from your faction pack: its DP cost, Force Disposition, rule, enhancements and stratagems. To add many at once, use Import.</p>${ro?'':'<button class="btn primary" data-a="newDet">Add detachment</button>'}</div>`):
     (units.length?grouped(units,u=>u).map(([g,us])=>catBlock('codex:'+fid+':'+g,g,us.length,us.map(u=>`<button class="card" data-a="viewUnit" data-id="${h(u.id)}"><div class="body"><div class="row between"><h3>${h(u.name)}</h3><span class="num small">${(u.tiers||[]).map(t=>h(t.pts)).join(' / ')||'–'} pts</span></div>
       <p class="small muted">${h(u.keywords||catOf(u))}${(u.tiers||[]).length?' · '+(u.tiers||[]).map(t=>h(t.label)).filter(Boolean).join(' / '):''}</p></div></button>`).join(''))).join(''):
@@ -1198,7 +1198,7 @@ const FIREBASE_CONFIG={
   messagingSenderId: "724539897955",
   appId: "1:724539897955:web:a17de2313e048ca3b7a056"
 };
-const MIGRATIONS=['rules-v2','enh-v3'];
+const MIGRATIONS=['rules-v2','enh-v3','codex-v4'];
 const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
 function groupKey(){
   const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
@@ -1225,7 +1225,7 @@ async function fbConnect(group){
   for(const mig of MIGRATIONS){const mr=F.doc(fs,root+'meta/mig-'+mig);if((await F.getDoc(mr)).exists())continue;
     try{const m=await (await fetch('migrations/'+mig+'.json',{cache:'no-store'})).json();const ops=[];
       for(const[c,docs]of Object.entries(m))for(const[id,d]of Object.entries(docs||{}))ops.push([c==='core'?'core/'+id:c+'/'+id,d]);
-      for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400))b.set(F.doc(fs,root+p),enc(d),{merge:true});await b.commit()}
+      for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400)){if(d===null)b.delete(F.doc(fs,root+p));else b.set(F.doc(fs,root+p),enc(d),{merge:true})}await b.commit()}
       await F.setDoc(mr,{at:Date.now()});toast('Rules updated')}catch(e){console.error('migration',mig,e)}}
   return{db:{doc,collection},uid:auth.currentUser.uid};
 }
