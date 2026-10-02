@@ -354,7 +354,7 @@ async function write(fn,okMsg){
 
 /* ---------- list maths ---------- */
 function enhOk(u,x){const r=rolesOf(u);if(r.epicHero)return false;if(!x.upgrade&&!r.character)return false;const fx=x.fx||{};
-  const hay=(u.name+' '+(u.keywords||'')).toLowerCase();if((fx.not||[]).some(w=>hay.includes(w)))return false;
+  const hay=(u.name+' '+(u.keywords||'')+' '+String(u.abilities||'').split('\n').filter(x=>/^Core:/.test(x)).join(' ')+' '+({orks:'orks ork',tyranids:'tyranids tyranid','dark-angels':'adeptus astartes astartes dark angels',custodes:'adeptus custodes custodes'}[u.faction]||'')).toLowerCase();if((fx.not||[]).some(w=>hay.includes(w)))return false;
   if(!fx.only?.length)return !x.upgrade||true;return fx.only.some(alt=>alt.every(w=>hay.includes(String(w).toLowerCase())))}
 function stepNum(v,ch){v=String(v??'');const m=String(ch).match(/^([=+-])(.*)$/);if(!m)return v;if(m[1]==='=')return m[2];const n=+m[2]*(m[1]==='-'?-1:1);
   const mm=v.match(/^(-?\d+)(.*)$/);if(!mm)return v+(n>=0?'+':'')+n;return (+mm[1]+n)+mm[2]}
