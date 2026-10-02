@@ -300,6 +300,11 @@ h1,h2,h3,strong,.card h3,.entry strong{overflow-wrap:anywhere;word-break:break-w
 body{line-height:1.5}
 .rules{line-height:1.55}
 .abil p,.sparts{line-height:1.5}
+
+.tag{white-space:normal;overflow-wrap:anywhere}
+.entry select,.panel select,.sheet select{width:100%;max-width:100%;min-width:0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.entry .row>select{flex:1 1 100%}
+p,span,label,summary,td,dd,li,button{overflow-wrap:anywhere}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -467,11 +472,19 @@ function vDbl(){const d=S.lists[S.dblId];if(!isDbl(d))return backTo('lists','Tha
   </div>`}
 
 /* ---------- rendering ---------- */
-function requestRender(){const a=document.activeElement;if(a&&a.closest('#app,#sheet')&&/^(INPUT|TEXTAREA)$/.test(a.tagName)){S.pending=true;return}render()}
+function requestRender(){const a=document.activeElement;if(a&&a.closest('#app,#sheet')&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&!/^(radio|checkbox|button)$/.test(a.type)))){S.pending=true;return}render()}
 document.addEventListener('focusout',()=>setTimeout(()=>{if(S.pending){S.pending=false;requestRender()}},0));
 
+const navKey=()=>JSON.stringify([S.view,S.listId,S.playId,S.dblId,S.viewId,S.draftId]);
+let NAVLAST=null,NAVPOP=false;
+function navSync(){const k=navKey();if(k===NAVLAST)return;if(NAVLAST&&!NAVPOP)history.pushState({k},'');else history.replaceState({k},'');NAVLAST=k;NAVPOP=false}
+addEventListener('popstate',e=>{const pop=document.getElementById('kwpop');if(pop&&!pop.hidden){pop.hidden=true;history.pushState({k:NAVLAST},'');return}
+  if(S.sheet){S.sheet=null;history.pushState({k:NAVLAST},'');render();return}
+  const k=e.state?.k;if(!k){if(S.view!=='lists'){S.view='lists';NAVPOP=true;render()}return}
+  const[v,l,p,d,vi,di]=JSON.parse(k);Object.assign(S,{view:v,listId:l,playId:p,dblId:d,viewId:vi,draftId:di,confirm:null});NAVPOP=true;
+  if(v==='play'&&p&&(!S.game||S.gameFor!==p)){loadGame(p)}else render();scrollTo(0,0)});
 function render(){
-  const v=S.view;
+  const v=S.view;setTimeout(navSync,0);
   const html=v==='lists'?vLists():v==='dbl'?vDbl():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
     v==='codex'?vCodex():v==='det'?vDet():v==='unit'?vUnit():v==='core'?vCore():v==='limits'?vSettings():v==='io'?vIO():
     v==='rules'?vRules():v==='settings'?vAppSettings():v==='udata'?vUData():v==='ddata'?vDData():'';
@@ -1006,7 +1019,7 @@ function normUnit(u){const leads=Array.isArray(u.leads)?u.leads:String(u.leadsTe
   weapons:u.weapons||'',abilities:u.abilities||''}}
 
 async function loadGame(listId){
-  S.game=null;render();
+  S.game=null;S.gameFor=listId;render();
   const blank={round:1,cp:0,vp:0,opp:0,phase:'Command',mine:true,used:{},units:{},log:[]};
   let g=null;
   if(S.db&&S.uid){try{const snap=await S.db.doc(`data/users/${S.uid}/game-${listId}`).get();if(snap.exists)g=snap.data()}catch(e){}}
