@@ -163,7 +163,8 @@ textarea{min-height:88px;resize:vertical}
 .theme[aria-pressed=true]{border-color:var(--brass)}
 .theme .sw{display:flex;height:34px;border-radius:8px;overflow:hidden}
 .theme .sw i{flex:1}
-.score{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:sticky;top:0;z-index:15;background:var(--bg);padding:6px 0;margin-inline:-2px}
+.score .ctr{padding:6px 4px;gap:4px}.score .ctr .v{font-size:1.5rem}.score .eyebrow{font-size:.65rem}
 @media (min-width:560px){.score{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .ctr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px;display:grid;gap:6px;justify-items:center}
 .ctr .v{font:600 2rem/1 var(--mono);font-variant-numeric:tabular-nums}
@@ -270,6 +271,21 @@ body{line-height:1.6}
 .wtab td{padding-block:8px}
 .wtab tbody tr:nth-child(even){background:color-mix(in srgb,var(--a-text) 6%,transparent)}
 .gear{border:1px dashed var(--line)}
+
+.mod,.statline div.mod span,.wtab td.mod{color:var(--a-text)!important;font-weight:800}
+.statline div.mod{background:color-mix(in srgb,var(--a-text) 16%,transparent)}
+.wtab td.mod{background:color-mix(in srgb,var(--a-text) 12%,transparent)}
+.modt{color:var(--a-text)}
+.eopt .kwb{text-align:left}
+.eopt{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid transparent}
+.eopt.on{background:color-mix(in srgb,var(--ink) 18%,var(--surface));border-color:var(--a-text)}
+.eopt.dis{opacity:.5}
+.agrp{border:2px solid color-mix(in srgb,var(--a-text) 45%,transparent);border-radius:14px;padding:10px;display:grid;gap:10px}
+.agrp-h{margin:0;font:700 1rem/1.2 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--a-text)}
+h1,h2,h3,strong,.card h3,.entry strong{overflow-wrap:anywhere;word-break:break-word;min-width:0}
+.row.between>*{min-width:0}
+.card .body{min-width:0}
+.card .row.between{flex-wrap:wrap}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -337,6 +353,24 @@ async function write(fn,okMsg){
 }
 
 /* ---------- list maths ---------- */
+function enhOk(u,x){const r=rolesOf(u);if(r.epicHero)return false;if(!x.upgrade&&!r.character)return false;const fx=x.fx||{};
+  const hay=(u.name+' '+(u.keywords||'')).toLowerCase();if((fx.not||[]).some(w=>hay.includes(w)))return false;
+  if(!fx.only?.length)return !x.upgrade||true;return fx.only.some(alt=>alt.every(w=>hay.includes(String(w).toLowerCase())))}
+function stepNum(v,ch){v=String(v??'');const m=String(ch).match(/^([=+-])(.*)$/);if(!m)return v;if(m[1]==='=')return m[2];const n=+m[2]*(m[1]==='-'?-1:1);
+  const mm=v.match(/^(-?\d+)(.*)$/);if(!mm)return v+(n>=0?'+':'')+n;return (+mm[1]+n)+mm[2]}
+function stepSkill(v,ch){const m=String(v).match(/^(\d)\+$/);const n=+String(ch).replace('+','');return m?Math.max(2,+m[1]-n)+'+':v}
+function stepAP(v,ch){const n=+String(ch).replace('+','');const c=+String(v).replace('–','0')||0;return String(c-n)}
+function fxGroup(l,e){const gid=e.attach||e.id;return (l.entries||[]).filter(x=>x.id===gid||x.attach===gid)}
+function fxUnit(l,e,u){const srcs=[];for(const m of fxGroup(l,e)){const en=findEnh(m.enhId);if(!en?.fx)continue;if(m.id===e.id||(en.fx.scope==='unit'&&!en.upgrade))srcs.push(en.fx)}
+  if(!srcs.length)return u;const v=clone(u);v.models=modelsOf(u).map(m=>({...m,_mod:{}}));v._addAbil=[];
+  const wmod=(list,ch,kw)=>(list||[]).map(w=>{const x={...w,_mod:{...(w._mod||{})}};for(const[k,c]of Object.entries(ch||{})){x[k]=k==='ap'?stepAP(x[k],c):(k==='ws'||k==='bs')?stepSkill(x[k],c):stepNum(x[k],c);x._mod[k]=1}
+    if(kw?.length){x.kw=[x.kw,...kw].filter(Boolean).join(', ');x._mod.kw=1}return x});
+  for(const f of srcs){for(const[k,c]of Object.entries(f.stats||{}))v.models.forEach(m=>{m[k]=stepNum(m[k],c);m._mod[k]=1});
+    v.ranged=wmod(v.ranged,f.ranged,f.kw?.ranged);v.melee=wmod(v.melee,f.melee,f.kw?.melee);
+    if(f.psychic)v.ranged=v.ranged.map(w=>/psychic/i.test(w.kw||'')?wmod([w],f.psychic)[0]:w);
+    (f.abilities||[]).forEach(a=>v._addAbil.push(a));
+    if(f.weapon){const w={...f.weapon,_mod:{name:1},_added:1};(w.type==='melee'?(v.melee=v.melee||[]):(v.ranged=v.ranged||[])).push(w)}}
+  return v}
 function findEnh(key){if(!key)return null;const[did,eid]=key.split(':');const d=S.dets[did];const e=d&&(d.enhancements||[]).find(x=>x.id===eid);return e?{...e,det:d.name}:null}
 const dispsOf=d=>Array.isArray(d.dispositions)&&d.dispositions.length?d.dispositions:(d.disposition?[d.disposition]:[]);
 const phasesOf=s=>Array.isArray(s.phases)&&s.phases.length?s.phases:[s.phase||'Any phase'];
@@ -467,7 +501,7 @@ function vList(){
   const entryHtml=e=>{const u=S.units[e.unitId];
     if(!u)return `<div class="entry"><div class="row between"><strong class="muted">Removed unit</strong>${ro?'':`<button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove</button>`}</div></div>`;
     const r=rolesOf(u);const tiers=u.tiers||[];const t=tiers[e.tier||0];
-    const pool=r.epicHero?[]:enhPool.filter(x=>r.character||x.upgrade);
+    const pool=enhPool.filter(x=>enhOk(u,x));
     const leads=(u.leads||[]).map(normName);
     const hosts=leads.length?(l.entries||[]).filter(x=>x.id!==e.id&&leads.includes(normName(S.units[x.unitId]?.name))):[];
     const host=(l.entries||[]).find(x=>x.id===e.attach);
@@ -475,11 +509,14 @@ function vList(){
       <div class="row between"><div style="min-width:0"><strong>${h(u.name)}</strong>${e.warlord?' <span class="tag brass">Warlord</span>':''}${r.epicHero?' <span class="tag">Epic Hero</span>':''}${c.later[e.id]?` <span class="tag">${ord(u.band2From)}+ copy price</span>`:''}${host?` <span class="tag">${h(u.leader||'Leader')} · ${h(groupName(l,host))}</span>`:''}${attachedTo(l,e).length?` <span class="tag brass">${h(groupName(l,e))}</span>`:''}</div><span class="num">${c.cost[e.id]??0} pts</span></div>
       <div class="row">
         ${tiers.length>1?`<select data-c="tier" data-id="${e.id}" aria-label="Unit size" ${ro?'disabled':''}>${tiers.map((t,i)=>`<option value="${i}" ${i===(e.tier||0)?'selected':''}>${h(t.label||'Option '+(i+1))}</option>`).join('')}</select>`:t?`<span class="small muted">${h(t.label||'')}</span>`:'<span class="small muted">No points set</span>'}
-        ${pool.length?`<select data-c="enh" data-id="${e.id}" aria-label="Enhancement" ${ro?'disabled':''}><option value="">${r.character?'No enhancement':'No upgrade'}</option>${pool.map(x=>`<option value="${x.key}" ${x.key===e.enhId?'selected':''} ${x.key!==e.enhId&&((!x.upgrade&&usedEnh.has(x.key))||(x.upgrade&&(c.enhUse[x.key]||0)>=3))?'disabled':''}>${h(x.name)}${x.upgrade?' (Upgrade)':''} (+${h(x.pts)})${x.restrict?' · '+h(x.restrict):''}</option>`).join('')}</select>`:''}
+
         ${hosts.length?`<select data-c="attach" data-id="${e.id}" aria-label="Attach to" ${ro?'disabled':''}><option value="">Not attached</option>${hosts.map(x=>`<option value="${x.id}" ${x.id===e.attach?'selected':''}>${h(u.leader||'Leader')}: ${h(entLabel(l,x))}</option>`).join('')}</select>`:''}
         ${ro?'':`<button class="btn sm" data-a="dupEntry" data-id="${e.id}">Duplicate</button><button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove</button>`}
       </div>
       ${attachedTo(l,e).length&&!ro?`<label class="f small">Unit name<input type="text" data-c="utitle" data-id="${e.id}" value="${h(e.title||'')}" placeholder="${h(groupName(l,{...e,title:''}))}"></label>`:''}
+      ${pool.length?(()=>{const cur=pool.find(x=>x.key===e.enhId);const lab=r.character?'Enhancement':'Upgrade';return `<details class="gear enhp" data-gid="enh-${e.id}" ${S.gearOpen['enh-'+e.id]?'open':''}><summary class="small">${lab} · ${cur?`<b class="modt">${h(cur.name)}</b>`:'none'}</summary><div class="radios" style="margin-top:8px">
+        <label class="eopt${!e.enhId?' on':''}"><input type="radio" name="enh-${e.id}" value="" data-c="enh" data-id="${e.id}" ${!e.enhId?'checked':''} ${ro?'disabled':''}>None</label>
+        ${pool.map(x=>{const dis=x.key!==e.enhId&&((!x.upgrade&&usedEnh.has(x.key))||(x.upgrade&&(c.enhUse[x.key]||0)>=3));return `<label class="eopt${x.key===e.enhId?' on':''}${dis?' dis':''}"><input type="radio" name="enh-${e.id}" value="${x.key}" data-c="enh" data-id="${e.id}" ${x.key===e.enhId?'checked':''} ${dis||ro?'disabled':''}><span style="flex:1;min-width:0"><button type="button" class="kwb" data-enh="${x.key}">${h(x.name)}</button>${x.upgrade?' <span class="tag">Upgrade</span>':''}${dis?' <span class="small muted">taken</span>':''}</span><span class="num small">+${h(x.pts)}</span></label>`}).join('')}</div></details>`})():''}
       ${gearBlock(u,e,ro)}
       ${(u.wargear||[]).length?`<div class="row">${u.wargear.map((wg,i)=>{const n=+(e.wg?.[i]||0);return `<span class="tag" style="gap:6px">${h(wg.name)} +${h(wg.pts)}${ro?` ×${n}`:` <button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="wg" data-id="${e.id}" data-k="${i}" data-n="-1" aria-label="Fewer ${h(wg.name)}">−</button><span class="num">${n}</span><button class="btn sm ghost" style="min-height:24px;padding:0 6px" data-a="wg" data-id="${e.id}" data-k="${i}" data-n="1" aria-label="More ${h(wg.name)}">+</button>`}</span>`}).join('')}</div>`:''}
     </div>`};
@@ -551,18 +588,21 @@ function vPlay(){
   const c=calc(l);
   const pool=stratPool(l).filter(s=>{const ps=phasesOf(s);return ps.includes('Any phase')||ps.includes(g.phase)}).filter(s=>(!s.turn||s.turn===TURNS[0]||(g.mine?s.turn==='Your turn':s.turn==="Opponent's turn")));
   const ctr=(k,label)=>`<div class="ctr"><span class="eyebrow">${label}</span><span class="v">${g[k]}</span><div class="row"><button class="btn sm" data-a="bump" data-k="${k}" data-n="-1" aria-label="${label} down">−</button><button class="btn sm" data-a="bump" data-k="${k}" data-n="1" aria-label="${label} up">+</button></div></div>`;
-  const unitHtml=e=>{const u=S.units[e.unitId];if(!u)return'';const st=g.units[e.id]||{};const t=(u.tiers||[])[e.tier||0];const en=findEnh(e.enhId);const host=(l.entries||[]).find(x=>x.id===e.attach);
+  const unitHtml=e=>{const u0=S.units[e.unitId];if(!u0)return'';const u=fxUnit(l,e,u0);const st=g.units[e.id]||{};const t=(u.tiers||[])[e.tier||0];const en=findEnh(e.enhId);const host=(l.entries||[]).find(x=>x.id===e.attach);
     return `<div class="panel unit${st.dead?' dead':''}">
       <div class="row between"><div style="min-width:0"><h3>${h(u.name)}</h3><p class="small muted">${h(t?t.label:'')}${e.warlord?' · Warlord':''}${en?' · '+h(en.name):''}${host?' · leading '+h(groupName(l,host)):''}${attachedTo(l,e).length?' · '+h(groupName(l,e)):''}</p></div>
       <div class="row"><button class="btn sm${st.shocked?' primary':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}">Battle-shocked</button><button class="btn sm${st.dead?' danger':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}">${st.dead?'Destroyed':'Destroy'}</button></div></div>
       ${statlines(u)}
       ${(()=>{const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));const cnt=weaponCounts(u,e);
-        const rg=(u.ranged||[]).filter(w=>g.has(baseW(w.name))),ml=(u.melee||[]).filter(w=>g.has(baseW(w.name)));const k=e.id;
+        const rg=(u.ranged||[]).filter(w=>w._added||g.has(baseW(w.name))),ml=(u.melee||[]).filter(w=>w._added||g.has(baseW(w.name)));const k=e.id;
         return `${rg.length?secBlock(k+':r','Ranged weapons',weaponTables({...u,ranged:rg,melee:[]},cnt)):''}${ml.length?secBlock(k+':m','Melee weapons',weaponTables({...u,ranged:[],melee:ml},cnt)):''}
-        ${u.abilities?secBlock(k+':a','Abilities',abilitiesHtml(u)):''}${en?secBlock(k+':e',en.upgrade?'Upgrade':'Enhancement',`<strong>${h(en.name)}</strong><div class="rules">${h(en.text)}</div>`):''}
+        ${u.abilities?secBlock(k+':a','Abilities',abilitiesHtml(u)):''}${en?secBlock(k+':e',en.upgrade?'Upgrade':'Enhancement',`<strong class="modt">${h(en.name)}</strong><div class="rules">${h(en.text)}</div>`):''}
         ${extra.length||u.composition?.length?secBlock(k+':c','Composition & wargear',`${u.composition?.length?`<p class="small">${h(u.composition.join(' · '))}</p>`:''}${extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:''}`):''}`})()}
     </div>`};
-  const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
+  const ents=l.entries||[];const hostIds=new Set(ents.filter(x=>x.attach&&ents.some(y=>y.id===x.attach)).map(x=>x.attach));
+  const inGrp=x=>hostIds.has(x.id)||hostIds.has(x.attach);
+  const grpHtml=[...hostIds].map(hid=>{const host=ents.find(x=>x.id===hid);const mem=[...ents.filter(x=>x.attach===hid),host];return `<div class="agrp"><p class="agrp-h">${h(groupName(l,host))}</p>${mem.map(unitHtml).join('')}</div>`}).join('');
+  const units=(hostIds.size?catBlock('play:'+S.playId+':att','Attached units',hostIds.size,grpHtml):'')+grouped(ents.filter(x=>!inGrp(x)),e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(unitHtml).join(''))).join('');
   const par=parentOf(l);const me=(par?par.disposition:l.disposition)||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
   const mission=`<section class="panel mission"><div class="mhead"><div style="min-width:0"><p class="eyebrow">Primary mission</p><h2>${h(ms?.name||(me&&op?'Not entered yet':'Set both dispositions'))}</h2></div><button class="btn sm ghost" data-a="sheet" data-k="opp">Opponent…</button></div>
     <div class="row small">You ${me?dtag(me):'<span class="tag bad">No disposition</span>'} <span class="muted">vs</span> ${h(g.oppName||'Opponent')} ${op?dtag(op):'<span class="tag bad">Not chosen</span>'}</div>
@@ -573,7 +613,7 @@ function vPlay(){
     <div class="row" style="align-self:start">${S.confirm==='game'?`<button class="btn sm danger" data-a="resetGame">Reset</button><button class="btn sm ghost" data-a="unconfirm">Cancel</button>`:`<button class="btn sm" data-a="confirm" data-k="game">Reset Game</button>`}</div></header>
   <div class="stack">
     ${mission}
-    <div class="score">${ctr('round','Battle round')}${ctr('cp','Command points')}${ctr('vp','Your VP')}${ctr('opp','Opponent VP')}</div>
+    <div class="score">${ctr('round','Round')}${ctr('cp','CP')}${ctr('vp','VP')}</div>
     <div class="seg" role="group" aria-label="Whose turn">${[[true,'Your turn'],[false,"Opponent's turn"]].map(([m,lab])=>`<button data-a="turn" data-k="${m}" aria-pressed="${g.mine===m}">${lab}</button>`).join('')}</div>
     <div class="seg" role="group" aria-label="Phase">${PHASES.map(p=>`<button data-a="phase" data-k="${p}" aria-pressed="${g.phase===p}">${p}</button>`).join('')}</div>
     <section class="stack" style="gap:10px">
@@ -588,10 +628,10 @@ function vPlay(){
 }
 
 function statlines(u){const ms=modelsOf(u);if(!ms.length)return'';const inv=ms.some(m=>m.inv);const cols=inv?MSTATS:STATS;
-  return ms.map(m=>`${ms.length>1&&m.name?`<p class="small" style="font-weight:600">${h(m.name)}</p>`:''}<div class="statline" style="grid-template-columns:repeat(${cols.length},minmax(0,1fr))">${cols.map(k=>`<div><b>${MLABEL[k]||k}</b><span>${h(m[k]||'–')}</span></div>`).join('')}</div>`).join('')}
+  return ms.map(m=>`${ms.length>1&&m.name?`<p class="small" style="font-weight:600">${h(m.name)}</p>`:''}<div class="statline" style="grid-template-columns:repeat(${cols.length},minmax(0,1fr))">${cols.map(k=>`<div${m._mod?.[k]?' class="mod"':''}><b>${MLABEL[k]||k}</b><span>${h(m[k]||'–')}</span></div>`).join('')}</div>`).join('')}
 function weaponTables(u,cnt){
   const kwl=w=>{const ks=String(w.kw||'').split(',').map(x=>x.trim()).filter(Boolean);if(/- Hunter$/.test(w.name))ks.unshift('Hunter: Monster/Vehicle');return ks};
-  const row=(w,cols)=>{const c=cnt?.[baseW(w.name)];const ks=kwl(w);return `<tr><td>${c?`<span class="wcount">${c}×</span>`:''}${h(w.name)}${ks.length?`<small>[${ks.map(k=>kwBtn(k,u.faction)).join(', ')}]</small>`:''}</td>${cols.map(k=>`<td>${h(w[k]||'–')}</td>`).join('')}</tr>`};
+  const row=(w,cols)=>{const c=cnt?.[baseW(w.name)];const ks=kwl(w);return `<tr><td${w._mod?.name||w._mod?.kw?' class="mod"':''}>${c?`<span class="wcount">${c}×</span>`:''}${h(w.name)}${ks.length?`<small>[${ks.map(k=>kwBtn(k,u.faction)).join(', ')}]</small>`:''}</td>${cols.map(k=>`<td${w._mod?.[k]?' class="mod"':''}>${h(w[k]||'–')}</td>`).join('')}</tr>`};
   const tab=(title,list,heads,cols)=>list?.length?`<div class="wtab-wrap"><table class="wtab"><thead><tr><th>${title}</th>${heads.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${list.map(w=>row(w,cols)).join('')}</tbody></table></div>`:'';
   return tab('Ranged weapons',u.ranged,['Range','A','BS','S','AP','D'],['range','a','bs','s','ap','d'])+tab('Melee weapons',u.melee,['Range','A','WS','S','AP','D'],['range','a','ws','s','ap','d']);
 }
@@ -678,7 +718,8 @@ function abilitiesHtml(u){if(!u.abilities)return'';const core=[],fac=[],unit=[];
   for(const line of String(u.abilities).split('\n').filter(Boolean)){const m=line.match(/^(Core|Faction):\s*(.*)$/);
     if(m)(m[1]==='Core'?core:fac).push(...m[2].split(',').map(x=>x.trim()).filter(Boolean));
     else{const i=line.indexOf(': ');unit.push(i>0?`<p><strong>${h(line.slice(0,i))}:</strong> ${h(line.slice(i+2))}</p>`:`<p>${h(line)}</p>`)}}
-  return `<div class="abil">${core.length?`<h4>Core</h4><div class="chips2">${core.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${fac.length?`<h4>Faction</h4><div class="chips2">${fac.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${unit.length?`<h4>Unit abilities</h4>${unit.join('')}`:''}</div>`}
+  const add=(u._addAbil||[]).map(x=>`<span class="mod">${kwBtn(x,u.faction)}</span>`).join('');
+  return `<div class="abil">${core.length||add?`<h4>Core</h4><div class="chips2">${core.map(x=>kwBtn(x,u.faction)).join('')}${add}</div>`:''}${false?`<h4>Core</h4><div class="chips2">${core.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${fac.length?`<h4>Faction</h4><div class="chips2">${fac.map(x=>kwBtn(x,u.faction)).join('')}</div>`:''}${unit.length?`<h4>Unit abilities</h4>${unit.join('')}`:''}</div>`}
 function modelGroups(u,n){const gs=(u.composition||[]).map(c=>{const m=String(c).match(/^(\d+)(?:-(\d+))?\s+(.*)$/);return m?{min:+m[1],max:+(m[2]||m[1]),name:m[3].replace(/ models?$/i,'').trim()}:null}).filter(Boolean);
   if(!gs.length)return[{name:'model',n}];const mn=gs.reduce((a,g)=>a+g.min,0);gs.forEach(g=>g.n=g.min);
   const k=n/mn;if(Number.isInteger(k)&&gs.every(g=>g.min*k<=g.max))gs.forEach(g=>g.n=g.min*k);
@@ -1084,7 +1125,7 @@ const A={
 
 document.addEventListener('click',e=>{
   const kb=e.target.closest('.kwb');let pop=document.getElementById('kwpop');
-  if(kb){e.preventDefault();e.stopPropagation();const inf=kwInfo(kb.dataset.kw,kb.dataset.fac);if(!inf)return;if(!pop){pop=document.createElement('div');pop.id='kwpop';document.body.appendChild(pop)}
+  if(kb){e.preventDefault();e.stopPropagation();const ee=kb.dataset.enh&&findEnh(kb.dataset.enh);const inf=ee?[ee.name+' · '+ee.pts+' pts',ee.text||'No rules text.']:kwInfo(kb.dataset.kw,kb.dataset.fac);if(!inf)return;if(!pop){pop=document.createElement('div');pop.id='kwpop';document.body.appendChild(pop)}
     pop.innerHTML=`<b>${h(inf[0])}</b>${h(inf[1])}`;pop.hidden=false;const r=kb.getBoundingClientRect();const w=Math.min(340,innerWidth-24);
     pop.style.left=Math.max(12,Math.min(r.left,innerWidth-w-12))+'px';pop.style.top='0px';const ph=pop.offsetHeight;
     pop.style.top=(r.bottom+8+ph<innerHeight?r.bottom+8:Math.max(8,r.top-ph-8))+'px';return}
@@ -1130,7 +1171,7 @@ const FIREBASE_CONFIG={
   messagingSenderId: "724539897955",
   appId: "1:724539897955:web:a17de2313e048ca3b7a056"
 };
-const MIGRATIONS=['rules-v2'];
+const MIGRATIONS=['rules-v2','enh-v3'];
 const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
 function groupKey(){
   const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
