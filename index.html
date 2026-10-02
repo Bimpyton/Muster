@@ -1202,7 +1202,7 @@ const MIGRATIONS=['rules-v2','enh-v3'];
 const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
 function groupKey(){
   const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
-  if(m){try{localStorage.setItem('muster-group',m[1])}catch(e){}history.replaceState(null,'',location.pathname+location.search);return m[1]}
+  if(m){try{localStorage.setItem('muster-group',m[1])}catch(e){}return m[1]}
   try{return localStorage.getItem('muster-group')}catch(e){return null}}
 async function fbConnect(group){
   const[A,AU,F]=await Promise.all([import(FBV+'firebase-app.js'),import(FBV+'firebase-auth.js'),import(FBV+'firebase-firestore.js')]);
@@ -1232,7 +1232,9 @@ async function fbConnect(group){
 async function boot(){
   try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||''}catch(e){S.customThemes=[]}applyTheme();S.view='lists';
   const g=groupKey();
-  if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Ask the person who runs your group for the invite link.</p></main>';return}
+  if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Paste the invite link from your group below.</p><input id="invite" type="text" placeholder="Paste invite link" style="width:100%;padding:12px;font-size:16px;border:1px solid #999;border-radius:8px;margin:8px 0"><button id="joinbtn" style="width:100%;padding:12px;font-size:16px;border-radius:8px;border:0;background:#d9a744;font-weight:700">Join group</button><p id="joinerr" style="color:#c3362b"></p></main>';
+    document.getElementById('joinbtn').onclick=()=>{const v=document.getElementById('invite').value.trim();const m=v.match(/g=([A-Za-z0-9_-]{20,})/)||v.match(/^([A-Za-z0-9_-]{20,})$/);
+      if(!m){document.getElementById('joinerr').textContent="That doesn't look like a Muster invite link.";return}try{localStorage.setItem('muster-group',m[1])}catch(e){}location.hash='g='+m[1];location.reload()};return}
   render();
   let c;try{c=await fbConnect(g)}catch(e){console.error(e);toast('Could not connect. Check your internet and reload.');render();return}
   S.db=c.db;S.uid=c.uid;const db=c.db;
