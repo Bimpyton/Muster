@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cut">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#16191d">
 <title>Muster</title>
@@ -373,6 +373,35 @@ section.stack>.legend{padding-bottom:10px}
 .ds-stats{display:grid;gap:6px}
 .ds-stats:empty{display:none}
 .wtab td small .kwb{display:inline;text-align:left;font-weight:400}
+
+/* v3: spacing, centred underlined headings, play icon buttons, PC layout, no zoom */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%}
+input,select,textarea{font-size:16px!important}
+#app>.stack{gap:30px}
+.stack:has(>.card)>.card{margin-inline:0}
+#app>.stack>.stack:has(>.cat),.panel>.stack:has(>.cat){margin-inline:0}
+.stack:has(>.cat){gap:0!important}
+.cat,.cat:first-of-type{border-bottom:1px solid var(--line)}
+.cat+.cat{margin-top:22px}
+.cat>.btn{margin-block:12px 14px}
+.cat>.card{margin-inline:0;padding-inline:var(--tx)}
+.cat>.card:last-child{border-bottom:0}
+#app h2,.cat-h h3{text-align:center;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.panel>h2,.panel-head>h2{border-bottom:0;padding-bottom:0}
+.panel-head,.mhead{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+section.stack>:is(h2,.panel-head){padding-block:0 12px}
+.cat-h{position:relative;justify-content:center;padding-inline:44px}
+.cat-h>.row{position:absolute;right:var(--hx);top:50%;transform:translateY(-50%)}
+.urow .ubtns{display:flex;gap:6px;flex:none}
+.ibtn{--ib-bg:var(--surface);appearance:none;width:38px;height:38px;display:grid;place-items:center;padding:0;border:1px solid var(--line);background:var(--ib-bg);color:var(--muted);cursor:pointer}
+.ibtn:hover{border-color:var(--muted)}
+.ibtn.shock.on{--ib-bg:#e0a800;background:#e0a800;border-color:#e0a800;color:#1b1400}
+.ibtn.kill.on{--ib-bg:var(--danger);background:var(--danger);border-color:var(--danger);color:#fff}
+.urow.dead .ibtn.kill{opacity:1}
+.urow.dead{opacity:1}.urow.dead>:not(.nm),.urow.dead .nm strong{opacity:.5}
+.pc #app,.pc .searchbar{max-width:760px;margin-inline:auto}
+.pc .tabs nav{max-width:760px}
+.pc .sheet .pane{max-width:760px;margin-inline:auto}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -644,8 +673,8 @@ function vPlayPick(){
   const dsec=dbls.length?`<h2>Doubles</h2><div class="stack" style="gap:10px">${dbls.map(([id,d])=>{const c=calcDbl(d);return `<button class="card" data-a="pickDbl" data-id="${h(id)}"><span class="row" style="gap:2px;flex-wrap:nowrap">${c.kids.map(k=>badge(k.faction)).join('')}</span><div class="body"><h3>${h(d.name||'Doubles force')}</h3><p class="small muted">${c.pts} pts${d.disposition?' · '+h(d.disposition):''}</p></div></button>`}).join('')}</div><h2>Single armies</h2>`:'';
   const all=singles().map(([id,l])=>({id,...l})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   return `<header class="top"><div class="grow"><p class="eyebrow">Battle companion</p><h1>Choose your army</h1></div></header>
-  ${dsec}<div class="stack" style="gap:10px">${all.length?all.map(l=>`<button class="card" data-a="play" data-id="${h(l.id)}">${badge(l.faction)}<div class="body"><h3>${h(l.name||'Untitled list')}</h3><p class="small muted">${calc(l).pts} pts${l.disposition?' · '+h(l.disposition):''}</p></div></button>`).join(''):
-  `<div class="empty"><h3>No lists to play yet</h3><p>Build a list first. Play mode tracks primary and secondary VP, filters your stratagems by phase, and tracks casualties.</p><button class="btn primary" data-a="go" data-k="lists">Go to lists</button></div>`}</div>`;
+  <div class="stack">${dsec}<div class="stack" style="gap:10px">${all.length?all.map(l=>`<button class="card" data-a="play" data-id="${h(l.id)}">${badge(l.faction)}<div class="body"><h3>${h(l.name||'Untitled list')}</h3><p class="small muted">${calc(l).pts} pts${l.disposition?' · '+h(l.disposition):''}</p></div></button>`).join(''):
+  `<div class="empty"><h3>No lists to play yet</h3><p>Build a list first. Play mode tracks primary and secondary VP, filters your stratagems by phase, and tracks casualties.</p><button class="btn primary" data-a="go" data-k="lists">Go to lists</button></div>`}</div></div>`;
 }
 
 function stratPool(l){
@@ -659,8 +688,7 @@ function vPlay(){
   const c=calc(l);
   const pool=stratPool(l).filter(s=>{const ps=phasesOf(s);return ps.includes('Any phase')||ps.includes(g.phase)}).filter(s=>(!s.turn||s.turn===TURNS[0]||(g.mine?s.turn==='Your turn':s.turn==="Opponent's turn")));
   const ctr=(k,label)=>`<div class="ctr"><span class="eyebrow">${label}</span><span class="v">${+g[k]||0}</span><div class="row"><button class="btn sm" data-a="bump" data-k="${k}" data-n="-1" aria-label="${label} down">−</button><button class="btn sm" data-a="bump" data-k="${k}" data-n="1" aria-label="${label} up">+</button></div></div>`;
-  const stTags=e=>{const st=g.units[e.id]||{};return `${st.shocked?'<span class="tag bad">Battle-shocked</span>':''}${st.dead?'<span class="tag">Destroyed</span>':''}`};
-  const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(e=>unitRow(l,e,'play',stTags(e))).join(''))).join('');
+  const units=grouped(l.entries||[],e=>S.units[e.unitId]).map(([gr,es])=>catBlock('play:'+S.playId+':'+gr,gr,es.length,es.map(e=>unitRow(l,e,'play')).join(''))).join('');
   const par=parentOf(l);const me=(par?par.disposition:l.disposition)||'',op=g.oppDisp||'';const mk=me+'|'+op;const ms=S.missions[mk]||MISSIONS[mk];
   const mission=`<section class="panel mission"><div class="mhead"><div style="min-width:0"><p class="eyebrow">Primary mission</p><h2>${h(ms?.name||(me&&op?'Not entered yet':'Set both dispositions'))}</h2></div><button class="btn sm ghost" data-a="sheet" data-k="opp">Opponent…</button></div>
     <div class="row small">You ${me?dtag(me):'<span class="tag bad">No disposition</span>'} <span class="muted">vs</span> ${h(g.oppName||'Opponent')} ${op?dtag(op):'<span class="tag bad">Not chosen</span>'}</div>
@@ -676,7 +704,7 @@ function vPlay(){
     <div class="seg" role="group" aria-label="Phase">${PHASES.map(p=>`<button data-a="phase" data-k="${p}" aria-pressed="${g.phase===p}">${p}</button>`).join('')}</div>
     <section class="stack" style="gap:10px">
       <div class="panel-head"><h2>Stratagems · ${h(g.phase)}</h2><span class="small muted">${pool.length} available</span></div>
-      ${pool.length?legend()+pool.map(s=>{const used=g.used[s.key];return stratCard(s,{core:s.src==='Core',src:s.src,used,collapse:true,extra:`<button class="btn sm${used?'':' primary'}" data-a="useStrat" data-k="${h(s.key)}" aria-pressed="${!!used}">${used?'Used this phase':'Mark as used'}</button>`})}).join(''):`<p class="muted small">No stratagems for this phase. Add them to your detachments, or add core stratagems in the Codex.</p>`}
+      ${pool.length?legend()+pool.map(s=>{const used=g.used[s.key];return stratCard(s,{core:s.src==='Core',src:s.src,used,collapse:true,notype:true,extra:`<button class="btn sm${used?'':' primary'}" data-a="useStrat" data-k="${h(s.key)}" aria-pressed="${!!used}">${used?'Used this phase':'Mark as used'}</button>`})}).join(''):`<p class="muted small">No stratagems for this phase. Add them to your detachments, or add core stratagems in the Codex.</p>`}
     </section>
     <section class="stack"><h2>Your army</h2>${units||'<p class="muted small">This list has no units.</p>'}</section>
     ${(S.core.armyRules?.[l.faction]||[]).length?`<section class="stack"><h2>Army rules</h2>${S.core.armyRules[l.faction].map((r,i)=>secBlock('ar:'+l.faction+':'+i,r.name,`<div class="rules">${h(r.text)}</div>`)).join('')}</section>`:''}
@@ -700,7 +728,7 @@ function stratBody(t){if(!t)return'';const parts=[];let cur=null;
   if(!parts.some(p=>p.k))return `<div class="rules">${h(t)}</div>`;
   return `<dl class="sparts">${parts.map(p=>p.k?`<dt>${p.k==='RESTRICTION'?'RESTRICTIONS':p.k}</dt><dd>${h(p.v.trim())}</dd>`:`<dd class="note">${h(p.v)}</dd>`).join('')}</dl>`}
 function stratCard(s,o={}){
-  const ph=phasesOf(s).join(' / ');const meta=[o.core?'Core':s.type||'',o.src&&!o.core?o.src:'',ph,s.turn||''].filter(Boolean).join(' · ');
+  const ph=phasesOf(s).join(' / ');const meta=[o.core?'Core':o.notype?'':s.type||'',o.src&&!o.core?o.src:'',ph,s.turn||''].filter(Boolean).join(' · ');
   const head=`<div class="sh"><div style="min-width:0"><h3>${h(s.name)}</h3><small>${h(meta)}</small></div><span class="cp">${h(s.cp)}CP<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></div>`;
   return `<details class="strat ${turnCls(s.turn)}${o.used?' used':''}" ${o.anchor?`id="${o.anchor}"`:''} ${o.open?'open':''}><summary>${head}</summary>
     <div class="sb">${stratBody(s.text)}</div></details>${o.extra?`<div class="strat-x">${o.extra}</div>`:''}`;
@@ -716,6 +744,8 @@ function customTokens(t){const dark=lum(t.bg)<.3;const ink=dark?'#eceef1':'#1619
 function applyTheme(){const r=document.documentElement;THEMES.forEach(([c])=>c&&r.classList.remove(c));r.removeAttribute('style');
   const c=(S.customThemes||[]).find(x=>x.id===S.theme);
   if(c){for(const[k,v]of Object.entries(customTokens(c)))r.style.setProperty(k,v)}else if(S.theme)r.classList.add(S.theme)}
+function applyLayout(){const m=S.layout||'auto';document.documentElement.classList.toggle('pc',m==='pc'||(m==='auto'&&innerWidth>=900))}
+addEventListener('resize',()=>{if((S.layout||'auto')==='auto')applyLayout()});
 function saveThemes(){try{localStorage.setItem('muster-custom-themes',JSON.stringify(S.customThemes||[]))}catch(e){}}
 const FAQ_BASE=(CORE_RULES.flatMap(x=>x.items).find(([t])=>t==='FAQ')||['',''])[1].split(/(?<=\.)\s+/).filter(Boolean);
 function vRules(){
@@ -735,8 +765,10 @@ function vRules(){
   </div>`;
 }
 function vAppSettings(){
+  const lay=S.layout||'auto';
   return `<header class="top"><div class="grow"><p class="eyebrow">This device</p><h1>Settings</h1></div></header>
-  <div class="stack"><section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
+  <div class="stack"><section class="panel"><h2>Layout</h2><p class="small muted">PC keeps the app in a centred column. Mobile stretches it edge to edge. Auto picks PC on wide screens. Saved on this device.</p>
+    <div class="seg" role="group" aria-label="Layout">${[['auto','Auto'],['mobile','Mobile'],['pc','PC']].map(([k,n])=>`<button data-a="layout" data-k="${k}" aria-pressed="${lay===k}">${n}</button>`).join('')}</div></section><section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
     <section class="panel"><h2>App theme</h2><p class="small muted">Changes the background and accents across the app. Army colours, stratagem colours and the Core Rules pages stay the same. Saved on this device only.</p>
     <div class="themes">${THEMES.map(([c,n,d,sw])=>`<button class="theme" data-a="theme" data-k="${c}" aria-pressed="${S.theme===c}"><span class="sw">${sw.map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${n}</strong><span class="small muted">${d}</span></button>`).join('')}
     ${(S.customThemes||[]).map(t=>`<div class="theme" style="cursor:default" aria-pressed="${S.theme===t.id}"><button class="btn ghost" style="padding:0;display:grid;gap:8px;text-align:left;min-height:0" data-a="theme" data-k="${t.id}"><span class="sw">${[t.bg,t.surface,t.accent].map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${h(t.name)}</strong><span class="small muted">Custom</span></button><button class="btn sm ghost danger" style="justify-self:start" data-a="delTheme" data-k="${t.id}">Delete</button></div>`).join('')}</div>
@@ -807,17 +839,20 @@ function rowStats(u){const ms=modelsOf(u);if(!ms.length)return'';const inv=ms.so
   return ms.map(m=>`${ms.length>1&&m.name?`<span class="sm-n">${h(m.name)}</span>`:''}<span class="statline" style="grid-template-columns:repeat(${cols.length},minmax(0,1fr))">${cols.map(k=>`<span${m._mod?.[k]?' class="mod"':''}><b>${MLABEL[k]||k}</b><span>${h(m[k]||'–')}</span></span>`).join('')}</span>`).join('')}
 function unitRow(l,e,mode,right){const u0=S.units[e.unitId];
   if(!u0)return mode==='list'?`<div class="urow"><span class="nm"><strong class="muted">Removed unit</strong>${S.canWrite?`<button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove</button>`:''}</span></div>`:'';
-  const u=fxUnit(l,e,u0);const dead=mode==='play'&&S.game?.units?.[e.id]?.dead;
-  return `<button class="urow${dead?' dead':''}" data-a="ds" data-k="${mode}" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}</strong><span class="row" style="flex-wrap:nowrap">${right||''}</span></span>${mode==='play'?rowStats(u):''}</button>`}
+  const u=fxUnit(l,e,u0);
+  if(mode==='play'){const st=S.game?.units?.[e.id]||{};
+    return `<div class="urow${st.dead?' dead':''}" role="button" tabindex="0" data-a="ds" data-k="play" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}</strong><span class="ubtns"><button class="ibtn shock${st.shocked?' on':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}" aria-label="Battle-shocked" title="Battle-shocked">${ICO_BOLT}</button><button class="ibtn kill${st.dead?' on':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}" aria-label="Destroyed" title="Destroyed">${ICO_SKULL}</button></span></span>${rowStats(u)}</div>`}
+  const n=tierSize(u0,e);
+  return `<button class="urow" data-a="ds" data-k="${mode}" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}${n>1?` (${n})`:''}</strong><span class="row" style="flex-wrap:nowrap">${right||''}</span></span></button>`}
+const ICO_BOLT='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>';
+const ICO_SKULL='<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2.5c-4.7 0-8.5 3.4-8.5 7.9 0 2.6 1.2 4.6 3.1 5.8V19c0 .8.7 1.5 1.5 1.5h.9v-2.2h1.7v2.2h2.6v-2.2H15v2.2h.9c.8 0 1.5-.7 1.5-1.5v-2.8c1.9-1.2 3.1-3.2 3.1-5.8 0-4.5-3.8-7.9-8.5-7.9z"/><circle cx="8.8" cy="11" r="2" fill="var(--ib-bg,#fff)"/><circle cx="15.2" cy="11" r="2" fill="var(--ib-bg,#fff)"/><path d="m12 13.4-1.1 2h2.2z" fill="var(--ib-bg,#fff)"/></svg>';
 function dsSheet(s){const play=s.mode==='play';const l=S.lists[play?S.playId:S.listId];const e=l&&(l.entries||[]).find(x=>x.id===s.id);const u0=e&&S.units[e.unitId];
   if(!u0||(play&&!S.game))return null;
   const u=fxUnit(l,e,u0);const ro=play||!S.canWrite;const tiers=u0.tiers||[];const t=tiers[e.tier||0];const en=findEnh(e.enhId);const k='ds:'+e.id;const c=calc(l);
   const g=gearOf(u,e);const wb=new Set([...(u.ranged||[]),...(u.melee||[])].map(w=>baseW(w.name)));const extra=[...g].filter(x=>!wb.has(x));const cnt=weaponCounts(u,e);
   const rg=(u.ranged||[]).filter(w=>w._added||g.has(baseW(w.name))),ml=(u.melee||[]).filter(w=>w._added||g.has(baseW(w.name)));
-  const st=play?(S.game.units[e.id]||{}):{};
   const sub=[t?.label,e.warlord?'Warlord':'',en?en.name:''].filter(Boolean).join(' · ');
   const head=`<header class="top"><div class="grow"><button class="btn ghost sm" data-a="closeSheet" style="justify-self:start;padding-left:0">‹ ${play?'Back to game':'Back to list'}</button><p class="eyebrow">${h(FX[u.faction]?.name||'')} · ${h(catOf(u0))}</p><h1>${h(u.name)}</h1>${sub?`<p class="small muted">${h(sub)}</p>`:''}</div>${play?'':`<span class="num">${c.cost[e.id]??0} pts</span>`}</header>`;
-  const state=play?`<div class="row ds-pad"><button class="btn sm${st.shocked?' primary':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}">Battle-shocked</button><button class="btn sm${st.dead?' danger':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}">${st.dead?'Destroyed':'Destroy'}</button></div>`:'';
   let edit='';
   if(!play){
     const leads=(u0.leads||[]).map(normName);
@@ -838,7 +873,7 @@ function dsSheet(s){const play=s.mode==='play';const l=S.lists[play?S.playId:S.l
     ${u.abilities?secBlock(k+':a','Abilities',abilitiesHtml(u),true):''}${play&&en?secBlock(k+':e',en.upgrade?'Upgrade':'Enhancement',`<strong class="modt">${h(en.name)}</strong><div class="rules">${h(en.text)}</div>`,true):''}
     ${secBlock(k+':c','Composition & keywords',`${u.composition?.length?`<p class="small"><strong>Composition:</strong> ${h(u.composition.join(' · '))}</p>`:''}${extra.length?`<p class="small"><strong>Wargear:</strong> ${h(extra.join(', '))}</p>`:''}<p class="small"><strong>Keywords:</strong> ${h(u.keywords||'–')}</p>`,true)}`;
   const foot=!ro?`<div class="row ds-pad"><button class="btn sm" data-a="dupEntry" data-id="${e.id}">Duplicate</button><button class="btn sm danger" data-a="rmEntry" data-id="${e.id}">Remove from list</button></div>`:'';
-  return `${head}${state}<div class="ds-pad ds-stats">${statlines(u)}</div>${edit}${secs}${foot}`;
+  return `${head}<div class="ds-pad ds-stats">${statlines(u)}</div>${edit}${secs}${foot}`;
 }
 function vUData(){
   const u=S.units[S.viewId];if(!u)return backTo('codex','That unit was deleted.');const f=FX[u.faction];
@@ -1113,6 +1148,7 @@ const A={
   cancelTheme(){S.themeDraft=null;S.draft=null;render()},
   saveTheme(){const t=S.themeDraft;if(!t.name.trim())return toast('Give the theme a name.');const id='c-'+rid();S.customThemes=[...(S.customThemes||[]),{...t,name:t.name.trim(),id}];saveThemes();S.themeDraft=null;S.draft=null;A.theme(id)},
   delTheme(k){S.customThemes=(S.customThemes||[]).filter(t=>t.id!==k);saveThemes();if(S.theme===k)A.theme('');else render()},
+  layout(k){S.layout=k;try{localStorage.setItem('muster-layout',k)}catch(e){}applyLayout();render()},
   theme(k){S.theme=k||'';applyTheme();try{localStorage.setItem('muster-theme',S.theme)}catch(e){}render()},
   toggleCat(k){S.closed[k]=!S.closed[k];render()},
   gsN(k,id,n){const l=S.lists[S.listId];const[i,j]=k.split(':');patchList({entries:l.entries.map(x=>{if(x.id!==id)return x;const gs={...(x.gs||{})};const cur={...(gs[i]||{})};cur[j]=Math.max(0,(+cur[j]||0)+ +n);if(!cur[j])delete cur[j];if(Object.keys(cur).length)gs[i]=cur;else delete gs[i];return {...x,gs}})})},
@@ -1234,6 +1270,8 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
   const fn=A[b.dataset.a];if(fn)fn(b.dataset.k,b.dataset.id,b.dataset.n);
 });
+document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.matches?.('[role=button][data-a]')){e.preventDefault();t.click()}});
+['gesturestart','gesturechange'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('toggle',e=>{const g=e.target?.dataset?.gid;if(g)S.gearOpen[g]=e.target.open;const k=e.target?.dataset?.sk;if(k)S.secOpen[k]=e.target.open},true);
 document.addEventListener('change',e=>{
   const t=e.target;const c=t.dataset.c;if(!c)return;const l=S.lists[S.listId];
@@ -1303,7 +1341,7 @@ async function fbConnect(group){
   return{db:{doc,collection},uid:auth.currentUser.uid};
 }
 async function boot(){
-  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||''}catch(e){S.customThemes=[]}applyTheme();S.view='lists';
+  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto'}catch(e){S.customThemes=[]}applyTheme();applyLayout();S.view='lists';
   const g=groupKey();
   if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Paste the invite link from your group below.</p><input id="invite" type="text" placeholder="Paste invite link" style="width:100%;padding:12px;font-size:16px;border:1px solid #999;border-radius:8px;margin:8px 0"><button id="joinbtn" style="width:100%;padding:12px;font-size:16px;border-radius:8px;border:0;background:#d9a744;font-weight:700">Join group</button><p id="joinerr" style="color:#c3362b"></p></main>';
     document.getElementById('joinbtn').onclick=()=>{const v=document.getElementById('invite').value.trim();const m=v.match(/g=([A-Za-z0-9_-]{20,})/)||v.match(/^([A-Za-z0-9_-]{20,})$/);
