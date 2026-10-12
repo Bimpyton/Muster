@@ -402,6 +402,43 @@ section.stack>:is(h2,.panel-head){padding-block:0 12px}
 .pc #app,.pc .searchbar{max-width:760px;margin-inline:auto}
 .pc .tabs nav{max-width:760px}
 .pc .sheet .pane{max-width:760px;margin-inline:auto}
+
+/* kill team */
+.kf-IMP{--a-fill:linear-gradient(135deg,#5b8fd6 0%,#1f3f78 55%,#4573b8 100%);--a-ink:#f2f6ff;--a-text:#2b5597;--a-soft:#dde7f6}
+.kf-CHAOS{--a-fill:linear-gradient(135deg,#e2574c 0%,#7a1712 55%,#c23a30 100%);--a-ink:#fff;--a-text:#a3241b;--a-soft:#f7dedb}
+.kf-AEL{--a-fill:linear-gradient(135deg,#4fd0c4 0%,#0d6d68 55%,#2fa79f 100%);--a-ink:#04201e;--a-text:#0f716b;--a-soft:#d6f0ed}
+.kf-NEC{--a-fill:linear-gradient(135deg,#8ff09a 0%,#1f7a3a 55%,#4cc46a 100%);--a-ink:#04200c;--a-text:#1d7038;--a-soft:#dcf2e1}
+.kf-ORK{--a-fill:linear-gradient(135deg,#c6ef5e 0%,#71b021 55%,#a5d93b 100%);--a-ink:#122005;--a-text:#3f6b0c;--a-soft:#e5f2d0}
+.kf-TAU{--a-fill:linear-gradient(135deg,#7fd3f5 0%,#1b6f99 55%,#3fa3d1 100%);--a-ink:#03141d;--a-text:#17668e;--a-soft:#d9eef8}
+.kf-TYR{--a-fill:linear-gradient(135deg,#a06ad0 0%,#552a7a 55%,#8452b3 100%);--a-ink:#fff;--a-text:#6b3a94;--a-soft:#ece2f4}
+.kf-VOT{--a-fill:linear-gradient(135deg,#e6b27a 0%,#7a4a1c 55%,#b8834c 100%);--a-ink:#1d1005;--a-text:#7d4e1f;--a-soft:#f3e5d4}
+.kf-SPEC{--a-fill:linear-gradient(135deg,#b7bec7 0%,#4b545e 55%,#8a939d 100%);--a-ink:#fff;--a-text:#4b545e;--a-soft:#e6e9ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.kf-IMP,.kf-CHAOS,.kf-AEL,.kf-NEC,.kf-ORK,.kf-TAU,.kf-TYR,.kf-VOT,.kf-SPEC){--a-soft:color-mix(in srgb,var(--surface) 80%,var(--a-text))}
+  :root:not([data-theme="light"]) .kf-IMP{--a-text:#86aef0}:root:not([data-theme="light"]) .kf-CHAOS{--a-text:#f08077}:root:not([data-theme="light"]) .kf-AEL{--a-text:#5fd6cb}:root:not([data-theme="light"]) .kf-NEC{--a-text:#7fdc92}:root:not([data-theme="light"]) .kf-ORK{--a-text:#a6dc5c}:root:not([data-theme="light"]) .kf-TAU{--a-text:#7fc8ec}:root:not([data-theme="light"]) .kf-TYR{--a-text:#c6a3e8}:root:not([data-theme="light"]) .kf-VOT{--a-text:#e3b07c}:root:not([data-theme="light"]) .kf-SPEC{--a-text:#b7bec7}}
+:root[data-theme="dark"] :is(.kf-IMP,.kf-CHAOS,.kf-AEL,.kf-NEC,.kf-ORK,.kf-TAU,.kf-TYR,.kf-VOT,.kf-SPEC){--a-soft:color-mix(in srgb,var(--surface) 80%,var(--a-text))}
+:root:is(.t-void,.t-forge) :is(.kf-IMP,.kf-CHAOS,.kf-AEL,.kf-NEC,.kf-ORK,.kf-TAU,.kf-TYR,.kf-VOT,.kf-SPEC){--a-soft:color-mix(in srgb,var(--surface) 80%,var(--a-text))}
+body.sys-kt:not([class*=kf-]){--a-fill:var(--brass);--a-ink:var(--brass-ink);--a-text:var(--brass);--a-soft:var(--brass-soft)}
+.strat.k-strat{--sc:#c2571a;--sl:#fbe4d5;--st:#9a4314}
+.strat.k-fire{--sc:#7a2f9e;--sl:#efe0f6;--st:#5e2279}
+.kt-md{display:grid;gap:8px;font-size:.93rem;line-height:1.55}
+.kt-md p{margin:0}.kt-md .kt-mdh{font:700 .8rem/1.3 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--a-text)}
+.kt-md .kt-ul{margin:0;padding-left:20px;display:grid;gap:4px}.kt-md .kt-ul li.sub{margin-left:18px;list-style:circle}
+.kt-md .kt-mdt{border:1px solid var(--line)!important;margin:2px 0!important}.kt-md .kt-mdt td,.kt-md .kt-mdt th{text-align:left;padding:6px 8px!important;width:auto!important}
+.kt-md hr.kt-hr{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
+.kt-wtab th:not(:first-child),.kt-wtab td:not(:first-child){width:14%}
+.kt-wt{display:inline-block;width:1.2em;margin-right:4px;color:var(--a-text);font-weight:700}
+.kt-ab{display:grid;gap:4px;padding-block:6px;border-top:1px dashed var(--line)}.kt-ab:first-child{border-top:0;padding-top:0}
+.kt-abh{margin:0!important}
+.kt-hl td{background:color-mix(in srgb,var(--a-text) 18%,transparent)!important;font-weight:700}
+.kt-eq{display:grid;grid-template-columns:auto 1fr;align-items:start;border-top:1px solid var(--line)}
+.kt-eq>.chip{margin:8px 0 8px var(--hx);align-self:start}
+.kt-eq .sec{border:0!important}
+.kt-eq.on{background:color-mix(in srgb,var(--a-text) 8%,transparent)}
+.score.kt-vp{position:static;grid-template-columns:repeat(3,minmax(0,1fr))!important;padding-inline:0}
+.kt-kill{padding-block:8px;border-top:1px solid var(--line)}
+.kt-addrow{padding-block:4px;border-bottom:1px dashed var(--line)}
+.urow .kt-stat{max-width:340px}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -437,7 +474,7 @@ const sizeOf=l=>(+l.limit||2000)<=1000?{name:'Incursion',dp:+S.settings.incDp,en
 const MSTATS=['M','T','Sv','inv','W','Ld','OC'];const MLABEL={inv:'Inv'};
 
 const S={secOpen:{},gearOpen:{},faq:[],missions:{},db:null,user:null,uid:null,canWrite:true,loaded:{dets:false,units:false,lists:false},
-  dets:{},units:{},lists:{},core:{stratagems:[]},settings:{...DEFAULTS},names:{},
+  dets:{},units:{},lists:{},ktteams:{},ktcore:null,ktg:null,sys:'40k',core:{stratagems:[]},settings:{...DEFAULTS},names:{},
   view:'lists',listId:null,playId:null,cfac:'orks',ctab:'detachments',draft:null,draftKind:null,draftId:null,
   sheet:null,confirm:null,filter:'all',q:'',game:null,pending:false,pickCat:null,closed:{},theme:'',scrollTo:null,openRule:null,viewId:null};
 
@@ -572,24 +609,30 @@ function vDbl(){const d=S.lists[S.dblId];if(!isDbl(d))return backTo('lists','Tha
 function requestRender(){const a=document.activeElement;if(a&&a.closest('#app,#sheet')&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&!/^(radio|checkbox|button)$/.test(a.type)))){S.pending=true;return}render()}
 document.addEventListener('focusout',()=>setTimeout(()=>{if(S.pending){S.pending=false;requestRender()}},0));
 
+const KT_VIEWS=new Set(['ktrules','kteams','ktteam','ktedit','ktio','ktplay','settings']);
 const navKey=()=>JSON.stringify([S.view,S.listId,S.playId,S.dblId,S.viewId,S.draftId]);
 let NAVLAST=null,NAVPOP=false;
 function navSync(){const k=navKey();if(k===NAVLAST)return;if(NAVLAST&&!NAVPOP)history.pushState({k},'');else history.replaceState({k},'');NAVLAST=k;NAVPOP=false}
 addEventListener('popstate',e=>{const pop=document.getElementById('kwpop');if(pop&&!pop.hidden){pop.hidden=true;history.pushState({k:NAVLAST},'');return}
   if(S.sheet){S.sheet=null;history.pushState({k:NAVLAST},'');render();return}
-  const k=e.state?.k;if(!k){if(S.view!=='lists'){S.view='lists';NAVPOP=true;render()}return}
+  const k=e.state?.k;if(!k){if(S.view!==sysHome()){S.view=sysHome();NAVPOP=true;render()}return}
   const[v,l,p,d,vi,di]=JSON.parse(k);Object.assign(S,{view:v,listId:l,playId:p,dblId:d,viewId:vi,draftId:di,confirm:null});NAVPOP=true;
   if(v==='play'&&p&&(!S.game||S.gameFor!==p)){loadGame(p)}else render();scrollTo(0,0)});
 function render(){
+  const kt=S.sys==='kt';
+  if(kt&&!KT_VIEWS.has(S.view))S.view=KT_HOME;else if(!kt&&KT_VIEWS.has(S.view)&&S.view!=='settings')S.view='lists';
   const v=S.view;setTimeout(navSync,0);
-  const html=v==='lists'?vLists():v==='dbl'?vDbl():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
+  if(kt&&v==='ktplay'&&!S.ktg&&S.db)loadKtGame();
+  const html=kt?(v==='ktrules'?vKtRules():v==='kteams'?vKTeams():v==='ktteam'?vKTeam():v==='ktedit'?vKtEdit():v==='ktio'?vKtIO():v==='ktplay'?vKtPlay():v==='settings'?vAppSettings():''):v==='lists'?vLists():v==='dbl'?vDbl():v==='list'?vList():v==='play'?vPlay():v==='playpick'?vPlayPick():
     v==='codex'?vCodex():v==='det'?vDet():v==='unit'?vUnit():v==='core'?vCore():v==='limits'?vSettings():v==='io'?vIO():
     v==='rules'?vRules():v==='settings'?vAppSettings():v==='udata'?vUData():v==='ddata'?vDData():'';
   const ctx=v==='list'?S.lists[S.listId]?.faction:v==='play'?S.lists[S.playId]?.faction:['det','unit'].includes(v)?S.draft?.faction:v==='codex'?S.cfac:v==='udata'?S.units[S.viewId]?.faction:v==='ddata'?S.dets[S.viewId]?.faction:'';
-  document.body.className=ctx?'f-'+ctx:'';
+  const kctx=kt?(['ktteam','ktedit'].includes(v)?ktFacOf(S.ktteams?.[S.viewId]):''):'';
+  document.body.className=kt?('sys-kt'+(kctx?' kf-'+kctx:'')):(ctx?'f-'+ctx:'');
+  const gs=$('#gsearch');if(gs)gs.placeholder=kt?'Search rules, kill teams, operatives, ploys…':'Search rules, units, detachments, stratagems…';
   $('#app').innerHTML=(!S.db?`<p class="notice" style="margin-top:16px">Connecting to your group…</p>`:'')+html;
-  const tab=['lists','list','dbl'].includes(v)?'lists':['play','playpick'].includes(v)?'play':['rules','core'].includes(v)?'rules':v==='settings'?'settings':'codex';
-  $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-a="tab" data-k="${k}" ${tab===k?'aria-current="page"':''} aria-label="${l}">${ICONS[k]}<span>${l}</span></button>`).join('');
+  const tab=kt?(['kteams','ktteam','ktedit','ktio'].includes(v)?'kteams':v):['lists','list','dbl'].includes(v)?'lists':['play','playpick'].includes(v)?'play':['rules','core'].includes(v)?'rules':v==='settings'?'settings':'codex';
+  $('#tabs').innerHTML=(kt?KT_TABS:TABS.map(([k,l])=>[k,l,k])).map(([k,l,ic])=>`<button data-a="tab" data-k="${k}" ${tab===k?'aria-current="page"':''} aria-label="${l}">${ICONS[ic]}<span>${l}</span></button>`).join('');
   renderSheet();
   if(S.scrollTo){const id=S.scrollTo;S.scrollTo=null;requestAnimationFrame(()=>{const el=document.getElementById(id);if(el){el.scrollIntoView({block:'start'});scrollBy(0,-70);el.classList?.add('flash')}})}
 }
@@ -767,7 +810,9 @@ function vRules(){
 function vAppSettings(){
   const lay=S.layout||'auto';
   return `<header class="top"><div class="grow"><p class="eyebrow">This device</p><h1>Settings</h1></div></header>
-  <div class="stack"><section class="panel"><h2>Layout</h2><p class="small muted">PC keeps the app in a centred column. Mobile stretches it edge to edge. Auto picks PC on wide screens. Saved on this device.</p>
+  <div class="stack"><section class="panel"><h2>Game System</h2><p class="small muted">Switches the whole app between games. Remembered on this device.</p>
+    <div class="seg" role="group" aria-label="Game System">${SYSTEMS.map(([k,n,ed])=>`<button data-a="system" data-k="${k}" aria-pressed="${(S.sys||'40k')===k}">${k==='40k'?'40k':n}</button>`).join('')}</div>
+    <p class="small muted" style="text-align:center">${h(SYSTEMS.find(x=>x[0]===(S.sys||'40k'))[1]+' · '+SYSTEMS.find(x=>x[0]===(S.sys||'40k'))[2])}</p></section><section class="panel"><h2>Layout</h2><p class="small muted">PC keeps the app in a centred column. Mobile stretches it edge to edge. Auto picks PC on wide screens. Saved on this device.</p>
     <div class="seg" role="group" aria-label="Layout">${[['auto','Auto'],['mobile','Mobile'],['pc','PC']].map(([k,n])=>`<button data-a="layout" data-k="${k}" aria-pressed="${lay===k}">${n}</button>`).join('')}</div></section><section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
     <section class="panel"><h2>App theme</h2><p class="small muted">Changes the background and accents across the app. Army colours, stratagem colours and the Core Rules pages stay the same. Saved on this device only.</p>
     <div class="themes">${THEMES.map(([c,n,d,sw])=>`<button class="theme" data-a="theme" data-k="${c}" aria-pressed="${S.theme===c}"><span class="sw">${sw.map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${n}</strong><span class="small muted">${d}</span></button>`).join('')}
@@ -801,7 +846,7 @@ const kwNorm=t=>{let k=String(t).toLowerCase().replace(/[\[\]]/g,'').trim();if(k
 let GLOSS=null;
 function gloss(){if(GLOSS)return GLOSS;GLOSS={};for(const sec of CORE_RULES)for(const[t,x]of sec.items)for(const p of t.split(' / '))GLOSS[kwNorm(p)]=[p.replace(/[\[\]]/g,''),x];
   GLOSS['hunter']=['Hunter','Before selecting targets for this weapon, pick one of its profiles. Hunter profiles can only target units with the listed keywords (here: Monster or Vehicle).'];return GLOSS}
-function kwInfo(t,fac){const ar=(S.core.armyRules?.[fac]||[]).find(r=>r.name.toLowerCase()===String(t).toLowerCase().trim());if(ar)return[ar.name,ar.text];return gloss()[kwNorm(t)]||null}
+function kwInfo(t,fac){if(String(fac||'').startsWith('kt:'))return ktRuleInfo(t,fac.slice(3));const ar=(S.core.armyRules?.[fac]||[]).find(r=>r.name.toLowerCase()===String(t).toLowerCase().trim());if(ar)return[ar.name,ar.text];return gloss()[kwNorm(t)]||null}
 const kwBtn=(t,fac)=>kwInfo(t,fac)?`<button type="button" class="kwb" data-kw="${h(t)}" data-fac="${h(fac||'')}">${h(t)}</button>`:h(t);
 const secBlock=(key,title,inner,def)=>`<details class="sec" data-sk="${h(key)}" ${(S.secOpen[key]??def)?'open':''}><summary>${h(title)}</summary><div class="sec-b">${inner}</div></details>`;
 function abilitiesHtml(u){if(!u.abilities)return'';const core=[],fac=[],unit=[];
@@ -896,6 +941,7 @@ function vDData(){
 /* search */
 function buildIndex(){
   const ix=[];const add=(g,t,sub,k,id,n,text)=>ix.push({g,t,sub,k,id,n,s:(t+' '+(sub||'')+' '+(text||'')).toLowerCase()});
+  if(S.sys==='kt'){ktIndex(add);return ix}
   for(const sec of CORE_RULES){add('Core rules',sec.title,'Section '+sec.num,'rule',sec.id,'rule-'+sec.id,'');sec.items.forEach(([t,x],i)=>add('Core rules',t,sec.title,'rule',sec.id,`rule-${sec.id}-${i}`,x))}
   for(const x of S.core.stratagems||[])add('Core stratagems',x.name,`${x.cp}CP · ${x.turn}`,'cstrat',x.id,'',x.text);
   for(const[fid,rs]of Object.entries(S.core.armyRules||{}))for(const r of rs)add('Army rules',r.name,FX[fid]?.name,'army',fid,'',r.text);
@@ -1044,9 +1090,10 @@ function vIO(){
 function renderSheet(){
   const el=$('#sheet');let s=S.sheet;let body='';
   if(s?.type==='ds'){body=dsSheet(s);if(body===null){S.sheet=s=null}}
+  if(s?.type==='ktop'||s?.type==='ktopv'){body=s.type==='ktop'?ktOpSheet(s):ktOpView(s);if(body===null){S.sheet=s=null}}
   if(!s){el.hidden=true;el.innerHTML='';el.dataset.key='';return}
   const skey=typeof s==='string'?s:JSON.stringify(s);const prev=el.querySelector('.pane');const keep=prev&&el.dataset.key===skey?prev.scrollTop:0;
-  if(s.type==='ds'){}
+  if(s.type==='ds'||s.type==='ktop'||s.type==='ktopv'){}
   else if(s==='newList'){
     body=`<h2>New list</h2><label class="f">List name<input type="text" id="nl-name" placeholder="e.g. Waaagh! 2000"></label>
       <label class="f">Army<select id="nl-fac">${FACTIONS.map(f=>`<option value="${f.id}" ${S.filter===f.id?'selected':''}>${h(f.name)}</option>`).join('')}</select></label>
@@ -1085,10 +1132,10 @@ function renderSheet(){
       <div class="row"><button class="btn ghost" data-a="skipOpp">Skip for now</button></div>`;
   }else if(s==='export'||s.type==='text'){
     const txt=s==='export'?rosterText(S.lists[S.listId]):s.text;
-    body=`<h2>${s==='export'?'Roster':'Codex JSON'}</h2><textarea id="exportText" rows="14" readonly spellcheck="false" class="num" style="font-size:.85rem">${h(txt)}</textarea>
+    body=`<h2>${s==='export'?'Roster':S.sys==='kt'?'Kill Team JSON':'Codex JSON'}</h2><textarea id="exportText" rows="14" readonly spellcheck="false" class="num" style="font-size:.85rem">${h(txt)}</textarea>
       <div class="row"><button class="btn primary" data-a="copyText">Copy</button><button class="btn" data-a="closeSheet">Close</button></div>`;
   }
-  el.className='sheet'+(s.type==='ds'?' full':'');el.hidden=false;el.innerHTML=`<div class="pane" role="dialog" aria-modal="true">${body}</div>`;el.dataset.key=skey;if(keep)el.querySelector('.pane').scrollTop=keep;
+  el.className='sheet'+(['ds','ktop','ktopv'].includes(s.type)?' full':'');el.hidden=false;el.innerHTML=`<div class="pane" role="dialog" aria-modal="true">${body}</div>`;el.dataset.key=skey;if(keep)el.querySelector('.pane').scrollTop=keep;
 }
 function rosterText(l){
   const c=calc(l);const lines=[`${l.name} — ${FX[l.faction].name} — ${c.pts}/${l.limit} pts`,
@@ -1142,7 +1189,7 @@ function getPath(o,p){return p.split('.').reduce((a,k)=>a?.[k],o)}
 function setPath(o,p,v){const k=p.split('.');let t=o;for(let i=0;i<k.length-1;i++)t=t[k[i]]??(t[k[i]]={});t[k.at(-1)]=v}
 
 const A={
-  tab(k){S.confirm=null;if(k==='lists')S.view='lists';else if(k==='play')S.view=S.playId&&S.lists[S.playId]?'play':'playpick';else S.view=k;render();scrollTo(0,0)},
+  tab(k){S.confirm=null;S.sheet=null;if(S.sys==='kt'){S.view=k;render();scrollTo(0,0);return}if(k==='lists')S.view='lists';else if(k==='play')S.view=S.playId&&S.lists[S.playId]?'play':'playpick';else S.view=k;render();scrollTo(0,0)},
   go(k){S.confirm=null;S.view=k;if(k==='limits')S.draft={...S.settings};if(k==='core')S.draft=clone(S.core.stratagems||[]);render();scrollTo(0,0)},
   newTheme(){S.themeDraft={name:'',bg:'#1a1d22',surface:'#24282f',accent:'#d9a744'};S.draft=S.themeDraft;render()},
   cancelTheme(){S.themeDraft=null;S.draft=null;render()},
@@ -1172,6 +1219,9 @@ const A={
     else if(k==='cstrat'){S.view='rules';S.scrollTo='cs-'+id;S.openStrat='cs-'+id}
     else if(k==='army'){S.view='codex';S.cfac=id;S.openArmy=true}
     else if(k==='list'){S.listId=id;S.view='list'}
+    else if(k==='ktrule'){S.view='ktrules';S.openRule=id;S.scrollTo=n||('rule-'+id)}
+    else if(k==='ktops'){S.view='ktrules';S.scrollTo=n}
+    else if(k==='ktteam'){S.view='ktteam';S.viewId=id;S.sheet=null;if(n)S.scrollTo=n}
     scrollTo(0,0);render()},
   filter(k){S.filter=k;render()},
   newList(){S.sheet='newList';render();setTimeout(()=>$('#nl-name')?.focus(),50)},
@@ -1274,7 +1324,7 @@ document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.
 ['gesturestart','gesturechange'].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('toggle',e=>{const g=e.target?.dataset?.gid;if(g)S.gearOpen[g]=e.target.open;const k=e.target?.dataset?.sk;if(k)S.secOpen[k]=e.target.open},true);
 document.addEventListener('change',e=>{
-  const t=e.target;const c=t.dataset.c;if(!c)return;const l=S.lists[S.listId];
+  const t=e.target;const c=t.dataset.c;if(!c)return;if(S.sys==='kt'&&ktChange(t,c))return;const l=S.lists[S.listId];
   if(c==='myname'){S.myName=t.value.trim();try{localStorage.setItem('muster-name',S.myName)}catch(e){}toast('Name saved');return}
   if(c==='lname')patchList({name:t.value.trim()||'Untitled list'});
   else if(c==='limit')patchList({limit:+t.value});
@@ -1293,8 +1343,319 @@ function onDraft(e){const t=e.target;const p=t.dataset.d;if(!p||!S.draft)return;
 document.addEventListener('input',e=>{onDraft(e);if(e.target.dataset.c==='uq'){S.q=e.target.value;const pos=e.target.selectionStart;renderSheet();const q=$('#uq');q.focus();q.setSelectionRange(pos,pos)}});
 document.addEventListener('change',onDraft);
 
+/* ---------- kill team ---------- */
+const SYSTEMS=[['40k','Warhammer 40,000','11th edition'],['kt','Kill Team','2024 edition']];
+const KT_TABS=[['ktrules','Core Rules','rules'],['kteams','Kill Teams','codex'],['ktplay','Play','play'],['settings','Settings','settings']];
+const KT_HOME='kteams';
+const KT_FAC_ORDER=['IMP','CHAOS','AEL','NEC','ORK','TAU','TYR','VOT','SPEC'];
+const KT_FAC_NAME={IMP:'Imperium',CHAOS:'Chaos',AEL:'Aeldari',NEC:'Necrons',ORK:'Orks',TAU:"T'au Empire",TYR:'Tyranids',VOT:'Leagues of Votann',SPEC:'Special Teams'};
+const KT_TP=4,KT_EQ_MAX=4;
+const KT_QUICK=[
+  ['Turning point','Strategy phase (Initiative → Ready → Gambits), then Firefight phase. Four turning points.'],
+  ['Activation','Pick a ready operative, choose Engage or Conceal, spend its APL on actions, then it is expended.'],
+  ['Counteract','When you have no ready operatives, an expended Engage operative can do one 1AP action (moves limited to 2"). Once per operative per turning point.'],
+  ['Shooting','Roll ATK dice vs HIT (6 = crit). Defender rolls 3 dice vs Save. Cover lets them keep one normal save without rolling.'],
+  ['Fighting','Both roll. Attacker resolves first, then alternate: strike to deal damage or block to cancel a success.'],
+  ['Injured','Below half starting Wounds: −2" Move and worsen weapon HIT by 1.'],
+  ['Scoring','Crit Op, Tac Op and Kill Op, up to 6VP each, plus half your primary op (rounded up).']];
+const KT_RULES=[
+ {id:'k01',num:'01',title:'Core Concepts',items:[
+  ['Operatives','Each operative has a datacard with four stats. APL (Action Point Limit) is how many action points it can spend each activation. Move is how far it can go with a move action. Save is the result each defence die needs. Wounds is how much damage it can take.'],
+  ['Weapons','Each weapon profile has ATK (attack dice rolled), HIT (the result each die needs to succeed) and DMG, written normal/critical. Weapon rules add effects; tap a rule on a datacard to read it.'],
+  ['Dice','D6 is a six-sided die and D3 is a D6 halved and rounded up. X+ means X or higher. A 6 is always a critical success and a 1 always fails. A die can never be re-rolled more than once.'],
+  ['Measuring and control range','Distances are in inches and you can measure at any time. An operative is within control range of another if it is within 1" and visible to it.'],
+  ['Visibility','An operative is visible if the observer can see it, looking from its head at any part of the target model (not its base).'],
+  ['Injured and incapacitated','An operative with fewer than half its starting Wounds is injured: subtract 2" from its Move and worsen the HIT of its weapons by 1. At 0 wounds it is incapacitated and removed once the current action is resolved.'],
+  ['Orders','When an operative is activated, give it an Engage or Conceal order. Engage operatives act normally and can counteract. Conceal operatives cannot Shoot (except with Silent weapons) or Charge, but are not a valid target while they are in cover.'],
+  ['Ready and expended','Operatives are ready at the start of each turning point. Once activated, an operative is expended until the next Ready step.'],
+  ['Objective markers','An operative contests a marker within its control range. Your kill team controls the marker if the total APL of your operatives contesting it is higher than the enemy\'s.'],
+  ['Command points','CP pay for ploys. Strategy ploys are used in the Gambit step and firefight ploys when their rule says. Each ploy can usually be used once per turning point.']]},
+ {id:'k02',num:'02',title:'Turning Point Sequence',items:[
+  ['Battle length','The battle lasts four turning points. Each has a Strategy phase followed by a Firefight phase.'],
+  ['Initiative step','Players roll off and the winner decides who has initiative for the turning point.'],
+  ['Ready step','Ready all operatives. Each player gains 1CP; after the first turning point, the player without initiative gains 2CP instead.'],
+  ['Gambit step','Starting with the player who has initiative, players alternate using one strategy ploy or passing. The step ends when both players pass in succession.'],
+  ['Firefight phase','Starting with the player who has initiative, players alternate activating one ready operative. Determine its order, perform actions up to its APL, then it is expended.'],
+  ['Counteract','If you have no ready operatives when it would be your activation, you can instead counteract with one of your expended Engage operatives that has not counteracted this turning point. It performs one 1AP action, and any move it makes is limited to 2". The phase ends when every operative is expended.'],
+  ['End of the battle','After the fourth turning point, the player with the most VP wins.']]},
+ {id:'k03',num:'03',title:'Universal Actions',items:[
+  ['Reposition (1AP)','Move up to the operative\'s Move. It cannot start or end within control range of an enemy operative.'],
+  ['Dash (1AP)','Move up to 3". Same restrictions as Reposition.'],
+  ['Fall Back (2AP)','Move up to the operative\'s Move. Use this to leave an enemy\'s control range.'],
+  ['Charge (1AP)','Move up to Move +2" and end within control range of an enemy operative. Cannot be performed with a Conceal order or if it starts within control range of an enemy.'],
+  ['Shoot (1AP)','Shoot a valid target with a ranged weapon. Cannot be performed within control range of an enemy operative, or with a Conceal order unless the weapon is Silent.'],
+  ['Fight (1AP)','Fight an enemy operative within this operative\'s control range with a melee weapon.'],
+  ['Pick Up and Place Marker (1AP)','Pick up a marker the operative controls, or place one it is carrying within its control range.'],
+  ['One of each','An operative cannot perform the same action more than once per activation unless a rule says it can.']]},
+ {id:'k04',num:'04',title:'Shooting',items:[
+  ['Valid target','The target must be visible. If it has a Conceal order, it must not be in cover.'],
+  ['Cover','An operative is in cover if intervening terrain is within its control range, unless the shooter is within 2" of it.'],
+  ['Obscured','If intervening Heavy terrain is more than 1" from both operatives, the target is obscured: the shooter discards one success and its critical successes count as normal.'],
+  ['Attack dice','Roll ATK dice. Each result equal to or above HIT is a normal success, a 6 is a critical success, everything else is discarded.'],
+  ['Defence dice','The defender rolls three dice against their Save. If in cover, they can keep one normal success without rolling it and roll one fewer die.'],
+  ['Resolve','A normal save blocks a normal success. Two normal saves can block a critical success, and a critical save blocks either. Each unblocked success inflicts the weapon\'s normal or critical damage.']]},
+ {id:'k05',num:'05',title:'Fighting',items:[
+  ['Select','Pick an enemy operative within control range. Attacker and defender each select a melee weapon.'],
+  ['Roll','Both roll their ATK dice against their HIT. Results work like shooting: 6 is critical, failures are discarded.'],
+  ['Resolve','Starting with the attacker, players alternate resolving one success. Strike to inflict that success\'s damage, or block: a normal success discards one of the opponent\'s normal successes and a critical discards one normal or critical. It ends when an operative is incapacitated or all successes are resolved.']]},
+ {id:'k06',num:'06',title:'Terrain',items:[
+  ['Heavy','Blocks visibility and can make operatives obscured.'],
+  ['Light','Provides cover but does not obscure.'],
+  ['Insignificant','Ignored for cover and visibility.'],
+  ['Exposed','Cannot be used for cover.'],
+  ['Vantage','Upper levels of terrain operatives can stand on. Each killzone explains how vantage works there.'],
+  ['Climbing, dropping and jumping','Operatives can move up, down and across terrain. Check the official rules and killzone rules for the distances.']]},
+ {id:'k07',num:'07',title:'Missions and Scoring',items:[
+  ['Three ops','You score VP from the Crit Op, your Tac Op and the Kill Op. Each is worth up to 6VP.'],
+  ['Crit Op','One mission shared by both players for the battle. Its VP are scored from the second turning point onwards.'],
+  ['Tac Op','Each player secretly picks one tac op from their kill team\'s archetypes and reveals it when its reveal condition happens.'],
+  ['Kill Op','Your kill grade goes up as you incapacitate enemy operatives. The number needed for each grade depends on how many operatives the enemy started with (see the Kill Op chart).'],
+  ['Primary op','Secretly choose Crit, Tac or Kill as your primary op. At the end of the battle, score extra VP equal to half the VP you scored from that op, rounding up.']]},
+ {id:'k08',num:'08',title:'Setting Up',items:[
+  ['Sequence','Set up the killzone and decide drop zones, select equipment and set it up, choose your tac op and primary op, then set up operatives in your drop zone.'],
+  ['Equipment','Select up to four different equipment options from your kill team\'s faction equipment and the universal equipment.']]}];
+const KT_KILLZONES=[
+  ['Volkus','Open ruins of a fallen city. Expect Heavy ruin walls with Vantage floors, scattered Light debris and lots of climbing between levels.'],
+  ['Gallowdark','Tight corridors inside a void hulk. Walls block everything and hatchways can be opened or closed with an action, so lines of fire change constantly.'],
+  ['Tomb World','Necron catacombs built from walls and doorways in close quarters, similar in feel to Gallowdark.'],
+  ['Bheta-Decima','A crumbling hive city with walls and gantries. Breach points let operatives force new routes through walls.'],
+  ['Other','Use the mission pack or killzone card you are playing with.']];
+const KT_SIG='Condensed reference in plain language for Kill Team 2024. For exact wording, check the official Kill Team rules.';
+
+const ktTeams=()=>Object.entries(S.ktteams||{}).map(([id,t])=>({id,...t}));
+const ktTeam=id=>S.ktteams?.[id]?{id,...S.ktteams[id]}:null;
+const ktFacOf=t=>KT_FAC_ORDER.includes(t?.faction)?t.faction:'SPEC';
+const ktAbbr=n=>String(n||'?').replace(/[^A-Za-z ]/g,' ').split(/\s+/).filter(w=>w&&!/^(of|the|and)$/i.test(w)).map(w=>w[0]).join('').slice(0,3).toUpperCase()||'KT';
+const ktBadge=(t,small)=>`<span class="badge kf-${ktFacOf(t)}${small?' s':''}" aria-hidden="true">${h(ktAbbr(t?.name))}</span>`;
+function ktGrouped(list){const m={};for(const t of list)(m[ktFacOf(t)]||(m[ktFacOf(t)]=[])).push(t);
+  return KT_FAC_ORDER.filter(f=>m[f]).map(f=>[f,m[f].sort(byName)])}
+const ktCore=()=>S.ktcore||{universalEquipment:[],weaponRules:[],critOps:[],tacOps:[],killOpChart:[]};
+const ktHead=(title,eyebrow,extra='',back='')=>`<header class="top"><div class="grow">${back}<p class="eyebrow">${h(eyebrow)}</p><h1>${h(title)}</h1></div>${extra}</header>`;
+const ktBack=(k,label)=>`<button class="btn ghost sm" data-a="go" data-k="${k}" style="justify-self:start;padding-left:0">‹ ${h(label)}</button>`;
+
+function mdInline(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/(^|[\s(])\*(?!\s)([^*\n]+?)\*(?![\w*])/g,'$1<em>$2</em>')}
+function md(src){
+  const lines=h(String(src||'')).split('\n').map(l=>l.replace(/\s+$/,''));const out=[];let i=0;
+  while(i<lines.length){let l=lines[i];const t=l.trim();
+    if(!t){i++;continue}
+    if(/^-{3,}$/.test(t)){out.push('<hr class="kt-hr">');i++;continue}
+    if(t.startsWith('|')){const rows=[];while(i<lines.length&&lines[i].trim().startsWith('|')){rows.push(lines[i].trim());i++}
+      const cells=rows.filter(r=>!/^\|[\s:|-]+\|?$/.test(r)).map(r=>r.replace(/^\||\|$/g,'').split('|').map(c=>c.trim()));
+      const w=Math.max(...cells.map(c=>c.length));
+      out.push(`<div class="wtab-wrap kt-mdt"><table class="wtab">${cells.map((c,ri)=>`<tr>${c.map((x,ci)=>{const tag=ri===0?'th':'td';const span=c.length<w&&ci===c.length-1?` colspan="${w-c.length+1}"`:'';return `<${tag}${span}>${mdInline(x)}</${tag}>`}).join('')}</tr>`).join('')}</table></div>`);continue}
+    const hm=t.match(/^#{1,6}\s+(.*)$/);if(hm){out.push(`<p class="kt-mdh">${mdInline(hm[1])}</p>`);i++;continue}
+    if(/^[-*]\s+/.test(t)){const items=[];while(i<lines.length&&/^\s*[-*]\s+/.test(lines[i])){const ind=lines[i].match(/^\s*/)[0].length;items.push(`<li${ind>1?' class="sub"':''}>${mdInline(lines[i].trim().replace(/^[-*]\s+/,''))}</li>`);i++}
+      out.push(`<ul class="kt-ul">${items.join('')}</ul>`);continue}
+    const para=[];while(i<lines.length&&lines[i].trim()&&!/^\s*([-*]\s+|\||#{1,6}\s)/.test(lines[i])&&!/^-{3,}$/.test(lines[i].trim())){para.push(mdInline(lines[i].trim()));i++}
+    out.push(`<p>${para.join('<br>')}</p>`)}
+  return `<div class="kt-md">${out.join('')}</div>`}
+
+const KT_WR_ALIAS={bal:'balanced',dev:'devastating',prc:'piercing',prccrit:'piercing crits',rng:'range','minimum rng':'range',sat:'saturate',sil:'silent',hvy:'heavy',lim:'limited',rnd:'rending',rend:'rending',sev:'severe',tor:'torrent',acc:'accurate','hvy(dash)':'heavy (dash only)','hvy(repos)':'heavy (reposition only)','heavy (repositiononly)':'heavy (reposition only)','heavy (dashonly)':'heavy (dash only)'};
+const ktWrNorm=t=>{let k=String(t).toLowerCase().replace(/^\*/,'').replace(/\*$/,'').replace(/[\d"+]+/g,' ').replace(/\bx\b/g,' ').replace(/\s*\(\s*/g,' (').replace(/\s+/g,' ').trim();
+  if(KT_WR_ALIAS[k.replace(/\s+/g,'')])return KT_WR_ALIAS[k.replace(/\s+/g,'')];return KT_WR_ALIAS[k]||k};
+let KTGLOSS=null,KTGLOSS_SRC=null;
+function ktGloss(){const src=ktCore().weaponRules;if(KTGLOSS&&KTGLOSS_SRC===src)return KTGLOSS;KTGLOSS={};KTGLOSS_SRC=src;
+  for(const r of src||[]){const k=ktWrNorm(r.name);if(!KTGLOSS[k]||!/^\d/.test(r.name))KTGLOSS[k]=[r.name.replace(/ x$/,' X').replace(/^\d"\s*/,''),r.text]}
+  KTGLOSS['psychic']=KTGLOSS['psychic']||['Psychic','A psychic weapon. Some rules interact with psychic weapons or PSYKER operatives.'];return KTGLOSS}
+function ktRuleInfo(tok,tid){const raw=String(tok).trim();
+  if(raw.startsWith('*')||raw.endsWith('*')){const t=ktTeam(tid);const nm=raw.replace(/\*/g,'').trim().toLowerCase();
+    for(const o of t?.ops||[])for(const a of o.abilities||[])if(a.name.replace(/\*/g,'').trim().toLowerCase()===nm.replace(/\s*\d.*$/,'')||a.name.replace(/\*/g,'').trim().toLowerCase()===nm)return[a.name.replace(/\*/g,''),a.text]}
+  const g=ktGloss()[ktWrNorm(raw)];return g||null}
+function ktWr(wr,tid){if(!wr)return'';const parts=[];let depth=0,cur='';for(const ch of wr){if(ch==='(')depth++;if(ch===')')depth--;if(ch===','&&depth<=0){parts.push(cur);cur=''}else cur+=ch}parts.push(cur);
+  return parts.map(p=>p.trim()).filter(Boolean).map(p=>ktRuleInfo(p,tid)?`<button type="button" class="kwb" data-kw="${h(p)}" data-fac="kt:${h(tid)}">${h(p)}</button>`:h(p)).join(', ')}
+
+function ktStats(o){return `<span class="statline kt-stat" style="grid-template-columns:repeat(4,minmax(0,1fr))">${[['APL',o.apl],['Move',o.move],['Save',o.save],['Wounds',o.wounds]].map(([k,v])=>`<span><b>${k}</b><span>${h(v)}</span></span>`).join('')}</span>`}
+function ktWeapons(o,tid,only){const ws=(o.weapons||[]).filter(w=>!only||only.includes(w.id));if(!ws.length)return'';
+  const rows=ws.flatMap(w=>(w.profiles||[]).map(p=>{const nm=w.name+(p.n?` – ${p.n}`:'');const ty=w.type==='M'?'Melee':w.type==='P'?'Psychic':w.type==='E'?'Equipment':'Ranged';
+    return `<tr><td><span class="kt-wt ${w.type==='M'?'m':'r'}" title="${ty}" aria-label="${ty}">${w.type==='M'?'⚔':'⌖'}</span>${h(nm)}${p.wr?`<small>[${ktWr(p.wr,tid)}]</small>`:''}</td><td>${h(p.atk)}</td><td>${h(p.hit)}</td><td>${h(p.dmg)}</td></tr>`}));
+  return `<div class="wtab-wrap"><table class="wtab kt-wtab"><thead><tr><th>Weapons</th><th>ATK</th><th>HIT</th><th>DMG</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>`}
+function ktAbil(o,opts){const ab=(o.abilities||[]).map(a=>`<div class="kt-ab"><p class="kt-abh"><strong>${h(a.name)}</strong>${a.ap!=null?` <span class="tag brass">${h(a.ap)}AP</span>`:''}</p>${md(a.text)}</div>`).join('');
+  const os=(o.options||[]).filter(x=>!opts||opts.includes(x.id)).map(x=>`<div class="kt-ab"><p class="kt-abh"><strong>${h(x.name)}</strong> <span class="tag">Option</span></p>${md(x.text)}</div>`).join('');
+  return ab+os}
+function ktCard(t,o,sel,key){const k=key||('kc:'+t.id+':'+o.id);const ab=ktAbil(o,sel?.opts);
+  return `<div class="ds-pad ds-stats">${ktStats(o)}</div>${secBlock(k+':w','Weapons',ktWeapons(o,t.id,sel?.weps),true)}${ab?secBlock(k+':a','Abilities',`<div class="abil">${ab}</div>`,true):''}
+    ${secBlock(k+':k','Keywords',`<p class="small">${h(o.keywords||'–')}</p>${o.base?`<p class="small muted">Base: ${h(o.base)}mm</p>`:''}`,false)}`}
+function ktPloy(p,o={}){const s=p.type==='S';
+  return `<details class="strat ${s?'k-strat':'k-fire'}${o.used?' used':''}" ${o.anchor?`id="${o.anchor}"`:''} ${o.open?'open':''}><summary><div class="sh"><div style="min-width:0"><h3>${h(p.name)}</h3><small>${s?'Strategy ploy':'Firefight ploy'}${o.src?' · '+h(o.src):''}</small></div><span class="cp">${h(p.cp??1)}CP${CHEV}</span></div></summary><div class="sb">${md(p.text)}</div></details>${o.extra?`<div class="strat-x">${o.extra}</div>`:''}`}
+const ktLegend=()=>`<div class="legend"><span><i style="background:#c2571a"></i>Strategy ploy</span><span><i style="background:#7a2f9e"></i>Firefight ploy</span></div>`;
+function ktEqItem(e,o={}){return secBlock((o.key||'eq:')+e.id,e.name,md(e.text),o.open)}
+
+/* views */
+function vKtRules(){const c=ktCore();
+  return ktHead('Core Rules','Kill Team · 2024 edition')+`<div class="stack">
+    <p class="small muted">${h(KT_SIG)}</p>
+    <section class="panel"><h2>Quick reference</h2><dl class="sparts">${KT_QUICK.map(([a,b])=>`<dt>${h(a.toUpperCase())}</dt><dd>${h(b)}</dd>`).join('')}</dl></section>
+    ${KT_RULES.map(sec=>`<details class="rulebox" id="rule-${sec.id}" ${S.openRule===sec.id?'open':''}><summary><span class="num">${sec.num}</span> &nbsp;<strong>${h(sec.title)}</strong></summary>
+      <div style="margin-top:8px">${sec.items.map(([t,x],i)=>`<div class="rule-item" id="rule-${sec.id}-${i}"><strong>${h(t)}</strong><p>${h(x)}</p></div>`).join('')}</div></details>`).join('')}
+    <section class="stack"><h2>Killzones</h2>${KT_KILLZONES.map(([n,x])=>secBlock('kz:'+n,n,`<p>${h(x)}</p>`)).join('')}</section>
+    <section class="stack" id="kt-ops"><h2>Approved Ops</h2>
+      ${catBlock('ktr:crit','Crit Ops',c.critOps.length,c.critOps.map(o=>secBlock('co:'+o.name,o.name,md(o.text))).join(''))}
+      ${catBlock('ktr:tac','Tac Ops',c.tacOps.length,c.tacOps.map(o=>secBlock('to:'+o.name,`${o.name} · ${o.archetype}`,md(o.text))).join(''))}
+      ${catBlock('ktr:kill','Kill Op',1,killChart())}</section>
+    <section class="stack" id="kt-ue"><h2>Universal equipment</h2>${c.universalEquipment.map(e=>ktEqItem(e,{key:'ue:'})).join('')||'<p class="muted small">Loading…</p>'}</section>
+    <section class="stack" id="kt-wr"><h2>Weapon rules</h2>${secBlock('ktwr','All weapon rules',`<dl class="sparts">${Object.values(ktGloss()).sort((a,b)=>a[0].localeCompare(b[0])).map(([n,x])=>`<dt>${h(n.toUpperCase())}</dt><dd>${h(x)}</dd>`).join('')}</dl>`,true)}</section>
+  </div>`}
+function killChart(hl){const ch=ktCore().killOpChart||[];if(!ch.length)return'';
+  return `<div class="wtab-wrap"><table class="wtab"><thead><tr><th>Enemy start</th>${[1,2,3,4,5].map(g=>`<th>Grade ${g}</th>`).join('')}</tr></thead><tbody>${ch.map((r,i)=>`<tr${hl===i+5?' class="kt-hl"':''}><td>${i+5} operatives</td>${r.map(n=>`<td>${n}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="small muted" style="padding:8px var(--tx)">Numbers are enemy operatives incapacitated to reach each kill grade.</p>`}
+
+function vKTeams(){const ts=ktTeams();const ro=!S.canWrite;
+  const loading=!S.loaded.ktteams&&S.db;
+  const body=ktGrouped(ts).map(([f,list])=>catBlock('kt:'+f,KT_FAC_NAME[f]||f,list.length,list.map(t=>`<button class="card kf-${ktFacOf(t)}" data-a="ktTeam" data-id="${h(t.id)}">${ktBadge(t)}<div class="body"><div class="row between"><h3>${h(t.name)}</h3><span class="small muted">${(t.ops||[]).length} operatives</span></div>
+    <div class="row">${(t.archetypes||[]).map(a=>`<span class="tag">${h(a)}</span>`).join('')}</div></div></button>`).join(''))).join('');
+  return ktHead('Kill Teams','Kill Team · 2024 edition',`<div class="row">${'<button class="btn sm" data-a="go" data-k="ktio">Import / export</button>'}</div>`)+`<div class="stack">
+    ${loading?'<p class="muted">Loading kill teams…</p>':ts.length?`<div class="stack">${body}</div>`:`<div class="empty"><h3>No kill teams yet</h3><p>The Kill Team data loads the first time someone opens the app after this update. Reload if this stays empty.</p></div>`}</div>`}
+function vKTeam(){const t=ktTeam(S.viewId);if(!t)return backTo('kteams','That kill team was removed.');const c=ktCore();
+  const sp=(t.ploys||[]).filter(p=>p.type==='S'),fp=(t.ploys||[]).filter(p=>p.type!=='S');
+  return ktHead(t.name,`${KT_FAC_NAME[ktFacOf(t)]||t.factionName||''} · Kill team`,S.canWrite?`<button class="btn sm" data-a="ktEdit" data-id="${h(t.id)}">Edit data</button>`:'',ktBack('kteams','Kill Teams'))+`<div class="stack">
+    ${(t.archetypes||[]).length?`<div class="row">${t.archetypes.map(a=>`<span class="tag brass">${h(a)}</span>`).join('')}</div>`:''}
+    <section class="stack">${t.description?secBlock('kta:'+t.id,'About',md(t.description)):''}${secBlock('ktc:'+t.id,'Operative selection',md(t.composition),true)}</section>
+    ${(t.factionRules||[]).length?`<section class="stack"><h2>Faction rules</h2>${t.factionRules.map((r,i)=>secBlock('ktf:'+t.id+':'+i,r.name,md(r.text))).join('')}</section>`:''}
+    <section class="stack"><h2>Operatives</h2>${catBlock('kto:'+t.id,'Datacards',(t.ops||[]).length,(t.ops||[]).map(o=>`<button class="urow" data-a="ktOpView" data-id="${h(o.id)}"><span class="nm"><strong>${h(o.name)}</strong><span class="sm-n">${h(o.wounds)}W</span></span>${ktStats(o)}</button>`).join(''))}</section>
+    ${sp.length?`<section class="stack"><h2>Strategy ploys</h2>${ktLegend()}${sp.map(p=>ktPloy(p,{anchor:'kp-'+p.id,open:S.scrollTo==='kp-'+p.id})).join('')}</section>`:''}
+    ${fp.length?`<section class="stack"><h2>Firefight ploys</h2>${fp.map(p=>ktPloy(p,{anchor:'kp-'+p.id,open:S.scrollTo==='kp-'+p.id})).join('')}</section>`:''}
+    ${(t.equipment||[]).length?`<section class="stack"><h2>Faction equipment</h2>${t.equipment.map(e=>ktEqItem(e,{key:'fe:'})).join('')}</section>`:''}
+    <section class="stack">${catBlock('ktue:'+t.id,'Universal equipment',c.universalEquipment.length,c.universalEquipment.map(e=>ktEqItem(e,{key:'ue:'})).join(''))}</section>
+  </div>`}
+function vKtEdit(){const t=S.ktteams?.[S.viewId];if(!t)return backTo('kteams','That kill team was removed.');
+  return ktHead(t.name,'Editing kill team data','',ktBack('ktteam','Back'))+`<div class="stack">
+    <p class="small muted">This is the team's raw data as JSON. Change stats, weapons, ploys or equipment, then save. Changes are shared with the whole group.</p>
+    <label class="f">Team JSON<textarea id="ktjson" rows="24" spellcheck="false" class="num" style="font-size:.8rem">${h(JSON.stringify(t,null,2))}</textarea></label>
+    <div class="row"><button class="btn primary" data-a="ktSaveJson">Save</button><button class="btn" data-a="go" data-k="ktteam">Cancel</button></div></div>`}
+function vKtIO(){return ktHead('Import / export','Kill Team data','',ktBack('kteams','Kill Teams'))+`<div class="stack">
+  <section class="panel"><h2>Export</h2><p class="small muted">Copies every kill team as JSON, keyed by team id.</p><button class="btn" style="justify-self:start" data-a="ktExport">Copy kill team JSON</button></section>
+  ${S.canWrite?`<section class="panel"><h2>Import</h2><p class="small muted">Paste JSON shaped like the export: { "TEAM-ID": { name, faction, ops, ploys, equipment, … } }. Teams with the same id are replaced.</p>
+    <label class="f">JSON<textarea id="ktImport" rows="10" spellcheck="false"></textarea></label><div class="row"><button class="btn primary" data-a="ktImport">Import</button></div></section>`:''}</div>`}
+
+/* play */
+const KTG0=()=>({format:'1v1',team:'',ops:[],eq:[],ally:{name:'',team:''},opp:[{name:'',team:''},{name:'',team:''}],oppStart:'',crit:'',tac:'',kz:'',primary:'',tp:1,cp:2,vp:{crit:0,tac:0,kill:0},oppVp:0,kills:0,step:1,ready:false,used:{}});
+function ktOpInst(t,id){const o=(t?.ops||[]).find(x=>x.id===id);if(!o)return null;const ws=o.weapons||[];const d=ws.filter(w=>w.def);
+  return{k:rid(),op:id,weps:(d.length?d:ws).map(w=>w.id),opts:[]}}
+async function loadKtGame(){if(S.ktg)return;S.ktg={...KTG0(),loading:true};let g=null;
+  if(S.db&&S.uid){try{const snap=await S.db.doc(`data/users/${S.uid}/ktgame`).get();if(snap.exists)g=snap.data()}catch(e){}}
+  else{try{g=JSON.parse(localStorage.getItem('muster-ktgame')||'null')}catch(e){}}
+  const b=KTG0();S.ktg={...b,...clone(g||{}),vp:{...b.vp,...(g?.vp||{})}};render()}
+function saveKt(){clearTimeout(saveKt.t);const g=clone(S.ktg);delete g.loading;saveKt.t=setTimeout(async()=>{
+  if(S.db&&S.uid){try{await S.db.doc(`data/users/${S.uid}/ktgame`).set(g)}catch(e){toast('Game could not be saved to your account.')}}
+  else{try{localStorage.setItem('muster-ktgame',JSON.stringify(g))}catch(e){}}},400)}
+function ktTeamSelect(id,val,ph){const opts=ktGrouped(ktTeams()).map(([f,l])=>`<optgroup label="${h(KT_FAC_NAME[f]||f)}">${l.map(t=>`<option value="${h(t.id)}" ${t.id===val?'selected':''}>${h(t.name)}</option>`).join('')}</optgroup>`).join('');
+  return `<select data-c="${id}"><option value="">${h(ph||'Choose a kill team…')}</option>${opts}</select>`}
+function ktScore(g){const v=g.vp||{};const base=(+v.crit||0)+(+v.tac||0)+(+v.kill||0);const pv=g.primary?(+v[g.primary]||0):0;return{base,bonus:Math.ceil(pv/2),total:base+Math.ceil(pv/2)}}
+function ktKillGrade(g){const r=(ktCore().killOpChart||[])[(+g.oppStart||0)-5];if(!r)return null;let gr=0;r.forEach((n,i)=>{if((+g.kills||0)>=n)gr=i+1});return{grade:gr,row:r}}
+const KT_STEPS=['Team','Operatives','Equipment','Opponent','Mission'];
+function vKtSetup(){const g=S.ktg;const t=ktTeam(g.team);const step=g.step||1;const c=ktCore();
+  const nav=`<div class="seg" role="group" aria-label="Setup steps">${KT_STEPS.map((s,i)=>`<button data-a="ktStep" data-k="${i+1}" aria-pressed="${step===i+1}" ${i>0&&!t?'disabled':''}>${i+1}. ${s}</button>`).join('')}</div>`;
+  let body='';
+  if(step===1){body=`<section class="panel"><h2>Game format</h2><div class="seg" role="group" aria-label="Format">${[['1v1','1 v 1'],['2v2','2 v 2']].map(([k,n])=>`<button data-a="ktFormat" data-k="${k}" aria-pressed="${g.format===k}">${n}</button>`).join('')}</div></section>
+    <section class="panel"><h2>Your kill team</h2><label class="f">Kill team${ktTeamSelect('ktgTeam',g.team)}</label>
+    ${t?`<div class="row">${ktBadge(t)}<div style="min-width:0"><strong>${h(t.name)}</strong><p class="small muted">${h((t.archetypes||[]).join(' · '))}</p></div></div>`:''}</section>`}
+  else if(step===2&&t){const cnt={};g.ops.forEach(x=>cnt[x.op]=(cnt[x.op]||0)+1);
+    body=`<section class="stack">${secBlock('ksc:'+t.id,'Operative selection rules',md(t.composition),true)}</section>
+    <section class="panel"><div class="panel-head"><h2>Add operatives</h2><span class="num small">${g.ops.length} selected</span></div>
+      <div class="stack" style="gap:6px">${(t.ops||[]).map(o=>`<div class="row between kt-addrow"><span style="min-width:0"><strong>${h(o.name)}</strong> <span class="small muted">${h(o.wounds)}W</span></span><span class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="ktOpN" data-id="${h(o.id)}" data-n="-1" ${cnt[o.id]?'':'disabled'} aria-label="Remove one ${h(o.name)}">−</button><span class="num" style="min-width:20px;text-align:center">${cnt[o.id]||0}</span><button class="btn sm" data-a="ktOpN" data-id="${h(o.id)}" data-n="1" aria-label="Add ${h(o.name)}">+</button></span></div>`).join('')}</div></section>
+    ${g.ops.length?`<section class="panel"><h2>Loadouts</h2><p class="small muted">Tick the weapons and options each operative is taking.</p>${g.ops.map((x,i)=>{const o=(t.ops||[]).find(y=>y.id===x.op);if(!o)return'';
+      return `<div class="item"><div class="row between"><strong>${h(o.name)}</strong><button class="btn sm ghost danger" data-a="ktOpRm" data-k="${h(x.k)}">Remove</button></div>
+        <div class="chips">${(o.weapons||[]).map(w=>`<button class="chip" data-a="ktWep" data-k="${h(x.k)}" data-id="${h(w.id)}" aria-pressed="${x.weps.includes(w.id)}">${h(w.name)}</button>`).join('')}</div>
+        ${(o.options||[]).length?`<p class="eyebrow">Options</p><div class="chips">${o.options.map(op=>`<button class="chip" data-a="ktOpt" data-k="${h(x.k)}" data-id="${h(op.id)}" aria-pressed="${(x.opts||[]).includes(op.id)}">${h(op.name)}</button>`).join('')}</div>`:''}</div>`}).join('')}</section>`:''}`}
+  else if(step===3&&t){const all=[...(t.equipment||[]).map(e=>({...e,src:'Faction'})),...c.universalEquipment.map(e=>({...e,src:'Universal'}))];
+    body=`<section class="panel"><div class="panel-head"><h2>Equipment</h2><span class="num small">${g.eq.length} / ${KT_EQ_MAX}</span></div><p class="small muted">Pick up to ${KT_EQ_MAX} different equipment options.</p>
+      ${g.eq.length>KT_EQ_MAX?`<ul class="warn"><li>${g.eq.length} picked. The limit is ${KT_EQ_MAX}.</li></ul>`:''}</section>
+      ${['Faction','Universal'].map(src=>`<section class="stack"><h2>${src} equipment</h2>${all.filter(e=>e.src===src).map(e=>{const on=g.eq.includes(e.id);
+        return `<div class="kt-eq${on?' on':''}"><button class="chip" data-a="ktEq" data-id="${h(e.id)}" aria-pressed="${on}">${on?'Selected':'Select'}</button>${ktEqItem(e,{key:'seq:'})}</div>`}).join('')}</section>`).join('')}`}
+  else if(step===4&&t){const two=g.format==='2v2';
+    const pl=(lab,k,i)=>`<div class="item"><p class="eyebrow">${h(lab)}</p><label class="f">Player name<input type="text" data-c="${k}Name" data-n="${i}" value="${h((i==null?g[k]:g[k][i])?.name||'')}" placeholder="Optional"></label><label class="f">Kill team${ktTeamSelect(k+'Team'+(i==null?'':i),(i==null?g[k]:g[k][i])?.team,'Choose their kill team…')}</label></div>`;
+    body=`${two?`<section class="panel"><h2>Your teammate</h2>${pl('Ally','ally',null)}</section>`:''}
+      <section class="panel"><h2>${two?'Opponents':'Opponent'}</h2>${pl(two?'Opponent 1':'Opponent','opp',0)}${two?pl('Opponent 2','opp',1):''}
+      <label class="f">Enemy operatives at the start (for the Kill Op)<select data-c="ktgOppStart"><option value="">Not set</option>${[5,6,7,8,9,10,11,12,13,14].map(n=>`<option value="${n}" ${+g.oppStart===n?'selected':''}>${n} operatives</option>`).join('')}</select></label></section>`}
+  else if(step===5&&t){const tac=c.tacOps.filter(o=>!(t.archetypes||[]).length||(t.archetypes||[]).some(a=>a.toLowerCase()===o.archetype.toLowerCase()));
+    body=`<section class="panel"><h2>Mission</h2>
+      <label class="f">Crit Op<select data-c="ktgCrit"><option value="">Choose…</option>${c.critOps.map(o=>`<option ${o.name===g.crit?'selected':''}>${h(o.name)}</option>`).join('')}</select></label>
+      <label class="f">Your Tac Op<select data-c="ktgTac"><option value="">Choose…</option>${tac.map(o=>`<option value="${h(o.name)}" ${o.name===g.tac?'selected':''}>${h(o.name)} · ${h(o.archetype)}</option>`).join('')}</select></label>
+      <label class="f">Killzone<select data-c="ktgKz"><option value="">Choose…</option>${KT_KILLZONES.map(([n])=>`<option ${n===g.kz?'selected':''}>${h(n)}</option>`).join('')}</select></label>
+      <p class="eyebrow">Primary op (secret)</p><div class="seg" role="group" aria-label="Primary op">${[['','Not yet'],['crit','Crit'],['tac','Tac'],['kill','Kill']].map(([k,n])=>`<button data-a="ktPrimary" data-k="${k}" aria-pressed="${(g.primary||'')===k}">${n}</button>`).join('')}</div></section>`}
+  const warn=[];if(step>=2&&t&&!g.ops.length)warn.push('No operatives selected yet.');if(g.eq.length>KT_EQ_MAX)warn.push(`Too much equipment (${g.eq.length}/${KT_EQ_MAX}).`);
+  const foot=`<div class="row" style="position:sticky;bottom:calc(70px + env(safe-area-inset-bottom,0px));background:var(--bg);padding-block:10px">${step>1?`<button class="btn" data-a="ktStep" data-k="${step-1}">Back</button>`:''}${step<5?`<button class="btn primary" data-a="ktStep" data-k="${step+1}" ${t?'':'disabled'}>Next</button>`:`<button class="btn primary" data-a="ktStart" ${t&&g.ops.length?'':'disabled'}>Start game</button>`}</div>`;
+  return ktHead(g.wasReady?'Edit setup':'New game','Kill Team · Battle setup',g.wasReady&&g.team?`<button class="btn sm" data-a="ktResume">Back to game</button>`:'')+`<div class="stack">${nav}${step===5&&warn.length?`<ul class="warn">${warn.map(x=>`<li>${h(x)}</li>`).join('')}</ul>`:''}${body}${foot}</div>`}
+function vKtPlay(){const g=S.ktg;if(!g||g.loading)return '<p class="muted" style="margin-top:24px">Loading game…</p>';
+  if(!g.ready)return vKtSetup();const t=ktTeam(g.team);if(!t)return vKtSetup();const c=ktCore();const sc=ktScore(g);const kg=ktKillGrade(g);
+  const ctr=(path,label,val,max)=>`<div class="ctr"><span class="eyebrow">${label}</span><span class="v">${val}</span><div class="row"><button class="btn sm" data-a="ktBump" data-k="${path}" data-n="-1" aria-label="${label} down">−</button><button class="btn sm" data-a="ktBump" data-k="${path}" data-n="1" aria-label="${label} up" ${max!=null&&val>=max?'disabled':''}>+</button></div></div>`;
+  const crit=c.critOps.find(o=>o.name===g.crit),tac=c.tacOps.find(o=>o.name===g.tac);const kz=KT_KILLZONES.find(([n])=>n===g.kz);
+  const opp=(g.format==='2v2'?g.opp:g.opp.slice(0,1)).filter(o=>o.team||o.name);
+  const oppTxt=opp.map(o=>{const ot=ktTeam(o.team);return `${o.name?h(o.name)+' · ':''}${ot?`<button class="kwb" data-a="ktTeam" data-id="${h(ot.id)}">${h(ot.name)}</button>`:'Unknown team'}`}).join(' & ')||'Opponent';
+  const ally=g.format==='2v2'&&(g.ally.team||g.ally.name)?(()=>{const at=ktTeam(g.ally.team);return `${g.ally.name?h(g.ally.name)+' · ':''}${at?`<button class="kwb" data-a="ktTeam" data-id="${h(at.id)}">${h(at.name)}</button>`:''}`})():'';
+  const sp=(t.ploys||[]).filter(p=>p.type==='S'),fp=(t.ploys||[]).filter(p=>p.type!=='S');const eq=g.eq.map(id=>(t.equipment||[]).find(e=>e.id===id)||c.universalEquipment.find(e=>e.id===id)).filter(Boolean);
+  const pbtn=p=>`<button class="btn sm${g.used[p.id]?'':' primary'}" data-a="ktUse" data-id="${h(p.id)}" aria-pressed="${!!g.used[p.id]}">${g.used[p.id]?'Used this turning point':'Mark used'}</button>`;
+  return `<header class="top kf-${ktFacOf(t)}"><div class="grow"><div class="row" style="flex-wrap:nowrap">${ktBadge(t)}<div style="min-width:0"><p class="eyebrow">Kill Team · ${g.format==='2v2'?'2 v 2':'1 v 1'}</p><h1>${h(t.name)}</h1></div></div></div>
+    <div class="row" style="align-self:start">${S.confirm==='ktnew'?`<button class="btn sm danger" data-a="ktNew">New game</button><button class="btn sm ghost" data-a="unconfirm">Cancel</button>`:`<button class="btn sm" data-a="ktSetupEdit">Setup</button><button class="btn sm" data-a="confirm" data-k="ktnew">New game</button>`}</div></header>
+  <div class="stack">
+    <div class="score kt-score">${ctr('tp','Turning point',g.tp,KT_TP)}${ctr('cp','CP',g.cp)}<div class="ctr"><span class="eyebrow">Your VP</span><span class="v">${sc.total}</span><span class="small muted">${sc.bonus?`incl. +${sc.bonus} primary`:'&nbsp;'}</span></div>${ctr('oppVp','Opponent VP',g.oppVp)}</div>
+    <p class="small muted" style="text-align:center">You vs ${oppTxt}${ally?` · with ${ally}`:''}</p>
+    <section class="panel"><h2>Victory points</h2>
+      <div class="score kt-vp">${ctr('vp.crit','Crit Op',g.vp.crit,6)}${ctr('vp.tac','Tac Op',g.vp.tac,6)}${ctr('vp.kill','Kill Op',g.vp.kill,6)}</div>
+      <p class="eyebrow" style="text-align:center">Primary op</p><div class="seg" role="group" aria-label="Primary op">${[['','None'],['crit','Crit'],['tac','Tac'],['kill','Kill']].map(([k,n])=>`<button data-a="ktPrimary" data-k="${k}" aria-pressed="${(g.primary||'')===k}">${n}</button>`).join('')}</div>
+      <div class="row between kt-kill"><span><strong>Enemies incapacitated</strong><br><span class="small muted">${kg?`Kill grade ${kg.grade} of 5 · next at ${kg.row[kg.grade]??'–'}`:'Set enemy starting operatives in Setup to see your kill grade'}</span></span><span class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="ktBump" data-k="kills" data-n="-1" aria-label="Fewer kills">−</button><span class="num" style="min-width:24px;text-align:center;font-size:1.2rem">${+g.kills||0}</span><button class="btn sm" data-a="ktBump" data-k="kills" data-n="1" aria-label="More kills">+</button></span></div></section>
+    <section class="stack"><h2>Mission</h2>
+      ${crit?secBlock('kpc','Crit Op · '+crit.name,md(crit.text)):''}${tac?secBlock('kpt','Tac Op · '+tac.name,md(tac.text)):''}
+      ${secBlock('kpk','Kill Op',killChart(+g.oppStart||0))}${kz?secBlock('kpz','Killzone · '+kz[0],`<p>${h(kz[1])}</p>`):''}</section>
+    ${(t.factionRules||[]).length?`<section class="stack"><h2>Faction rules</h2>${t.factionRules.map((r,i)=>secBlock('kpf:'+i,r.name,md(r.text))).join('')}</section>`:''}
+    <section class="stack"><h2>Your operatives</h2>${g.ops.map(x=>{const o=(t.ops||[]).find(y=>y.id===x.op);if(!o)return'';const ws=(o.weapons||[]).filter(w=>x.weps.includes(w.id)).map(w=>w.name);
+      return `<button class="urow" data-a="ktOpSheet" data-k="${h(x.k)}"><span class="nm"><strong>${h(o.name)}</strong><span class="sm-n">${h(o.wounds)}W</span></span>${ktStats(o)}<span class="small muted">${h(ws.join(', '))}</span></button>`}).join('')||'<p class="muted small">No operatives selected.</p>'}</section>
+    ${sp.length?`<section class="stack"><h2>Strategy ploys</h2>${ktLegend()}${sp.map(p=>ktPloy(p,{used:g.used[p.id],extra:pbtn(p)})).join('')}</section>`:''}
+    ${fp.length?`<section class="stack"><h2>Firefight ploys</h2>${fp.map(p=>ktPloy(p,{used:g.used[p.id],extra:pbtn(p)})).join('')}</section>`:''}
+    <section class="stack"><h2>Equipment</h2>${eq.map(e=>ktEqItem(e,{key:'pe:'})).join('')||'<p class="muted small">No equipment selected.</p>'}</section>
+  </div>`}
+function ktOpSheet(s){const g=S.ktg;const t=ktTeam(g?.team);const x=g?.ops.find(y=>y.k===s.k);const o=x&&(t?.ops||[]).find(y=>y.id===x.op);if(!o)return null;
+  return `<header class="top kf-${ktFacOf(t)}"><div class="grow"><button class="btn ghost sm" data-a="closeSheet" style="justify-self:start;padding-left:0">‹ Back to game</button><p class="eyebrow">${h(t.name)}</p><h1>${h(o.name)}</h1></div></header>${ktCard(t,o,{weps:x.weps,opts:x.opts},'kps:'+x.k)}`}
+function ktOpView(s){const t=ktTeam(S.viewId);const o=(t?.ops||[]).find(y=>y.id===s.id);if(!o)return null;
+  return `<header class="top kf-${ktFacOf(t)}"><div class="grow"><button class="btn ghost sm" data-a="closeSheet" style="justify-self:start;padding-left:0">‹ ${h(t.name)}</button><p class="eyebrow">${h(t.name)} · Datacard</p><h1>${h(o.name)}</h1></div></header>${ktCard(t,o)}`}
+
+function ktIndex(add){
+  for(const sec of KT_RULES){add('Core rules',sec.title,'Section '+sec.num,'ktrule',sec.id,'rule-'+sec.id,'');sec.items.forEach(([t,x],i)=>add('Core rules',t,sec.title,'ktrule',sec.id,`rule-${sec.id}-${i}`,x))}
+  const c=ktCore();for(const o of c.critOps)add('Approved ops',o.name,'Crit Op','ktops','','kt-ops',o.text);for(const o of c.tacOps)add('Approved ops',o.name,'Tac Op · '+o.archetype,'ktops','','kt-ops',o.text);
+  for(const e of c.universalEquipment)add('Universal equipment',e.name,'Universal','ktops','','kt-ue',e.text);
+  for(const t of ktTeams()){add('Kill teams',t.name,KT_FAC_NAME[ktFacOf(t)],'ktteam',t.id,'',(t.archetypes||[]).join(' '));
+    for(const o of t.ops||[])add('Operatives',o.name,t.name,'ktteam',t.id,'',o.keywords);
+    for(const p of t.ploys||[])add('Ploys',p.name,`${t.name} · ${p.type==='S'?'Strategy':'Firefight'}`,'ktteam',t.id,'kp-'+p.id,p.text);
+    for(const e of t.equipment||[])add('Equipment',e.name,t.name,'ktteam',t.id,'',e.text);
+    for(const r of t.factionRules||[])add('Faction rules',r.name,t.name,'ktteam',t.id,'',r.text)}}
+
+function setSystem(k){if(!SYSTEMS.some(s=>s[0]===k))k='40k';S.sys=k;try{localStorage.setItem('muster-system',k)}catch(e){}}
+const sysHome=()=>S.sys==='kt'?KT_HOME:'lists';
+const KTA={
+  system(k){if(S.sys===k)return;setSystem(k);S.confirm=null;S.sheet=null;closeSearch();render();toast(k==='kt'?'Switched to Kill Team':'Switched to Warhammer 40,000')},
+  ktTeam(_,id){S.sheet=null;S.viewId=id;S.view='ktteam';S.confirm=null;render();scrollTo(0,0)},
+  ktOpView(_,id){S.sheet={type:'ktopv',id};render()},
+  ktOpSheet(k){S.sheet={type:'ktop',k};render()},
+  ktEdit(_,id){S.viewId=id;S.view='ktedit';render();scrollTo(0,0)},
+  async ktSaveJson(){let t;try{t=JSON.parse($('#ktjson').value)}catch(e){return toast('That isn\'t valid JSON. Check for a missing comma or bracket.')}
+    if(!t||!t.name)return toast('The team needs a name.');const id=S.viewId;
+    if(await write(()=>S.db.doc('ktteams/'+id).set(t),'Kill team saved')){S.ktteams[id]=t;S.view='ktteam';render()}},
+  ktExport(){S.sheet={type:'text',text:JSON.stringify(S.ktteams||{},null,2)};render()},
+  async ktImport(){let d;try{d=JSON.parse($('#ktImport').value)}catch(e){return toast('That isn\'t valid JSON. Check for a missing comma or bracket.')}
+    const ents=Object.entries(d||{}).filter(([id,t])=>/^[A-Za-z0-9_-]+$/.test(id)&&t&&t.name);let n=0;
+    for(const[id,t]of ents){if(!await write(()=>S.db.doc('ktteams/'+id).set(t)))return;S.ktteams[id]=t;n++}
+    toast(`Imported ${n} kill team${n===1?'':'s'}.`);S.view='kteams';render()},
+  ktStep(k){S.ktg.step=+k;render();scrollTo(0,0);saveKt()},
+  ktFormat(k){S.ktg.format=k;render();saveKt()},
+  ktOpN(_,id,n){const g=S.ktg;const t=ktTeam(g.team);if(+n>0){const x=ktOpInst(t,id);if(x)g.ops.push(x)}else{const i=g.ops.map(x=>x.op).lastIndexOf(id);if(i>=0)g.ops.splice(i,1)}render();saveKt()},
+  ktOpRm(k){const g=S.ktg;g.ops=g.ops.filter(x=>x.k!==k);render();saveKt()},
+  ktWep(k,id){const x=S.ktg.ops.find(y=>y.k===k);if(!x)return;x.weps=x.weps.includes(id)?x.weps.filter(w=>w!==id):[...x.weps,id];render();saveKt()},
+  ktOpt(k,id){const x=S.ktg.ops.find(y=>y.k===k);if(!x)return;x.opts=(x.opts||[]).includes(id)?x.opts.filter(w=>w!==id):[...(x.opts||[]),id];render();saveKt()},
+  ktEq(_,id){const g=S.ktg;if(g.eq.includes(id))g.eq=g.eq.filter(x=>x!==id);else{if(g.eq.length>=KT_EQ_MAX)return toast(`You can only take ${KT_EQ_MAX} equipment options.`);g.eq.push(id)}render();saveKt()},
+  ktPrimary(k){S.ktg.primary=k||'';render();saveKt()},
+  ktStart(){const g=S.ktg;if(!g.wasReady)g.used={};g.ready=true;g.wasReady=true;render();scrollTo(0,0);saveKt()},
+  ktResume(){S.ktg.ready=true;render();scrollTo(0,0);saveKt()},
+  ktSetupEdit(){S.ktg.ready=false;S.ktg.wasReady=true;S.ktg.step=1;render();scrollTo(0,0);saveKt()},
+  ktNew(){const g=KTG0();S.ktg=g;S.confirm=null;render();scrollTo(0,0);saveKt();toast('New game')},
+  ktBump(k,_,n){const g=S.ktg;const cur=+getPath(g,k)||0;let v=Math.max(0,cur+ +n);if(k==='tp'){v=Math.min(KT_TP,Math.max(1,v));if(v!==cur)g.used={}}if(k.startsWith('vp.'))v=Math.min(6,v);setPath(g,k,v);render();saveKt()},
+  ktUse(_,id){const g=S.ktg;g.used[id]=!g.used[id];render();saveKt()}};
+function ktChange(t,c){const g=S.ktg;if(!g)return false;
+  const map={ktgTeam:v=>{if(v!==g.team){g.team=v;g.ops=[];g.eq=[];g.tac=''}},ktgOppStart:v=>g.oppStart=v,ktgCrit:v=>g.crit=v,ktgTac:v=>g.tac=v,ktgKz:v=>g.kz=v,allyTeam:v=>g.ally.team=v,oppTeam0:v=>g.opp[0].team=v,oppTeam1:v=>g.opp[1].team=v,
+    allyName:v=>g.ally.name=v.trim(),oppName:v=>{g.opp[+t.dataset.n].name=v.trim()}};
+  if(!map[c])return false;map[c](t.value);render();saveKt();return true}
+
+Object.assign(A,KTA);
 /* ---------- boot ---------- */
-const EDITING=new Set(['det','unit','core','limits','io','settings']);
+const EDITING=new Set(['det','unit','core','limits','io','settings','ktedit','ktio']);
 const live=()=>{if(!EDITING.has(S.view))requestRender()};
 async function resolveNames(){if(!S.user)return;const ids=[...new Set(Object.values(S.lists).map(l=>l.createdBy).filter(Boolean))];if(!ids.length)return;
   const ps=await S.user.profiles(ids);let ch=false;for(const id of ids){const n=ps[id]?.name||'';if(S.names[id]!==n){S.names[id]=n;ch=true}}if(ch)live()}
@@ -1309,7 +1670,7 @@ const FIREBASE_CONFIG={
   messagingSenderId: "724539897955",
   appId: "1:724539897955:web:a17de2313e048ca3b7a056"
 };
-const MIGRATIONS=['rules-v2','enh-v3','codex-v4','da-codex-v5','da-wahapedia-v6'];
+const MIGRATIONS=['rules-v2','enh-v3','codex-v4','da-codex-v5','da-wahapedia-v6','kt-v1'];
 const FBV='https://www.gstatic.com/firebasejs/10.12.2/';
 function groupKey(){
   const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
@@ -1341,7 +1702,7 @@ async function fbConnect(group){
   return{db:{doc,collection},uid:auth.currentUser.uid};
 }
 async function boot(){
-  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto'}catch(e){S.customThemes=[]}applyTheme();applyLayout();S.view='lists';
+  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto';S.sys=localStorage.getItem('muster-system')||'40k'}catch(e){S.customThemes=[]}if(S.sys!=='kt')S.sys='40k';applyTheme();applyLayout();S.view=sysHome();
   const g=groupKey();
   if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Paste the invite link from your group below.</p><input id="invite" type="text" placeholder="Paste invite link" style="width:100%;padding:12px;font-size:16px;border:1px solid #999;border-radius:8px;margin:8px 0"><button id="joinbtn" style="width:100%;padding:12px;font-size:16px;border-radius:8px;border:0;background:#d9a744;font-weight:700">Join group</button><p id="joinerr" style="color:#c3362b"></p></main>';
     document.getElementById('joinbtn').onclick=()=>{const v=document.getElementById('invite').value.trim();const m=v.match(/g=([A-Za-z0-9_-]{20,})/)||v.match(/^([A-Za-z0-9_-]{20,})$/);
@@ -1349,7 +1710,9 @@ async function boot(){
   render();
   let c;try{c=await fbConnect(g)}catch(e){console.error(e);toast('Could not connect. Check your internet and reload.');render();return}
   S.db=c.db;S.uid=c.uid;const db=c.db;
-  sub('detachments','dets');sub('units','units');sub('lists','lists');
+  sub('detachments','dets');sub('units','units');sub('lists','lists');sub('ktteams','ktteams');
+  db.doc('core/kt').onSnapshot(s=>{S.ktcore=s.exists?s.data():null;live()},()=>{});
+  if(S.sys==='kt'&&S.view==='ktplay')loadKtGame();
   db.doc('core/faq').onSnapshot(s=>{S.faq=(s.exists?s.data().items:null)||[];live()},()=>{});
   db.doc('core/missions').onSnapshot(s=>{S.missions=(s.exists?s.data().rows:null)||{};live()},()=>{});
   db.doc('core/rules').onSnapshot(s=>{const d=s.exists?s.data():{};S.core={stratagems:d.stratagems||[],armyRules:d.armyRules||{}};S.settings={...DEFAULTS,...Object.fromEntries(Object.keys(DEFAULTS).filter(k=>d[k]!=null).map(k=>[k,d[k]]))};live()},()=>{});
