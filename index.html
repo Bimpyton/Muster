@@ -447,7 +447,7 @@ body.sys-kt:not([class*=kf-]){--a-fill:var(--brass);--a-ink:var(--brass-ink);--a
 :root.t-war .f-tyranids{--a-text:#c6a3e8;--a-soft:#2c1f3a}
 :root.t-war .f-dark-angels{--a-text:#78c9a0;--a-soft:#16291f}
 :root.t-war .f-custodes{--a-text:#e8bf55;--a-soft:#382c10}
-.top{margin-inline:-16px;padding-inline:16px;background:var(--a-solid);color:#fff;border-bottom:0;margin-bottom:12px}
+.top{margin-inline:0;padding-inline:var(--hx);background:var(--a-solid);color:#fff;border-bottom:0;margin-bottom:12px}
 .top::after{display:none}
 .top h1,.top .eyebrow,.top .grp,.top .muted{color:#fff}
 .top .btn{background:rgb(0 0 0 / .3);border-color:transparent;color:#fff}
@@ -479,6 +479,62 @@ body.sys-kt:not([class*=kf-]){--a-fill:var(--brass);--a-ink:var(--brass-ink);--a
 .au-err{min-height:1.2em;color:#ff7b70;font-size:.85rem}
 .au-ok{color:#7fd48b;font-size:.85rem}
 .au-link{background:none;border:0;color:#d9a744;font-size:.9rem;cursor:pointer;padding:6px}
+
+.lcard,.ptsbar,.cat-h,.urow,.pill,.pick,.btn,.chip,.sec>summary,.strat,.wtab-wrap,.card,.panel,input,select,textarea,.statline div,.seg,.seg button,.tabs button,.searchbar input,.results,.res,.eopt,.tag,.badge,.notice,.auth-card,.auth-card input,.ibtn,.top .btn,.cat,.sec,.sheet .pane{border-radius:8px!important}
+.pill,.tag,.chip{border-radius:5px!important}
+.chip{border-radius:999px!important}
+.cat{margin:12px 10px 0!important;border:0!important;background:color-mix(in srgb,var(--a-solid) 28%,var(--bg));padding-bottom:6px!important;overflow:hidden}
+.cat:last-child{border-bottom:0!important}
+.cat-h{margin:0;padding:11px 12px;border-radius:8px 8px 0 0!important}
+.cat.closed .cat-h{border-radius:8px!important}
+.cat>:not(.cat-h,.urow){margin-inline:10px}
+.urow{background:#0d0d0d;border:0;margin:8px 8px 0;width:auto;padding:10px 12px;gap:8px}
+.urow:hover{background:#161616}
+.urow .nm strong{color:#fff;font:700 1.05rem/1.2 var(--body)}
+.urow .nm .ibtn.trash{background:none;border:0;color:#fff;min-width:32px;min-height:32px;display:grid;place-items:center;padding:0}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-block;background:var(--a-solid);color:#fff;padding:3px 9px;font:600 .8rem/1.3 var(--body);white-space:normal}
+.pick{background:#0d0d0d;border:0;margin-bottom:6px}
+.pick strong{color:#fff}
+.pick .plus{font:700 1.6rem/1 var(--body);color:#fff;margin-left:8px}
+.pick .pill{flex:none}
+.sec{border:0!important;margin:10px 10px 0!important;background:#262626;overflow:hidden}
+.sec>summary{background:var(--a-solid)!important;color:#fff!important;font:700 .95rem/1.2 var(--display);letter-spacing:.08em;padding:11px 12px}
+.sec>summary::before{color:#fff!important}
+.sec[open]>summary{border-bottom:0}
+.sec-b{padding:10px 12px;background:#262626}
+.sec-b .wtab-wrap{margin:-10px -12px;border:0}
+.wtab th{background:var(--a-solid)!important;color:#fff!important}
+.wtab tbody tr:nth-child(odd){background:#2b2b2b}
+.wtab tbody tr:nth-child(even){background:#333}
+.wtab td small,.wtab td small .kwb{color:var(--a-text)}
+.abil h4{color:var(--a-text);border-bottom:0}
+.strat{margin:6px 10px!important;border:0!important;overflow:hidden}
+.strat .sh{padding:10px 12px}
+.strat .sh small{text-transform:uppercase;letter-spacing:.06em;font-size:.7rem}
+.strat .sb{background:#262626}
+.btn{background:#333;border-color:#4a4a4a;color:#f2f2f2}
+.btn.primary{background:var(--a-solid);color:#fff;border-color:transparent}
+.btn.danger{background:transparent}
+.btn.ghost{background:transparent}
+input[type=text],input[type=number],input[type=email],input[type=search],input[type=password],select,textarea{background:#111;border:2px solid #3d3d3d;color:#f2f2f2}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--a-text)}
+.searchbar input{background:#111;border:2px solid #3d3d3d}
+.tabs{background:#111;border-top:1px solid #333}
+.tabs button[aria-current=page]{background:var(--a-solid);color:#fff}
+.tabs button[aria-current=page] svg{color:#fff}
+.seg{background:#111;border:0}
+.seg button[aria-pressed=true]{background:var(--a-solid);color:#fff;box-shadow:none}
+.card{background:var(--a-solid);border:0;color:#fff;margin:8px 10px;width:auto}
+.card .muted,.card .small{color:#fff;opacity:.85}
+.stack:has(>.card){gap:0!important}
+.panel>:is(.sec,.cat,.strat,.stack:has(>.card)){margin-inline:10px!important}
+.ptsbar{margin:10px 10px 6px}
+.lgrid{margin:10px}
+.chips{margin-inline:10px}
+.sheet .pane{background:#1b1b1b}
+.statline div{margin:0}
+.eopt.on{background:#0d0d0d}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -705,7 +761,7 @@ function vList(){
   const warSel=`<label class="f">Warlord<select data-c="warlord" ${ro?'disabled':''}><option value="">${wl.length?'Choose your Warlord…':'Add a Character first'}</option>${wl.map(x=>`<option value="${x.id}" ${cur&&cur.id===x.id?'selected':''}>${h(entLabel(l,x).replace(/ \(1\)/,''))}</option>`).join('')}</select></label>`;
   const entries=(l.parent?'':warSel)+cats.map(c=>{const es=byCat[c]||[];const key=S.listId+':'+c;const closed=S.closed[key];
     return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(CAT_GROUP[c])}</h3><span class="row" style="flex-wrap:nowrap"><span class="cat-count">${es.length}</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
-      ${closed?'':`${es.map(e=>unitRow(l,e,'list',`<span class="num">${cost[e.id]??0} pts</span>`)).join('')}${ro?'':`<button class="btn sm" style="justify-self:start" data-a="addCat" data-k="${h(c)}">Add ${h(c)}</button>`}`}</div>`}).join('');
+      ${closed?'':`${es.map(e=>unitRow(l,e,'list',cost[e.id]??0)).join('')}${ro?'':`<button class="btn sm" style="justify-self:start" data-a="addCat" data-k="${h(c)}">Add ${h(c)}</button>`}`}</div>`}).join('');
   const par=parentOf(l);
   return `<header class="top"><div class="grow">${par?`<button class="btn ghost sm" data-a="openDbl" data-id="${h(l.parent)}" style="justify-self:start;padding-left:0">‹ ${h(par.name||'Doubles force')}</button>`:`<button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>`}
     <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(f?f.name:'')}</p><h1>${h(l.name||'Untitled list')}</h1></div></div></div>
@@ -921,8 +977,9 @@ function unitRow(l,e,mode,right){const u0=S.units[e.unitId];
   const u=fxUnit(l,e,u0);
   if(mode==='play'){const st=S.game?.units?.[e.id]||{};
     return `<div class="urow${st.dead?' dead':''}" role="button" tabindex="0" data-a="ds" data-k="play" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}</strong><span class="ubtns"><button class="ibtn shock${st.shocked?' on':''}" data-a="ustate" data-id="${e.id}" data-k="shocked" aria-pressed="${!!st.shocked}" aria-label="Battle-shocked" title="Battle-shocked">${ICO_BOLT}</button><button class="ibtn kill${st.dead?' on':''}" data-a="ustate" data-id="${e.id}" data-k="dead" aria-pressed="${!!st.dead}" aria-label="Destroyed" title="Destroyed">${ICO_SKULL}</button></span></span>${rowStats(u)}</div>`}
-  const n=tierSize(u0,e);
-  return `<button class="urow" data-a="ds" data-k="${mode}" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}${n>1?` (${n})`:''}</strong><span class="row" style="flex-wrap:nowrap">${right||''}</span></span></button>`}
+  const n=tierSize(u0,e);const en=findEnh(e.enhId);const ro=!S.canWrite;
+  return `<div class="urow" role="button" tabindex="0" data-a="ds" data-k="${mode}" data-id="${e.id}"><span class="nm"><strong>${h(u.name)}</strong>${ro?'':`<button class="ibtn trash" data-a="rmEntry" data-id="${e.id}" aria-label="Remove ${h(u.name)}">${ICO_TRASH}</button>`}</span><span class="pills"><span class="pill">${right??0} points${n>1?` ${n} models`:''}</span>${e.warlord?'<span class="pill">Warlord</span>':''}${en?`<span class="pill">${h(en.name)}${en.pts?` ${h(en.pts)} points`:''}</span>`:''}</span></div>`}
+const ICO_TRASH='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v7M14 10v7"/></svg>';
 const ICO_BOLT='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.6z"/></svg>';
 const ICO_SKULL='<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2.5c-4.7 0-8.5 3.4-8.5 7.9 0 2.6 1.2 4.6 3.1 5.8V19c0 .8.7 1.5 1.5 1.5h.9v-2.2h1.7v2.2h2.6v-2.2H15v2.2h.9c.8 0 1.5-.7 1.5-1.5v-2.8c1.9-1.2 3.1-3.2 3.1-5.8 0-4.5-3.8-7.9-8.5-7.9z"/><circle cx="8.8" cy="11" r="2" fill="var(--ib-bg,#fff)"/><circle cx="15.2" cy="11" r="2" fill="var(--ib-bg,#fff)"/><path d="m12 13.4-1.1 2h2.2z" fill="var(--ib-bg,#fff)"/></svg>';
 function dsSheet(s){const play=s.mode==='play';const l=S.lists[play?S.playId:S.listId];const e=l&&(l.entries||[]).find(x=>x.id===s.id);const u0=e&&S.units[e.unitId];
@@ -1142,7 +1199,7 @@ function renderSheet(){
   }else if(s==='unitPicker'){
     const l=S.lists[S.listId];const q=S.q.toLowerCase();const us=unitsOf(l.faction).filter(u=>(!S.pickCat||catOf(u)===S.pickCat)&&(!q||u.name.toLowerCase().includes(q)||(u.keywords||'').toLowerCase().includes(q)));
     body=`<h2>Add ${h(S.pickCat||'unit')}</h2><input type="text" id="uq" data-c="uq" placeholder="Search name or keyword" value="${h(S.q)}" aria-label="Search units">
-      ${unitsOf(l.faction).length?grouped(us,u=>u).map(([lab,xs])=>{return `<p class="grp">${lab}</p>${xs.map(u=>`<button class="pick" data-a="addUnit" data-id="${h(u.id)}"><span class="body"><strong>${h(u.name)}</strong><span class="small muted">${(u.tiers||[]).map(t=>h(t.label)).join(' / ')}</span></span><span class="num small">${(u.tiers||[]).length?unitCost(u,{tier:0},(l.entries||[]).filter(e=>e.unitId===u.id).length+1).pts:'–'} pts</span></button>`).join('')}`}).join('')||'<p class="muted">No matches.</p>':
+      ${unitsOf(l.faction).length?grouped(us,u=>u).map(([lab,xs])=>{return `<p class="grp">${lab}</p>${xs.map(u=>`<button class="pick" data-a="addUnit" data-id="${h(u.id)}"><span class="body"><strong>${h(u.name)}</strong><span class="small muted">${(u.tiers||[]).map(t=>h(t.label)).join(' / ')}</span></span><span class="pill">${(u.tiers||[]).length?unitCost(u,{tier:0},(l.entries||[]).filter(e=>e.unitId===u.id).length+1).pts:'–'} points</span><span class="plus">+</span></button>`).join('')}`}).join('')||'<p class="muted">No matches.</p>':
       `<div class="empty"><h3>No units in the codex</h3><p>Add ${h(FX[l.faction].name)} units in the Codex tab first.</p><button class="btn primary" data-a="toCodex" data-k="units">Open codex</button></div>`}`;
   }else if(s==='newDbl'){
     body=`<h2>New doubles force</h2><label class="f">Force name<input type="text" id="nd-name" placeholder="e.g. Green & Gold"></label>
@@ -1689,12 +1746,10 @@ function ktChange(t,c){const g=S.ktg;if(!g)return false;
 
 Object.assign(A,KTA);
 Object.assign(A,{
-  async signout(){try{await window.__muster?.signOut()}catch(e){}location.reload()},
-  async impLegacy(_,id){const L=S.legacy||{};const d=L[id];if(!d)return;const ids=[id,...(d.armies||[])];for(const[k,x]of Object.entries(L))if(x.parent===id&&!ids.includes(k))ids.push(k);
-    const ok=await write(async()=>{for(const k of ids)if(L[k])await S.db.doc('lists/'+k).set({...L[k],createdBy:S.uid,createdByName:S.myName||'',acct:true})},'Imported to your account');if(ok)render()}});
+  async signout(){try{await window.__muster?.signOut()}catch(e){}location.reload()}
+});
 function accountPanel(){
-  const leg=Object.entries(S.legacy||{}).filter(([id,d])=>!d.parent&&!S.lists[id]).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-  return `<section class="panel"><h2>Account</h2><p class="small muted">Signed in as ${h(S.email||'')}. Your lists and games are private to this account.</p><button class="btn" data-a="signout">Sign out</button></section>`+(leg.length?`<section class="panel"><h2>Old group lists</h2><p class="small muted">Lists made before accounts existed. Import the ones that are yours.</p>${leg.map(([id,d])=>`<div class="row between"><div style="min-width:0"><strong>${h(d.name||'Untitled')}</strong><p class="small muted">${h(FX[d.faction]?.name||'Doubles')}${d.createdByName?' · '+h(d.createdByName):''}</p></div><button class="btn sm" data-a="impLegacy" data-id="${h(id)}">Import</button></div>`).join('')}</section>`:'')}
+  return `<section class="panel"><h2>Account</h2><p class="small muted">Signed in as ${h(S.email||'')}. Your lists and games are private to this account.</p><button class="btn" data-a="signout">Sign out</button></section>`}
 /* ---------- boot ---------- */
 const EDITING=new Set(['det','unit','core','limits','io','settings','ktedit','ktio']);
 const live=()=>{if(!EDITING.has(S.view))requestRender()};
@@ -1767,8 +1822,7 @@ async function fbConnect(group){
       for(const[c,docs]of Object.entries(m))for(const[id,d]of Object.entries(docs||{}))ops.push([c==='core'?'core/'+id:c+'/'+id,d]);
       for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400)){if(d===null)b.delete(F.doc(fs,root+p));else b.set(F.doc(fs,root+p),enc(d),{merge:true})}await b.commit()}
       await F.setDoc(mr,{at:Date.now()});toast('Rules updated')}catch(e){console.error('migration',mig,e)}}
-  let legacy={};try{const ls=await F.getDocs(F.collection(fs,root+'lists'));for(const d of ls.docs)legacy[d.id]=dec(d.data())}catch(e){}
-  return{db:{doc,collection},uid,email:user.email||'',name:user.displayName||'',legacy,signOut:()=>AU.signOut(auth)};
+  return{db:{doc,collection},uid,email:user.email||'',name:user.displayName||'',signOut:()=>AU.signOut(auth)};
 }
 async function boot(){
   try{S.theme=(t=>t===null?'t-war':t)(localStorage.getItem('muster-theme'));S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto';S.sys=localStorage.getItem('muster-system')||'40k'}catch(e){S.customThemes=[]}if(S.sys!=='kt')S.sys='40k';applyTheme();applyLayout();S.view=sysHome();
@@ -1778,7 +1832,7 @@ async function boot(){
       if(!m){document.getElementById('joinerr').textContent="That doesn't look like a Muster invite link.";return}try{localStorage.setItem('muster-group',m[1])}catch(e){}location.hash='g='+m[1];location.reload()};return}
   render();
   let c;try{c=await fbConnect(g)}catch(e){console.error(e);toast('Could not connect. Check your internet and reload.');render();return}
-  S.db=c.db;S.uid=c.uid;S.email=c.email;S.legacy=c.legacy;window.__muster={signOut:c.signOut};if(!S.myName&&c.name)S.myName=c.name;const db=c.db;
+  S.db=c.db;S.uid=c.uid;S.email=c.email;window.__muster={signOut:c.signOut};if(!S.myName&&c.name)S.myName=c.name;const db=c.db;
   sub('detachments','dets');sub('units','units');sub('lists','lists');sub('ktteams','ktteams');
   db.doc('core/kt').onSnapshot(s=>{S.ktcore=s.exists?s.data():null;live()},()=>{});
   if(S.sys==='kt'&&S.view==='ktplay')loadKtGame();
