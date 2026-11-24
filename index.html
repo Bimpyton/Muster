@@ -439,6 +439,46 @@ body.sys-kt:not([class*=kf-]){--a-fill:var(--brass);--a-ink:var(--brass-ink);--a
 .kt-addrow{padding-block:4px;border-bottom:1px dashed var(--line)}
 .urow .kt-stat{max-width:340px}
 .seg button:disabled{opacity:.4;cursor:not-allowed}
+
+:root{--a-solid:#3a3f46}
+.f-orks{--a-solid:#4a6320;--a-chip:#b8e65a}.f-tyranids{--a-solid:#6b3a94;--a-chip:#c89cf0}.f-dark-angels{--a-solid:#1b5a3b;--a-chip:#6fd6a0}.f-custodes{--a-solid:#9a7a1f;--a-chip:#f2cf63}
+:root.t-war{--bg:#1b1b1b;--surface:#262626;--surface2:#303030;--ink:#f2f2f2;--muted:#a8a8a8;--line:#3d3d3d;--brass:#d9a744;--brass-ink:#1a1408;--brass-soft:#372b14;--danger:#ef7468;--danger-soft:#3a1c19;--ok:#6fc893;--ok-soft:#183126;color-scheme:dark}
+:root.t-war .f-orks{--a-text:#a6dc5c;--a-soft:#223212}
+:root.t-war .f-tyranids{--a-text:#c6a3e8;--a-soft:#2c1f3a}
+:root.t-war .f-dark-angels{--a-text:#78c9a0;--a-soft:#16291f}
+:root.t-war .f-custodes{--a-text:#e8bf55;--a-soft:#382c10}
+.top{margin-inline:-16px;padding-inline:16px;background:var(--a-solid);color:#fff;border-bottom:0;margin-bottom:12px}
+.top::after{display:none}
+.top h1,.top .eyebrow,.top .grp,.top .muted{color:#fff}
+.top .btn{background:rgb(0 0 0 / .3);border-color:transparent;color:#fff}
+.top .btn.primary{background:#fff;color:#111}
+.top .btn.ghost{background:transparent}
+.ptsbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:12;margin:0 0 14px;padding:12px 14px;border-radius:8px;background:var(--a-solid);color:#fff;text-align:center;font:700 1.05rem/1.2 var(--body);box-shadow:0 2px 8px rgb(0 0 0 / .35)}
+.ptsbar.over{background:var(--danger);color:#1a0604}
+.cat-h{background:var(--a-solid);border-radius:6px;padding:11px 12px}
+.cat-h h3{border-left:0;padding-left:0;color:#fff;font-size:1.15rem}
+.cat-h .cat-count,.cat-h .chev{color:#fff}
+.lgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lcard{appearance:none;border:0;border-radius:8px;background:var(--a-solid);color:#fff;padding:12px;min-height:122px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;box-shadow:0 1px 3px rgb(0 0 0 / .35)}
+.lc-name{font:700 1.1rem/1.15 var(--display);letter-spacing:.02em;overflow-wrap:anywhere}
+.lc-sub{font-size:.82rem;opacity:.9;line-height:1.25}
+.lc-pts{margin-top:auto;font:600 .85rem/1.2 var(--mono)}
+.lc-pts.over{color:#ffb3ab}
+.lc-bad{font-size:.75rem;font-weight:700;color:#ffd0ca}
+.lcard.lc-new{background:#3c3f7a;font:400 3.2rem/1 var(--body);align-items:center;justify-content:center}
+.statline{border:0;gap:6px;overflow:visible;background:none}
+.statline div{border:0!important;background:#000;border-radius:8px;padding:6px 2px}
+.statline b{color:#cfcfcf}
+.statline span{color:var(--a-chip,#e8bf55)}
+#authScreen{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-card{width:100%;max-width:380px;background:#262626;border-radius:10px;padding:22px;display:grid;gap:10px;color:#f2f2f2}
+.auth-card h1{font-size:2rem;color:#fff}
+.auth-card input{width:100%;padding:13px;border-radius:6px;border:2px solid #3d3d3d;background:#111;color:#fff;font-size:16px}
+.auth-card input:focus{outline:none;border-color:#d9a744}
+.auth-card .btn.primary{background:#d9a744;color:#1a1408}
+.au-err{min-height:1.2em;color:#ff7b70;font-size:.85rem}
+.au-ok{color:#7fd48b;font-size:.85rem}
+.au-link{background:none;border:0;color:#d9a744;font-size:.9rem;cursor:pointer;padding:6px}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -461,7 +501,7 @@ const ICONS={
   codex:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M12 7v6M9 10h6"/></svg>',
   settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>'};
 const TABS=[['rules','Core Rules'],['lists','Lists'],['play','Play'],['codex','Codex'],['settings','Settings']];
-const THEMES=[['','Default','Follows your device',['#e9ecef','#fbfcfd','#8a5f12']],['t-void','Void','Deep navy, steel blue',['#0b0f17','#121826','#7aa7ff']],['t-forge','Forge','Charcoal, ember orange',['#141110','#1d1917','#ff8a3d']],['t-bone','Bone','Warm grey, crimson',['#ebe8e3','#f8f6f3','#9b1c2c']],['t-ice','Ice','Cool white, cobalt',['#e8eef4','#f7fafd','#1f5fbf']]];
+const THEMES=[['t-war','Charcoal','Dark charcoal, faction colour',['#1b1b1b','#262626','#d9a744']],['','Default','Follows your device',['#e9ecef','#fbfcfd','#8a5f12']],['t-void','Void','Deep navy, steel blue',['#0b0f17','#121826','#7aa7ff']],['t-forge','Forge','Charcoal, ember orange',['#141110','#1d1917','#ff8a3d']],['t-bone','Bone','Warm grey, crimson',['#ebe8e3','#f8f6f3','#9b1c2c']],['t-ice','Ice','Cool white, cobalt',['#e8eef4','#f7fafd','#1f5fbf']]];
 const FX=Object.fromEntries(FACTIONS.map(f=>[f.id,f]));
 const DISPOSITIONS=['Take and Hold','Purge the Foe','Disruption','Reconnaissance','Priority Assets'];
 const PHASES=['Command','Movement','Shooting','Charge','Fight'];
@@ -644,19 +684,14 @@ function vLists(){
   const dcards=dbls.map(([id,d])=>{const c=calcDbl(d);return `<button class="card" data-a="openDbl" data-id="${h(id)}"><span class="row" style="gap:2px;flex-wrap:nowrap">${c.kids.map(k=>badge(k.faction)).join('')}</span><div class="body"><div class="row between"><h3>${h(d.name||'Doubles force')}</h3><span class="num small">${c.pts} / ${h(d.limit)}</span></div>
     <p class="small muted">${c.kids.map(k=>h(k.name)).join(' + ')}</p><div class="row">${d.disposition?dtag(d.disposition):''}${c.w.length?`<span class="tag bad">${c.w.length} to fix</span>`:'<span class="tag ok">Legal</span>'}</div></div></button>`}).join('');
   const chips=[['all','All armies'],...FACTIONS.map(f=>[f.id,f.name])].map(([k,l])=>`<button class="chip${FX[k]?' f-'+k:''}" data-a="filter" data-k="${k}" aria-pressed="${S.filter===k}">${h(l)}</button>`).join('');
-  const cards=shown.map(l=>{const c=calc(l);const f=FX[l.faction];const owner=l.createdByName||S.names[l.createdBy];
-    return `<button class="card f-${h(l.faction)}" data-a="openList" data-id="${h(l.id)}">${badge(l.faction)}<div class="body">
-      <div class="row between"><h3>${h(l.name||'Untitled list')}</h3><span class="num small">${c.pts} / ${h(l.limit)}</span></div>
-      <p class="small muted">${h(f?f.name:'')}${owner?` · ${h(owner)}`:''}</p>
-      <div class="meter${c.pts>l.limit?' over':''}"><i style="width:${Math.min(100,c.pts/(l.limit||1)*100)}%"></i></div>
-      <div class="row">${c.dets.map(d=>`<span class="tag">${h(d.name)}</span>`).join('')}${l.disposition?dtag(l.disposition):''}${c.w.length?`<span class="tag bad">${c.w.length} to fix</span>`:'<span class="tag ok">Legal</span>'}</div>
-    </div></button>`}).join('');
+  const cards=shown.map(l=>{const c=calc(l);const f=FX[l.faction];
+    return `<button class="lcard f-${h(l.faction)}" data-a="openList" data-id="${h(l.id)}"><strong class="lc-name">${h(l.name||'Untitled list')}</strong><span class="lc-sub">${h(f?f.name:'')}</span><span class="lc-sub">${c.dets.map(d=>h(d.name)).join(', ')||'No detachment'}</span><span class="lc-pts${c.pts>l.limit?' over':''}">${c.pts}/${h(l.limit)} points</span>${c.w.length?`<span class="lc-bad">${c.w.length} to fix</span>`:''}</button>`}).join('');
+  const newTile=S.canWrite?'<button class="lcard lc-new" data-a="newList" aria-label="New list">+</button>':'';
   const loading=!S.loaded.lists&&S.db;
   return `<header class="top"><div class="grow"><p class="eyebrow">Warhammer 40,000 · 11th edition</p><h1>Muster</h1></div>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</header>
   <div class="stack"><div class="chips" role="group" aria-label="Filter by army">${chips}</div>
   ${S.canWrite||dbls.length?`<section class="stack" style="gap:10px"><div class="panel-head"><h2>Doubles</h2>${S.canWrite?'<button class="btn sm" data-a="sheet" data-k="newDbl">New doubles</button>':''}</div>${dcards||'<p class="small muted">No doubles forces yet. A doubles force is two armies that split the points evenly and play as one team.</p>'}</section><h2>Lists</h2>`:''}
-  ${loading?'<p class="muted">Loading lists…</p>':shown.length?`<div class="stack" style="gap:10px">${cards}</div>`:
-  `<div class="empty"><h3>No ${S.filter==='all'?'':h(FX[S.filter].name)+' '}lists yet</h3><p>Start a list, pick its detachments and Force Disposition, then add units from the codex. Everyone with the link sees the group's lists.</p>${S.canWrite?'<button class="btn primary" data-a="newList">New list</button>':''}</div>`}</div>`;
+  ${loading?'<p class="muted">Loading lists…</p>':`<div class="lgrid">${newTile}${cards}</div>${shown.length?'':'<p class="small muted">No lists yet. Tap + to start one. Lists are private to your account.</p>'}`}</div>`;
 }
 
 function vList(){
@@ -675,10 +710,9 @@ function vList(){
   return `<header class="top"><div class="grow">${par?`<button class="btn ghost sm" data-a="openDbl" data-id="${h(l.parent)}" style="justify-self:start;padding-left:0">‹ ${h(par.name||'Doubles force')}</button>`:`<button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>`}
     <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(f?f.name:'')}</p><h1>${h(l.name||'Untitled list')}</h1></div></div></div>
     <button class="btn primary" data-a="play" data-id="${S.listId}">Play</button></header>
+  <div class="ptsbar${c.pts>l.limit?' over':''}">${c.pts}/${h(l.limit)} points (${c.pts>l.limit?(c.pts-l.limit)+' over':(l.limit-c.pts)+' remaining'})</div>
   <div class="stack">
     <section class="panel">
-      <div class="panel-head"><span class="eyebrow">Points</span><span class="num">${c.pts} / ${h(l.limit)}</span></div>
-      <div class="meter${c.pts>l.limit?' over':''}"><i style="width:${Math.min(100,c.pts/(l.limit||1)*100)}%"></i></div>
       ${ro?'':`<div class="grid2"><label class="f">List name<input type="text" id="lname" data-c="lname" value="${h(l.name)}"></label>
       <label class="f">Battle size<select id="llimit" data-c="limit">${SIZES.map(([p,n])=>`<option value="${p}" ${sizeOf(l).name===n?'selected':''}>${n} · ${p} pts</option>`).join('')}</select></label></div>`}
     </section>
@@ -693,7 +727,7 @@ function vList(){
       <div class="panel-head"><h2>Units</h2><span class="small muted">${(l.entries||[]).length} entries · ${c.enh}/${c.sz.enh} enhancements</span></div>
       ${entries||'<p class="muted small">This army has no units in the codex yet.</p>'}
     </section>
-    <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro||l.parent?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list for everyone</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
+    <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro||l.parent?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
   </div>`;
 }
 function gearInner(u,e,ro){
@@ -813,7 +847,7 @@ function vAppSettings(){
   <div class="stack"><section class="panel"><h2>Game System</h2><p class="small muted">Switches the whole app between games. Remembered on this device.</p>
     <div class="seg" role="group" aria-label="Game System">${SYSTEMS.map(([k,n,ed])=>`<button data-a="system" data-k="${k}" aria-pressed="${(S.sys||'40k')===k}">${k==='40k'?'40k':n}</button>`).join('')}</div>
     <p class="small muted" style="text-align:center">${h(SYSTEMS.find(x=>x[0]===(S.sys||'40k'))[1]+' · '+SYSTEMS.find(x=>x[0]===(S.sys||'40k'))[2])}</p></section><section class="panel"><h2>Layout</h2><p class="small muted">PC keeps the app in a centred column. Mobile stretches it edge to edge. Auto picks PC on wide screens. Saved on this device.</p>
-    <div class="seg" role="group" aria-label="Layout">${[['auto','Auto'],['mobile','Mobile'],['pc','PC']].map(([k,n])=>`<button data-a="layout" data-k="${k}" aria-pressed="${lay===k}">${n}</button>`).join('')}</div></section><section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
+    <div class="seg" role="group" aria-label="Layout">${[['auto','Auto'],['mobile','Mobile'],['pc','PC']].map(([k,n])=>`<button data-a="layout" data-k="${k}" aria-pressed="${lay===k}">${n}</button>`).join('')}</div></section>${accountPanel()}<section class="panel"><h2>Your name</h2><p class="small muted">Shown on lists you create. Saved on this device.</p><label class="f">Name<input type="text" id="myname" data-c="myname" value="${h(S.myName||'')}" placeholder="e.g. Luke"></label></section>
     <section class="panel"><h2>App theme</h2><p class="small muted">Changes the background and accents across the app. Army colours, stratagem colours and the Core Rules pages stay the same. Saved on this device only.</p>
     <div class="themes">${THEMES.map(([c,n,d,sw])=>`<button class="theme" data-a="theme" data-k="${c}" aria-pressed="${S.theme===c}"><span class="sw">${sw.map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${n}</strong><span class="small muted">${d}</span></button>`).join('')}
     ${(S.customThemes||[]).map(t=>`<div class="theme" style="cursor:default" aria-pressed="${S.theme===t.id}"><button class="btn ghost" style="padding:0;display:grid;gap:8px;text-align:left;min-height:0" data-a="theme" data-k="${t.id}"><span class="sw">${[t.bg,t.surface,t.accent].map(x=>`<i style="background:${x}"></i>`).join('')}</span><strong>${h(t.name)}</strong><span class="small muted">Custom</span></button><button class="btn sm ghost danger" style="justify-self:start" data-a="delTheme" data-k="${t.id}">Delete</button></div>`).join('')}</div>
@@ -1654,6 +1688,13 @@ function ktChange(t,c){const g=S.ktg;if(!g)return false;
   if(!map[c])return false;map[c](t.value);render();saveKt();return true}
 
 Object.assign(A,KTA);
+Object.assign(A,{
+  async signout(){try{await window.__muster?.signOut()}catch(e){}location.reload()},
+  async impLegacy(_,id){const L=S.legacy||{};const d=L[id];if(!d)return;const ids=[id,...(d.armies||[])];for(const[k,x]of Object.entries(L))if(x.parent===id&&!ids.includes(k))ids.push(k);
+    const ok=await write(async()=>{for(const k of ids)if(L[k])await S.db.doc('lists/'+k).set({...L[k],createdBy:S.uid,createdByName:S.myName||'',acct:true})},'Imported to your account');if(ok)render()}});
+function accountPanel(){
+  const leg=Object.entries(S.legacy||{}).filter(([id,d])=>!d.parent&&!S.lists[id]).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
+  return `<section class="panel"><h2>Account</h2><p class="small muted">Signed in as ${h(S.email||'')}. Your lists and games are private to this account.</p><button class="btn" data-a="signout">Sign out</button></section>`+(leg.length?`<section class="panel"><h2>Old group lists</h2><p class="small muted">Lists made before accounts existed. Import the ones that are yours.</p>${leg.map(([id,d])=>`<div class="row between"><div style="min-width:0"><strong>${h(d.name||'Untitled')}</strong><p class="small muted">${h(FX[d.faction]?.name||'Doubles')}${d.createdByName?' · '+h(d.createdByName):''}</p></div><button class="btn sm" data-a="impLegacy" data-id="${h(id)}">Import</button></div>`).join('')}</section>`:'')}
 /* ---------- boot ---------- */
 const EDITING=new Set(['det','unit','core','limits','io','settings','ktedit','ktio']);
 const live=()=>{if(!EDITING.has(S.view))requestRender()};
@@ -1676,18 +1717,45 @@ function groupKey(){
   const m=location.hash.match(/[#&]g=([A-Za-z0-9_-]{20,})/);
   if(m){try{localStorage.setItem('muster-group',m[1])}catch(e){}return m[1]}
   try{return localStorage.getItem('muster-group')}catch(e){return null}}
+function authScreen(AU,auth){return new Promise(res=>{
+  const el=document.createElement('div');el.id='authScreen';
+  el.innerHTML=`<div class="auth-card"><h1>Muster</h1><p id="au-sub" class="muted">Sign in to your account</p>
+  <input id="au-name" type="text" placeholder="Display name" autocomplete="nickname" style="display:none">
+  <input id="au-email" type="email" placeholder="Email" autocomplete="email">
+  <input id="au-pw" type="password" placeholder="Password" autocomplete="current-password">
+  <p id="au-err" class="au-err"></p><p id="au-ok" class="au-ok"></p>
+  <button id="au-go" class="btn primary" style="width:100%;justify-content:center">Sign in</button>
+  <button id="au-tg" class="au-link">No account? Create one</button><button id="au-rs" class="au-link">Forgot password?</button></div>`;
+  document.body.appendChild(el);
+  const q=i=>el.querySelector('#'+i);let up=false;
+  const msg={'auth/invalid-email':"That email address isn't valid.",'auth/missing-password':'Enter a password.','auth/weak-password':'Password must be at least 6 characters.','auth/email-already-in-use':'An account with that email already exists.','auth/invalid-credential':'Wrong email or password.','auth/user-not-found':'Wrong email or password.','auth/wrong-password':'Wrong email or password.','auth/too-many-requests':'Too many attempts. Try again in a few minutes.','auth/network-request-failed':'No connection. Check your network.','auth/operation-not-allowed':'Email sign-in is not enabled in Firebase yet.'};
+  const say=(e,o)=>{q('au-err').textContent=e||'';q('au-ok').textContent=o||''};
+  q('au-tg').onclick=()=>{up=!up;q('au-name').style.display=up?'block':'none';q('au-go').textContent=up?'Create account':'Sign in';q('au-sub').textContent=up?'Create your account':'Sign in to your account';q('au-tg').textContent=up?'Have an account? Sign in':'No account? Create one';q('au-pw').autocomplete=up?'new-password':'current-password';say()};
+  q('au-go').onclick=async()=>{const email=q('au-email').value.trim(),pw=q('au-pw').value;say();q('au-go').disabled=true;
+    try{let cred;
+      if(up){cred=await AU.createUserWithEmailAndPassword(auth,email,pw);const n=q('au-name').value.trim();if(n){await AU.updateProfile(cred.user,{displayName:n});try{localStorage.setItem('muster-name',n)}catch(e){}}}
+      else cred=await AU.signInWithEmailAndPassword(auth,email,pw);
+      el.remove();res(cred.user)}
+    catch(e){say(msg[e&&e.code]||'Something went wrong. Try again.')}
+    q('au-go').disabled=false};
+  q('au-rs').onclick=async()=>{const email=q('au-email').value.trim();say();if(!email){say('Enter your email first.');return}
+    try{await AU.sendPasswordResetEmail(auth,email);say('','Reset email sent. Check your inbox.')}catch(e){say(msg[e&&e.code]||'Something went wrong. Try again.')}};
+})}
 async function fbConnect(group){
   const[A,AU,F]=await Promise.all([import(FBV+'firebase-app.js'),import(FBV+'firebase-auth.js'),import(FBV+'firebase-firestore.js')]);
   const app=A.initializeApp(FIREBASE_CONFIG);const auth=AU.getAuth(app);
   await AU.setPersistence(auth,AU.browserLocalPersistence).catch(()=>{});
-  if(!auth.currentUser)await AU.signInAnonymously(auth);
+  let user=await new Promise(r=>{const un=AU.onAuthStateChanged(auth,u=>{un();r(u)})});
+  if(!user||user.isAnonymous)user=await authScreen(AU,auth);
+  const uid=user.uid;
   let fs;try{fs=F.initializeFirestore(app,{localCache:F.persistentLocalCache()})}catch(e){fs=F.getFirestore(app)}
   const root='groups/'+group+'/';
+  const mapP=p=>p.startsWith('lists/')?'data/users/'+uid+'/list-'+p.slice(6):p;
   const enc=v=>Array.isArray(v)?(v.some(Array.isArray)?{__json:JSON.stringify(v)}:v.map(enc)):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,enc(x)])):v;
   const dec=v=>Array.isArray(v)?v.map(dec):v&&typeof v==='object'?(typeof v.__json==='string'&&Object.keys(v).length===1?JSON.parse(v.__json):Object.fromEntries(Object.entries(v).map(([k,x])=>[k,dec(x)]))):v;
   const snapOf=x=>({exists:x.exists(),id:x.id,data:()=>dec(x.data())});
-  const doc=p=>{const r=F.doc(fs,root+p);return{set:d=>F.setDoc(r,enc(d)),update:d=>F.updateDoc(r,enc(d)),delete:()=>F.deleteDoc(r),get:async()=>snapOf(await F.getDoc(r)),onSnapshot:(cb,err)=>F.onSnapshot(r,x=>cb(snapOf(x)),err)}};
-  const collection=c=>({onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+c),x=>cb({docs:x.docs.map(d=>({id:d.id,data:()=>dec(d.data())}))}),err)});
+  const doc=p=>{const r=F.doc(fs,root+mapP(p));return{set:d=>F.setDoc(r,enc(d)),update:d=>F.updateDoc(r,enc(d)),delete:()=>F.deleteDoc(r),get:async()=>snapOf(await F.getDoc(r)),onSnapshot:(cb,err)=>F.onSnapshot(r,x=>cb(snapOf(x)),err)}};
+  const collection=c=>c==='lists'?{onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+'data/users/'+uid),x=>cb({docs:x.docs.filter(d=>d.id.startsWith('list-')).map(d=>({id:d.id.slice(5),data:()=>dec(d.data())}))}),err)}:{onSnapshot:(cb,err)=>F.onSnapshot(F.collection(fs,root+c),x=>cb({docs:x.docs.map(d=>({id:d.id,data:()=>dec(d.data())}))}),err)};
   const meta=await F.getDoc(F.doc(fs,root+'meta/seed'));
   if(!meta.exists()){toast('Setting up your group for the first time…');
     const seed=await (await fetch('seed.json')).json();const ops=[];
@@ -1699,17 +1767,18 @@ async function fbConnect(group){
       for(const[c,docs]of Object.entries(m))for(const[id,d]of Object.entries(docs||{}))ops.push([c==='core'?'core/'+id:c+'/'+id,d]);
       for(let k=0;k<ops.length;k+=400){const b=F.writeBatch(fs);for(const[p,d]of ops.slice(k,k+400)){if(d===null)b.delete(F.doc(fs,root+p));else b.set(F.doc(fs,root+p),enc(d),{merge:true})}await b.commit()}
       await F.setDoc(mr,{at:Date.now()});toast('Rules updated')}catch(e){console.error('migration',mig,e)}}
-  return{db:{doc,collection},uid:auth.currentUser.uid};
+  let legacy={};try{const ls=await F.getDocs(F.collection(fs,root+'lists'));for(const d of ls.docs)legacy[d.id]=dec(d.data())}catch(e){}
+  return{db:{doc,collection},uid,email:user.email||'',name:user.displayName||'',legacy,signOut:()=>AU.signOut(auth)};
 }
 async function boot(){
-  try{S.theme=localStorage.getItem('muster-theme')||'';S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto';S.sys=localStorage.getItem('muster-system')||'40k'}catch(e){S.customThemes=[]}if(S.sys!=='kt')S.sys='40k';applyTheme();applyLayout();S.view=sysHome();
+  try{S.theme=(t=>t===null?'t-war':t)(localStorage.getItem('muster-theme'));S.customThemes=JSON.parse(localStorage.getItem('muster-custom-themes')||'[]');S.myName=localStorage.getItem('muster-name')||'';S.layout=localStorage.getItem('muster-layout')||'auto';S.sys=localStorage.getItem('muster-system')||'40k'}catch(e){S.customThemes=[]}if(S.sys!=='kt')S.sys='40k';applyTheme();applyLayout();S.view=sysHome();
   const g=groupKey();
   if(!g){document.body.innerHTML='<main style="max-width:420px;margin:20vh auto;padding:16px;text-align:center;font-family:system-ui"><h1>Muster</h1><p>This is a private app. Paste the invite link from your group below.</p><input id="invite" type="text" placeholder="Paste invite link" style="width:100%;padding:12px;font-size:16px;border:1px solid #999;border-radius:8px;margin:8px 0"><button id="joinbtn" style="width:100%;padding:12px;font-size:16px;border-radius:8px;border:0;background:#d9a744;font-weight:700">Join group</button><p id="joinerr" style="color:#c3362b"></p></main>';
     document.getElementById('joinbtn').onclick=()=>{const v=document.getElementById('invite').value.trim();const m=v.match(/g=([A-Za-z0-9_-]{20,})/)||v.match(/^([A-Za-z0-9_-]{20,})$/);
       if(!m){document.getElementById('joinerr').textContent="That doesn't look like a Muster invite link.";return}try{localStorage.setItem('muster-group',m[1])}catch(e){}location.hash='g='+m[1];location.reload()};return}
   render();
   let c;try{c=await fbConnect(g)}catch(e){console.error(e);toast('Could not connect. Check your internet and reload.');render();return}
-  S.db=c.db;S.uid=c.uid;const db=c.db;
+  S.db=c.db;S.uid=c.uid;S.email=c.email;S.legacy=c.legacy;window.__muster={signOut:c.signOut};if(!S.myName&&c.name)S.myName=c.name;const db=c.db;
   sub('detachments','dets');sub('units','units');sub('lists','lists');sub('ktteams','ktteams');
   db.doc('core/kt').onSnapshot(s=>{S.ktcore=s.exists?s.data():null;live()},()=>{});
   if(S.sys==='kt'&&S.view==='ktplay')loadKtGame();
