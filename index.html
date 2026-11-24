@@ -535,6 +535,28 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--a-text)}
 .sheet .pane{background:#1b1b1b}
 .statline div{margin:0}
 .eopt.on{background:#0d0d0d}
+
+.bld{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:0 6px!important;align-items:start}
+.bld.one{grid-template-columns:1fr}
+.bl-col{min-width:0;display:grid;gap:8px;align-content:start}
+.bl-q{width:100%;padding:8px 10px;font-size:.95rem}
+.bl-cat{background:color-mix(in srgb,var(--a-solid) 28%,var(--bg));overflow:hidden}
+.bl-cat .cat-h,.bld .cat .cat-h{margin:0;padding:9px 10px;width:100%;display:flex;justify-content:space-between;align-items:center;border-radius:8px!important}
+.bl-cat .cat-h h3,.bld .cat .cat-h h3{font-size:1rem;letter-spacing:.04em}
+.bl-u{appearance:none;border:0;width:calc(100% - 12px);margin:6px;padding:8px;background:#0d0d0d;color:#fff;text-align:left;cursor:pointer;display:grid;gap:6px;border-radius:6px!important}
+.bl-n{font:700 .9rem/1.2 var(--body);overflow-wrap:anywhere}
+.bl-r{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.bl-r .plus{font:700 1.5rem/1 var(--body)}
+.bld .cat{margin:0!important;padding-bottom:4px!important}
+.bld .urow{margin:6px 4px 0;padding:8px}
+.bld .urow .nm strong{font-size:.9rem}
+.bld .pill{font-size:.72rem;padding:2px 6px}
+.bld .attsel{width:calc(100% - 8px);margin:4px 4px 0;font-size:.8rem;padding:5px 6px}
+.bl-gtitle{font:700 .8rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--a-text);padding:2px 2px 0}
+.bl-grp{border:2px solid var(--a-solid);background:color-mix(in srgb,var(--a-solid) 20%,var(--bg));padding-bottom:6px;overflow:hidden}
+.bl-gh{display:grid;gap:5px;padding:8px;background:var(--a-solid)}
+.bl-gname{width:100%;padding:6px 8px;font-size:.9rem;font-weight:700}
+.bl-gh .pill{background:rgb(0 0 0 / .35);justify-self:start}
 </style>
 
 <div class="searchbar" id="searchwrap" role="search"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="gsearch" placeholder="Search rules, units, detachments, stratagems…" aria-label="Search the app" autocomplete="off"><div id="results" class="results" hidden></div></div>
@@ -750,6 +772,38 @@ function vLists(){
   ${loading?'<p class="muted">Loading lists…</p>':`<div class="lgrid">${newTile}${cards}</div>${shown.length?'':'<p class="small muted">No lists yet. Tap + to start one. Lists are private to your account.</p>'}`}</div>`;
 }
 
+
+const NAME_BITS={orks:[['Skull-Stompin','Rusty','Dakka','Gutrippa','Mad','Krumpin','Blood-Axe','Scrap-Heap','Loud','Stompy'],['Boyz','Mob','Krew','Smashaz','Bashaz','Gitz','Runtz','Wrecka Gang']],
+  tyranids:[['Hunger','Swarm','Razor','Shadow','Chitin','Void','Gnawing','Ravening','Hive','Feral'],['Brood','Tide','Spawn','Pack','Reapers','Strain','Claws']],
+  custodes:[['Golden','Aquila','Sentinel','Auric','Throne','Eternal','Shieldbearer','Imperial','Radiant'],['Vigil','Host','Guard','Spear','Oath','Phalanx','Company']],
+  'dark-angels':[['Lion','Caliban','Unforgiven','Dread','Silent','Ravenwing','Fallen','Watchful','Steel'],['Blades','Sword','Vigil','Hand','Wrath','Hunters','Brotherhood']]};
+function randomUnitName(l){const bits=NAME_BITS[l.faction]||[['Iron','Grim','Ashen','Crimson','Silent'],['Vanguard','Company','Strike Force','Hand']];
+  const used=new Set((l.entries||[]).map(e=>e.title).filter(Boolean));let n='';
+  for(let i=0;i<12;i++){const a=bits[0][Math.floor(Math.random()*bits[0].length)],b=bits[1][Math.floor(Math.random()*bits[1].length)];n=`${a} ${b}`;if(!used.has(n))break}return n}
+function builderHtml(l,c){
+  const ro=!S.canWrite;const cost=c.cost;const ents=l.entries||[];
+  const byId=Object.fromEntries(ents.map(e=>[e.id,e]));
+  const isMember=e=>!!(e.attach&&byId[e.attach]);
+  const isHost=e=>attachedTo(l,e).length>0;
+  const attachSel=e=>{if(ro)return'';const u0=S.units[e.unitId];if(!u0||isHost(e))return'';const leads=(u0.leads||[]).map(normName);if(!leads.length)return'';
+    const hosts=ents.filter(x=>x.id!==e.id&&!isMember(x)&&leads.includes(normName(S.units[x.unitId]?.name)));if(!hosts.length&&!e.attach)return'';
+    return `<select class="attsel" data-c="attach" data-id="${e.id}" aria-label="Attach unit"><option value="">${e.attach?'Detach':'Attach to…'}</option>${hosts.map(x=>`<option value="${x.id}" ${x.id===e.attach?'selected':''}>${h(entLabel(l,x))}</option>`).join('')}</select>`};
+  const row=e=>unitRow(l,e,'list',cost[e.id]??0)+attachSel(e);
+  const groups=ents.filter(isHost).map(hst=>{const mem=attachedTo(l,hst);const all=[hst,...mem];const pts=all.reduce((a,x)=>a+(cost[x.id]||0),0);const nm=groupName(l,hst);
+    return `<div class="bl-grp"><div class="bl-gh">${ro?`<strong>${h(nm)}</strong>`:`<input type="text" class="bl-gname" data-c="utitle" data-id="${hst.id}" value="${h(hst.title||nm)}" aria-label="Attached unit name">`}<span class="pill">${pts} points</span></div>${all.map(x=>x===hst?unitRow(l,x,'list',cost[x.id]??0):row(x)).join('')}</div>`}).join('');
+  const loose=ents.filter(e=>!isHost(e)&&!isMember(e));const byCat={};for(const e of loose){const u=S.units[e.unitId];const k=u?catOf(u):'Other';(byCat[k]||(byCat[k]=[])).push(e)}
+  const lcats=Object.keys(byCat).sort((a,b)=>CATS.indexOf(a)-CATS.indexOf(b));
+  const right=`${groups?`<div class="bl-gtitle">Attached units</div>${groups}`:''}${lcats.map(k=>{const es=byCat[k];const pts=es.reduce((a,x)=>a+(cost[x.id]||0),0);const key=S.listId+':'+k;const closed=S.closed[key];
+    return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(CAT_GROUP[k]||k)} ${pts}</h3><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>${closed?'':es.map(row).join('')}</div>`}).join('')}${ents.length?'':'<p class="small muted" style="padding:6px">Tap a unit on the left to add it.</p>'}`;
+  if(ro)return `<section class="bld one"><div class="bl-col">${right}</div></section>`;
+  const q=(S.bq||'').toLowerCase();const open=S.bopen||{};
+  const us=unitsOf(l.faction).filter(u=>!q||u.name.toLowerCase().includes(q)||(u.keywords||'').toLowerCase().includes(q));
+  const left=CATS.filter(k=>us.some(u=>catOf(u)===k)).map(k=>{const key='bld:'+k;const isOpen=!!q||open[key];
+    const items=isOpen?us.filter(u=>catOf(u)===k).map(u=>{const n=ents.filter(e=>e.unitId===u.id).length+1;const pts=(u.tiers||[]).length?unitCost(u,{tier:0},n).pts:'–';
+      return `<button class="bl-u" data-a="addUnit" data-id="${h(u.id)}"><span class="bl-n">${h(u.name)}</span><span class="bl-r"><span class="pill">${pts} points</span><span class="plus">+</span></span></button>`}).join(''):'';
+    return `<div class="bl-cat"><button class="cat-h" data-a="bopen" data-k="${key}" aria-expanded="${isOpen}"><h3>${h(CAT_GROUP[k]||k)}</h3><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="transform:rotate(${isOpen?0:-90}deg)"><path d="m6 9 6 6 6-6"/></svg></button>${items}</div>`}).join('')||'<p class="small muted" style="padding:6px">No matches.</p>';
+  return `<section class="bld"><div class="bl-col"><input type="search" id="bq" data-c="bq" class="bl-q" placeholder="Search" value="${h(S.bq||'')}" aria-label="Search units">${left}</div><div class="bl-col">${right}</div></section>`;
+}
 function vList(){
   const l=S.lists[S.listId];if(!l)return backTo('lists','That list was deleted.');
   const c=calc(l);const cost=c.cost;const f=FX[l.faction];const ro=!S.canWrite;
@@ -759,9 +813,7 @@ function vList(){
   const cats=[...new Set([...facCats,...Object.keys(byCat)])].sort((a,b)=>CATS.indexOf(a)-CATS.indexOf(b));
   const wl=(l.entries||[]).filter(x=>{const uu=S.units[x.unitId];return uu&&rolesOf(uu).character});const cur=(l.entries||[]).find(x=>x.warlord);
   const warSel=`<label class="f">Warlord<select data-c="warlord" ${ro?'disabled':''}><option value="">${wl.length?'Choose your Warlord…':'Add a Character first'}</option>${wl.map(x=>`<option value="${x.id}" ${cur&&cur.id===x.id?'selected':''}>${h(entLabel(l,x).replace(/ \(1\)/,''))}</option>`).join('')}</select></label>`;
-  const entries=(l.parent?'':warSel)+cats.map(c=>{const es=byCat[c]||[];const key=S.listId+':'+c;const closed=S.closed[key];
-    return `<div class="cat${closed?' closed':''}"><button class="cat-h" data-a="toggleCat" data-k="${h(key)}" aria-expanded="${!closed}"><h3>${h(CAT_GROUP[c])}</h3><span class="row" style="flex-wrap:nowrap"><span class="cat-count">${es.length}</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button>
-      ${closed?'':`${es.map(e=>unitRow(l,e,'list',cost[e.id]??0)).join('')}${ro?'':`<button class="btn sm" style="justify-self:start" data-a="addCat" data-k="${h(c)}">Add ${h(c)}</button>`}`}</div>`}).join('');
+  const entries=l.parent?'':warSel;
   const par=parentOf(l);
   return `<header class="top"><div class="grow">${par?`<button class="btn ghost sm" data-a="openDbl" data-id="${h(l.parent)}" style="justify-self:start;padding-left:0">‹ ${h(par.name||'Doubles force')}</button>`:`<button class="btn ghost sm" data-a="go" data-k="lists" style="justify-self:start;padding-left:0">‹ All lists</button>`}
     <div class="row" style="flex-wrap:nowrap">${badge(l.faction)}<div style="min-width:0"><p class="eyebrow">${h(f?f.name:'')}</p><h1>${h(l.name||'Untitled list')}</h1></div></div></div>
@@ -781,8 +833,9 @@ function vList(){
     </section>
     <section class="panel">
       <div class="panel-head"><h2>Units</h2><span class="small muted">${(l.entries||[]).length} entries · ${c.enh}/${c.sz.enh} enhancements</span></div>
-      ${entries||'<p class="muted small">This army has no units in the codex yet.</p>'}
+      ${entries}
     </section>
+    ${builderHtml(l,c)}
     <div class="row"><button class="btn" data-a="sheet" data-k="export">Copy roster text</button>${ro||l.parent?'':S.confirm==='list'?`<button class="btn danger" data-a="delList">Delete this list</button><button class="btn ghost" data-a="unconfirm">Keep it</button>`:`<button class="btn ghost" data-a="confirm" data-k="list">Delete list…</button>`}</div>
   </div>`;
 }
@@ -1288,6 +1341,7 @@ const A={
   delTheme(k){S.customThemes=(S.customThemes||[]).filter(t=>t.id!==k);saveThemes();if(S.theme===k)A.theme('');else render()},
   layout(k){S.layout=k;try{localStorage.setItem('muster-layout',k)}catch(e){}applyLayout();render()},
   theme(k){S.theme=k||'';applyTheme();try{localStorage.setItem('muster-theme',S.theme)}catch(e){}render()},
+  bopen(k){S.bopen=S.bopen||{};S.bopen[k]=!S.bopen[k];render()},
   toggleCat(k){S.closed[k]=!S.closed[k];render()},
   gsN(k,id,n){const l=S.lists[S.listId];const[i,j]=k.split(':');patchList({entries:l.entries.map(x=>{if(x.id!==id)return x;const gs={...(x.gs||{})};const cur={...(gs[i]||{})};cur[j]=Math.max(0,(+cur[j]||0)+ +n);if(!cur[j])delete cur[j];if(Object.keys(cur).length)gs[i]=cur;else delete gs[i];return {...x,gs}})})},
   setOpp(_,id){const o=S.lists[id];if(!o)return;Object.assign(S.game,{oppList:id,oppName:o.name||'Untitled list',oppFac:o.faction,oppDisp:o.disposition||''});S.sheet=null;gameLog(`Opponent: ${o.name}`);render();saveGame()},
@@ -1426,12 +1480,12 @@ document.addEventListener('change',e=>{
   else if(c==='dwar'){const d=S.lists[S.dblId];const[lid,eid]=t.value.split('|');for(const k of d.armies||[]){const L=S.lists[k];if(!L)continue;const es=(L.entries||[]).map(x=>({...x,warlord:k===lid&&x.id===eid}));write(()=>S.db.doc('lists/'+k).update({entries:es}))}}
   else if(c==='warlord')patchList({entries:l.entries.map(x=>({...x,warlord:x.id===t.value}))});
   else if(c==='utitle')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,title:t.value.trim()}:x)});
-  else if(c==='attach')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,attach:t.value}:x)});
+  else if(c==='attach'){const hid=t.value;const nm=hid&&!(l.entries.find(x=>x.id===hid)||{}).title?randomUnitName(l):'';patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,attach:hid}:(hid&&x.id===hid&&nm?{...x,title:nm}:x))})}
   else if(c==='enh')patchList({entries:l.entries.map(x=>x.id===t.dataset.id?{...x,enhId:t.value}:x)});
 });
 function onDraft(e){const t=e.target;const p=t.dataset.d;if(!p||!S.draft)return;let v=t.value;if(t.hasAttribute('data-num'))v=v===''?'':+v;
   if(S.view==='core')setPath({core:S.draft},p,v);else setPath(S.draft,p,v)}
-document.addEventListener('input',e=>{onDraft(e);if(e.target.dataset.c==='uq'){S.q=e.target.value;const pos=e.target.selectionStart;renderSheet();const q=$('#uq');q.focus();q.setSelectionRange(pos,pos)}});
+document.addEventListener('input',e=>{if(e.target.dataset.c==='bq'){S.bq=e.target.value;const pos=e.target.selectionStart;render();const q=$('#bq');if(q){q.focus();q.setSelectionRange(pos,pos)}return}onDraft(e);if(e.target.dataset.c==='uq'){S.q=e.target.value;const pos=e.target.selectionStart;renderSheet();const q=$('#uq');q.focus();q.setSelectionRange(pos,pos)}});
 document.addEventListener('change',onDraft);
 
 /* ---------- kill team ---------- */
